@@ -18,7 +18,7 @@ def get_users(filename):
     return set(users)
 
 
-def get_page(user, driver, sleeptime=1, down_scrolls=1e6):
+def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
     '''
     '''
     url = 'http://instagram.com/' + user
@@ -37,13 +37,16 @@ def get_page(user, driver, sleeptime=1, down_scrolls=1e6):
             break
         page = driver.page_source
 
+    saveas = ActionChains(driver).key_down(Keys.COMMAND).send_keys('s').key_up(Keys.COMMAND)
     saveas.perform()
-    time.sleep(sleeptime)
+
+    time.sleep(2)
     app('System Events').keystroke('\r')
+    time.sleep(2)
 
 if __name__ == '__main__':
     SLEEPTIME = 1
-    SAVE_DIR = '/Users/wonder/galvanize/project/recommend-a-graham/data'
+    SAVE_DIR = '/Users/datascientist/theo/recommend-a-graham/data/raw'
     DEBUG = False
 
 
@@ -52,20 +55,30 @@ if __name__ == '__main__':
     else:
         users = get_users('../data/most_popular.txt')
 
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference("browser.download.folderList", 2)
-    profile.set_preference("browser.download.manager.showWhenStarting", False)
-    profile.set_preference("browser.download.dir", SAVE_DIR)
-    driver = webdriver.Firefox(firefox_profile=profile)
-
-    saveas = ActionChains(driver).key_down(Keys.COMMAND).send_keys('s').key_up(Keys.COMMAND)
-
-    rawPages = os.listdir('data/')
+    rawPages = os.listdir('../data/raw')
     for user in users:
-        if any("@" + user in s for s in rawPages):
-            continue
-        get_page(user, driver, sleeptime=SLEEPTIME)
-        with open('logs/log_scrape_users.txt', 'ab') as f:
-            f.write('{} saved page for {}'.format(time.strftime('%Y%m%d.%H:%M:%s'), user))
 
-    driver.close()
+        # Check if exists
+        if any(user in s for s in rawPages):
+            continue
+
+        # Set profile, inside for loop because doesn't exist after used
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("browser.download.folderList", 2)
+        profile.set_preference("browser.download.manager.showWhenStarting", False)
+        profile.set_preference("browser.download.dir", SAVE_DIR)
+
+        # Load driver to load page
+        driver = webdriver.Firefox(firefox_profile=profile)
+
+        get_page(user, driver, sleeptime=SLEEPTIME)
+
+        # Write log when done
+        with open('../logs/log_scrape_users.txt', 'ab') as f:
+            f.write('{} saved page for {}\n'.format(time.strftime('%Y%m%d.%H:%M:%s'), user))
+
+        # Check if HTML file is saved to conserve memory
+        while not any(user in s and 'html' in s for s in os.listdir('../data/raw')):
+            time.sleep(3)
+        time.sleep(5)
+        driver.close()
