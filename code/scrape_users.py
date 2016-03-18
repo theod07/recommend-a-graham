@@ -23,6 +23,11 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
     '''
     url = 'http://instagram.com/' + user
     driver.get(url)
+
+    # Page is not available/404
+    if 'The link you followed may be broken, or the page may have been removed.' in driver.page_source:
+        return
+
     try:
         driver.find_element_by_link_text('LOAD MORE').click()
     except NoSuchElementException:
