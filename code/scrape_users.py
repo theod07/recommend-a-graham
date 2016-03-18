@@ -77,6 +77,11 @@ if __name__ == '__main__':
         with open('../logs/log_scrape_users.txt', 'ab') as f:
             f.write('{} saved page for {}\n'.format(time.strftime('%Y%m%d.%H:%M:%s'), user))
 
+        # Page is not available/404
+        if 'The link you followed may be broken, or the page may have been removed.' in driver.page_source:
+            driver.close()
+            continue
+
         # Check if HTML file is saved to conserve memory
         while not any(user in s and 'html' in s for s in os.listdir('../data/raw')):
             time.sleep(3)
