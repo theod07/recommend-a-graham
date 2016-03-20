@@ -89,7 +89,7 @@ if __name__ == '__main__':
             continue
 
         # Check if HTML file is saved to conserve memory
-        while not any(user in s and 'html' in s for s in os.listdir(SAVE_DIR)):
+        while not any(user.lower() in s.lower() and 'html' in s.lower() for s in os.listdir(SAVE_DIR)):
             print '{} Saving {} to {}'.format(time.strftime('%Y%m%d.%H:%M:%s'), user, SAVE_DIR)
             time.sleep(3)
 
