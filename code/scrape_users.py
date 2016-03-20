@@ -51,7 +51,8 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
 
 if __name__ == '__main__':
     SLEEPTIME = 1
-    SAVE_DIR = '/Users/datascientist/theo/recommend-a-graham/data/raw'
+    CWD = os.getcwd()
+    SAVE_DIR = CWD + '/../data/raw/'
     DEBUG = False
 
 
@@ -88,7 +89,9 @@ if __name__ == '__main__':
             continue
 
         # Check if HTML file is saved to conserve memory
-        while not any(user in s and 'html' in s for s in os.listdir('../data/raw')):
+        while not any(user in s and 'html' in s for s in os.listdir(SAVE_DIR)):
+            print '{} Saving {} to {}'.format(time.strftime('%Y%m%d.%H:%M:%s'), user, SAVE_DIR)
             time.sleep(3)
+
         time.sleep(5)
         driver.close()
