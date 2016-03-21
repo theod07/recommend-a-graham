@@ -65,7 +65,7 @@ if __name__ == '__main__':
     for user in users:
 
         # Check if exists
-        if any(user in s for s in rawPages):
+        if any(user.lower() in s.lower() for s in rawPages):
             continue
 
         # Set profile, inside for loop because doesn't exist after used
