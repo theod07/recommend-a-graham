@@ -1,0 +1,4 @@
+# use boto-rsync to transfer files to s3
+#
+# pip install boto_rsync
+# boto-rsync -n -a [ACCESS-KEY] -s [SECRET-ACCESS-KEY] recommend-a-graham/data/raw/ s3://insta_image_clusters/most_popular/
