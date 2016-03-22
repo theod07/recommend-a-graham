@@ -52,16 +52,18 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
 if __name__ == '__main__':
     SLEEPTIME = 1
     CWD = os.getcwd()
-    SAVE_DIR = CWD + '/../data/raw/'
+    USER_TYPE = 'travel'
+    SAVE_DIR = CWD + '/../data/{}/'.format(USER_TYPE)
     DEBUG = False
+
 
 
     if DEBUG:
         users = ['patricknorton', 'taylorswift']
     else:
-        users = get_users('../data/most_popular.txt')
+        users = get_users('../data/{}.txt'.format(USER_TYPE))
 
-    rawPages = os.listdir('../data/raw')
+    rawPages = os.listdir('../data/{}/'.format(USER_TYPE))
     for user in users:
 
         # Check if exists
