@@ -5,7 +5,8 @@ import os
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-from appscript import app
+# from appscript import app
+from pykeyboard import PyKeyboard
 
 def get_users(filename):
     '''
@@ -46,14 +47,16 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
     saveas.perform()
 
     time.sleep(2)
-    app('System Events').keystroke('\r')
+    # app('System Events').keystroke('\r')
+    kbrd = PyKeyboard()
+    kbrd.press_key('Return')
     time.sleep(2)
 
 if __name__ == '__main__':
-    DEBUG = False
+    DEBUG = True
     SLEEPTIME = 1
     CWD = os.getcwd()
-    USER_BUCKET = 'travel'
+    USER_BUCKET = 'photographers'
     SAVE_DIR = CWD + '/../data/{}/'.format(USER_BUCKET)
 
     if DEBUG:
