@@ -56,7 +56,6 @@ if __name__ == '__main__':
     USER_BUCKET = 'travel'
     SAVE_DIR = CWD + '/../data/{}/'.format(USER_BUCKET)
 
-
     if DEBUG:
         users = ['patricknorton', 'taylorswift']
     else:
