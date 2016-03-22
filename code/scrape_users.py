@@ -50,24 +50,23 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
     time.sleep(2)
 
 if __name__ == '__main__':
+    DEBUG = False
     SLEEPTIME = 1
     CWD = os.getcwd()
-    USER_TYPE = 'travel'
-    SAVE_DIR = CWD + '/../data/{}/'.format(USER_TYPE)
-    DEBUG = False
-
-
+    USER_BUCKET = 'travel'
+    SAVE_DIR = CWD + '/../data/{}/'.format(USER_BUCKET)
 
     if DEBUG:
         users = ['patricknorton', 'taylorswift']
     else:
-        users = get_users('../data/{}.txt'.format(USER_TYPE))
+        users = get_users('../data/{}.txt'.format(USER_BUCKET))
 
-    rawPages = os.listdir('../data/{}/'.format(USER_TYPE))
+    # Account for users that have been scraped in previous iteration
+    raw_pages = os.listdir('../data/{}/'.format(USER_BUCKET)) + os.listdir('../data/raw/')
+
     for user in users:
-
         # Check if exists
-        if any(user in s for s in rawPages):
+        if any(user.lower() in s.lower() for s in raw_pages):
             continue
 
         # Set profile, inside for loop because doesn't exist after used
