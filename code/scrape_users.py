@@ -43,7 +43,7 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
             break
         page = driver.page_source
 
-    saveas = ActionChains(driver).key_down(Keys.COMMAND).send_keys('s').key_up(Keys.COMMAND)
+    saveas = ActionChains(driver).key_down(Keys.CONTROL).send_keys('s').key_up(Keys.CONTROL)
     saveas.perform()
 
     time.sleep(2)
@@ -53,10 +53,11 @@ def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
     time.sleep(2)
 
 if __name__ == '__main__':
-    DEBUG = True
+
+    DEBUG = False 
     SLEEPTIME = 1
     CWD = os.getcwd()
-    USER_BUCKET = 'photographers'
+    USER_BUCKET = 'models'
     SAVE_DIR = CWD + '/../data/{}/'.format(USER_BUCKET)
 
     if DEBUG:
