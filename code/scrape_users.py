@@ -65,7 +65,7 @@ if __name__ == '__main__':
         users = get_users('../data/{}.txt'.format(USER_BUCKET))
 
     # Account for users that have been scraped in previous iteration
-    raw_pages = os.listdir('../data/{}/'.format(USER_BUCKET)) + os.listdir('../data/raw/')
+    raw_pages = set( os.listdir('../data/{}/'.format(USER_BUCKET)) + os.listdir('../data/raw/') + os.listdir('../data/travel') )
 
     for user in users:
         # Check if exists
