@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
 
 	for group in USER_GROUPS:
-		dirs = [dir for dir in os.listdir('../data/{}/'.format(GROUP)) if dir.endswith('.html')]
+		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html')]
 
 		if DEBUG:
 			dirs = dirs[:2]
