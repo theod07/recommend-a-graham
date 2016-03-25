@@ -6,7 +6,7 @@ CREATE TABLE tracker (
 	shortcode text,
 	username text,
 	img_id text,
-	predicted boolean DEFAULT BOOL(0),
+	predicted int DEFAULT 0,
 	PRIMARY KEY(shortcode)
 );
 
