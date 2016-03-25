@@ -1,4 +1,8 @@
 data/raw/
 data/pickles/
+data/foodies/
+data/travel/
+data/models/
+data/photographers/
 *.tar.bz2
 *.pyc

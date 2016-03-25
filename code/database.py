@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	    "tracker_pkey" PRIMARY KEY, btree (shortcode)
 	'''
 
-	conn = pg2.connect(dbname='image_clusters')
+	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	c = conn.cursor()
 
 	DEBUG = True
@@ -34,6 +34,7 @@ if __name__ == '__main__':
 
 	if DEBUG:
 		dirs = dirs[:2]
+                print 'dirs: {}'.format(dirs)
 
 	while len(dirs) > 0:
 		fname = dirs.pop()
