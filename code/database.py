@@ -28,7 +28,7 @@ if __name__ == '__main__':
 	c = conn.cursor()
 
 	DEBUG = True
-	USER_GROUP
+	USER_GROUP = 'foodies'
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
 	dirs = [dir for dir in os.listdir('../data/{}/'.format(USER_GROUP)) if dir.endswith('.html')]
