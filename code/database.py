@@ -31,42 +31,44 @@ if __name__ == '__main__':
 	USER_GROUPS = ['foodies']
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
-	dirs = [dir for GROUP in USER_GROUPS for dir in os.listdir('../data/{}/'.format(GROUP)) if dir.endswith('.html')]
 
 
-	if DEBUG:
-		dirs = dirs[:2]
-                print 'dirs: {}'.format(dirs)
+	for group in USER_GROUPS:
+		dirs = [dir for dir in os.listdir('../data/{}/'.format(GROUP)) if dir.endswith('.html')]
 
-	while len(dirs) > 0:
-		fname = dirs.pop()
-		hrefs, srcs = get_hrefs_srcs(fname, USER_GROUP)
+		if DEBUG:
+			dirs = dirs[:2]
+	                print 'dirs: {}'.format(dirs)
 
-		if len(hrefs) == 0 or len(srcs) == 0:
-			print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
-			continue
-		
-		shortcodes, username = href_to_shortcode(hrefs)
-		ids = src_to_img_id(srcs)
+		while len(dirs) > 0:
+			fname = dirs.pop()
+			hrefs, srcs = get_hrefs_srcs(fname, group)
 
-		if len(shortcodes) != len(ids):
-			print 'user {} len(shortcodes): {}, len(ids): {}'.format(username, len(shortcodes), len(ids))
-			continue
+			if len(hrefs) == 0 or len(srcs) == 0:
+				print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
+				continue
+			
+			shortcodes, username = href_to_shortcode(hrefs)
+			ids = src_to_img_id(srcs)
 
-		pairs = zip(shortcodes, ids) 
-		random.shuffle(pairs)
+			if len(shortcodes) != len(ids):
+				print 'user {} len(shortcodes): {}, len(ids): {}'.format(username, len(shortcodes), len(ids))
+				continue
 
-		# check whether user is already in table
-		c.execute('''SELECT COUNT(*) FROM tracker WHERE username = '{}';'''.format(username))
+			pairs = zip(shortcodes, ids) 
+			random.shuffle(pairs)
 
-		user_count = int(c.fetchall()[0][0])
-				
-		print '{} already has {} entries in tracker'.format(username, user_count)
+			# check whether user is already in table
+			c.execute('''SELECT COUNT(*) FROM tracker WHERE username = '{}';'''.format(username))
 
-		if user_count == 0:
-			for (code, img_id) in pairs:
-				c.execute( insert(code, username, img_id) )
-			conn.commit()
+			user_count = int(c.fetchall()[0][0])
+					
+			print '{} already has {} entries in tracker'.format(username, user_count)
+
+			if user_count == 0:
+				for (code, img_id) in pairs:
+					c.execute( insert(code, username, img_id) )
+				conn.commit()
 
 	conn.commit()
 	conn.close()
