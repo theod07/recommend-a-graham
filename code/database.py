@@ -31,7 +31,7 @@ if __name__ == '__main__':
 	USER_GROUPS = ['foodies']
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
-	dirs = [dir for dir in os.listdir('../data/{}/'.format(GROUP)) for GROUP in USER_GROUPS if dir.endswith('.html')]
+	dirs = [dir for GROUP in USER_GROUPS for dir in os.listdir('../data/{}/'.format(GROUP)) if dir.endswith('.html')]
 
 
 	if DEBUG:
