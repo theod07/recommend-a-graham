@@ -37,7 +37,7 @@ if __name__ == '__main__':
 		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html')]
 
 		if DEBUG:
-			dirs = dirs[:2]
+			dirs = dirs[:5]
 	                print 'dirs: {}'.format(dirs)
 
 		while len(dirs) > 0:
