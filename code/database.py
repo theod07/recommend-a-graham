@@ -30,7 +30,8 @@ if __name__ == '__main__':
 	DEBUG = True
 
 
-	dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
+	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
+	dirs = [dir for dir in os.listdir('../data/foodies/') if dir.endswith('.html')]
 
 	if DEBUG:
 		dirs = dirs[:2]
