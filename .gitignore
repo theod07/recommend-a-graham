@@ -1,3 +1,4 @@
 data/raw/
 data/pickles/
 *.tar.bz2
+*.pyc
