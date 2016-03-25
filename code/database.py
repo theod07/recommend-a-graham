@@ -19,7 +19,7 @@ if __name__ == '__main__':
 	 shortcode | text    | not null
 	 username  | text    |
 	 img_id    | text    |
-	 predicted | boolean | default bool(0)
+	 predicted | integer | default 0
 	Indexes:
 	    "tracker_pkey" PRIMARY KEY, btree (shortcode)
 	'''
