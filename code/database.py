@@ -28,10 +28,10 @@ if __name__ == '__main__':
 	c = conn.cursor()
 
 	DEBUG = True
-
+	USER_GROUP
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
-	dirs = [dir for dir in os.listdir('../data/foodies/') if dir.endswith('.html')]
+	dirs = [dir for dir in os.listdir('../data/{}/'.format(USER_GROUP)) if dir.endswith('.html')]
 
 	if DEBUG:
 		dirs = dirs[:2]
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 	while len(dirs) > 0:
 		fname = dirs.pop()
-		hrefs, srcs = get_hrefs_srcs(fname)
+		hrefs, srcs = get_hrefs_srcs(fname, USER_GROUP)
 
 		if len(hrefs) == 0 or len(srcs) == 0:
 			print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))

@@ -15,11 +15,11 @@ from time import strftime as strftime
 
 # print [tag.attrs for tag in a_tags]
 
-def get_hrefs_srcs(fname):
+def get_hrefs_srcs(fname, sub_directory):
 	"""
 	take in a html file and return the hrefs and img_src links
 	"""
-	with open('../data/raw/{}'.format(fname), 'r') as f:
+	with open('../data/{}/{}'.format(sub_directory, fname), 'r') as f:
 		soup = BeautifulSoup(f, 'lxml')
 
 	a_tags = soup('a')
@@ -67,11 +67,13 @@ def save_df(username, shortcodes, img_ids):
 
 if __name__ == '__main__':
 
-	dirs = [dir for dir in os.listdir('../data/raw/') if dir.endswith('.html')]
+	USER_GROUP = 'raw'
+
+	dirs = [dir for dir in os.listdir('../data/{}/'.format(USER_GROUP)) if dir.endswith('.html')]
 
 	while len(dirs) > 0:
 		fname = dirs.pop()
-		hrefs, srcs = get_hrefs_srcs(fname)
+		hrefs, srcs = get_hrefs_srcs(fname, USER_GROUP)
 
 		if len(hrefs) == 0 or len(srcs) == 0:
 			print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
