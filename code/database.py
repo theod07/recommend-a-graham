@@ -38,21 +38,21 @@ if __name__ == '__main__':
 
 		if DEBUG:
 			dirs = dirs[:5]
-	                print 'dirs: {}'.format(dirs)
+	            print 'dirs: {}'.format(dirs); raw_input()
 
 		while len(dirs) > 0:
 			fname = dirs.pop()
 			hrefs, srcs = get_hrefs_srcs(fname, group)
 
 			if len(hrefs) == 0 or len(srcs) == 0:
-				print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
+				print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs)); raw_input()
 				continue
 			
 			shortcodes, username = href_to_shortcode(hrefs)
 			ids = src_to_img_id(srcs)
 
 			if len(shortcodes) != len(ids):
-				print 'user {} len(shortcodes): {}, len(ids): {}'.format(username, len(shortcodes), len(ids))
+				print 'user {} len(shortcodes): {}, len(ids): {}'.format(username, len(shortcodes), len(ids)); raw_input()
 				continue
 
 			pairs = zip(shortcodes, ids) 
@@ -62,8 +62,9 @@ if __name__ == '__main__':
 			c.execute('''SELECT COUNT(*) FROM tracker WHERE username = '{}';'''.format(username))
 
 			user_count = int(c.fetchall()[0][0])
+			print '{} user_count: {}'.format(username, user_count)
 					
-			print '{} already has {} entries in tracker'.format(username, user_count)
+			print '{} already has {} entries in tracker'.format(username, user_count); raw_input()
 
 			if user_count == 0:
 				print 'inserting for user {}'.format(username)
