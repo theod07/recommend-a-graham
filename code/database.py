@@ -27,8 +27,8 @@ if __name__ == '__main__':
 	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	c = conn.cursor()
 
-	DEBUG = True
-	USER_GROUPS = ['foodies']
+	DEBUG = False
+	USER_GROUPS = ['foodies', 'photographers', 'travel', 'models']
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
 
