@@ -34,11 +34,11 @@ if __name__ == '__main__':
 
 
 	for group in USER_GROUPS:
-		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html')]
+		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html') and not dir.startswith('._')]
 
 		if DEBUG:
 			dirs = dirs[:5]
-	            print 'dirs: {}'.format(dirs)
+	            	print 'dirs: {}'.format(dirs)
 
 		while len(dirs) > 0:
 			fname = dirs.pop()
