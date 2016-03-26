@@ -66,6 +66,7 @@ if __name__ == '__main__':
 			print '{} already has {} entries in tracker'.format(username, user_count)
 
 			if user_count == 0:
+				print 'inserting for user {}'.format(username)
 				for (code, img_id) in pairs:
 					c.execute( insert(code, username, img_id) )
 				conn.commit()
