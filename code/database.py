@@ -28,7 +28,7 @@ if __name__ == '__main__':
 	c = conn.cursor()
 
 	DEBUG = False
-	USER_GROUPS = ['foodies', 'photographers', 'travel', 'models']
+	USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
 
@@ -63,17 +63,14 @@ if __name__ == '__main__':
 
 			# check whether user is already in table
 			c.execute('''SELECT COUNT(*) FROM tracker WHERE username = '{}';'''.format(username))
-
 			user_count = int(c.fetchall()[0][0])
-			print '{} user_count: {}'.format(username, user_count)
-					
-			print '{} already has {} entries in tracker'.format(username, user_count)
 
 			if user_count == 0:
 				print 'inserting for user {}'.format(username)
 				for (code, img_id) in pairs:
 					c.execute( insert(code, username, img_id) )
 				conn.commit()
-
+			else:
+				print '{} already has {} entries in tracker'.format(username, user_count)
 	conn.commit()
 	conn.close()
