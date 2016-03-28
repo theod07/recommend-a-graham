@@ -6,6 +6,7 @@
 # Download pretrained weights from:
 # https://s3.amazonaws.com/lasagne/recipes/pretrained/imagenet/vgg16.pkl
 
+import lasagne
 from lasagne.layers import InputLayer
 from lasagne.layers import DenseLayer
 from lasagne.layers import NonlinearityLayer
@@ -14,6 +15,15 @@ from lasagne.layers import Pool2DLayer as PoolLayer
 # from lasagne.layers.dnn import Conv2DDNNLayer as ConvLayer
 from lasagne.layers import Conv2DLayer as ConvLayer
 from lasagne.nonlinearities import softmax
+import cPickle as pickle
+import numpy as np 
+import os
+import time
+import matplotlib.pyplot as plt
+import skimage.transform
+from lasagne.utils import floatX
+import urllib
+import io
 
 
 def build_model():
@@ -32,7 +42,7 @@ def build_model():
     net['conv3_1'] = ConvLayer(
         net['pool2'], 256, 3, pad=1, flip_filters=True)
     net['conv3_2'] = ConvLayer(
-        net['conv3_1'], 256, 3, pad=1, flip_filters=True)
+         net['conv3_1'], 256, 3, pad=1, flip_filters=True)
     net['conv3_3'] = ConvLayer(
         net['conv3_2'], 256, 3, pad=1, flip_filters=True)
     net['pool3'] = PoolLayer(net['conv3_3'], 2)
@@ -59,3 +69,76 @@ def build_model():
     net['prob'] = NonlinearityLayer(net['fc8'], softmax)
 
     return net
+
+def prep_image(img_path, local_img=True):
+    ext = img_path.split('.')[-1]
+
+    if local_img:
+        im = plt.imread(img_path)
+    else: 
+        im = plt.imread(io.BytesIO(urllib.urlopen(img_path).read()), ext)
+
+    # Resize so smallest dim = 256, preserving aspect ratio
+    h, w, _ = im.shape
+    if h < w:
+        im = skimage.transform.resize(im, (256, w*256/h), preserve_range=True)
+    else:
+        im = skimage.transform.resize(im, (h*256/w, 256), preserve_range=True)
+
+        # Central crop to 224x224
+        h, w, _ = im.shape
+        im = im[h//2-112:h//2+112, w//2-112:w//2+112]
+
+        rawim = np.copy(im).astype('uint8')
+
+        # Shuffle axes to c01
+        im = np.swapaxes(np.swapaxes(im, 1, 2), 0, 1)
+
+        # Convert to BGR
+        im = im[::-1, :, :]
+
+        im = im - MEAN_IMAGE
+        return rawim, floatX(im[np.newaxis])
+
+def predict(nnet, img_path, local_img=True):
+    tic = time.clock()
+    print 'tic'
+    rawim, im = prep_image(img_path, local_img)
+
+    print 'calculating probs..'
+    prob = np.array(lasagne.layers.get_output(nnet['prob'], im, deterministic=True).eval())
+    pred_2 = np.array(lasagne.layers.get_output(nnet['fc8'], im, deterministic=True).eval())
+
+    print 'got probs..'
+    top = np.argsort(prob[0])[-1:-4:-1]
+    # print 'preparing to plot'
+    # plt.figure()
+    # plt.imshow(rawim.astype('uint8'))
+    # plt.axis('off')
+    # print 'successfully plotted'
+    toc = time.clock()
+
+    print 'img_path: {}'.format(img_path)
+    print 'predict time: {}'.format(toc-tic)
+    for n, label in enumerate(top):
+        plt.text(250, 70 + n * 20, '{}, {}'.format(n+1, CLASSES[label]), fontsize=14)
+        print '{}, Guess: {}.'.format(n+1, CLASSES[label])
+    return prob, pred_2
+
+
+if __name__ == '__main__':
+
+    model = pickle.load(open('./vgg16.pkl')) 
+    CLASSES = model['synset words']
+    MEAN_IMAGE = model['mean value'][:, np.newaxis, np.newaxis]
+    nnet = build_model()
+    lasagne.layers.set_all_param_values(nnet['prob'], model['param values'])
+
+    imgs = [f for f in os.listdir('../../image_clusters/code/') if f.endswith('.jpg')]
+
+    probs, pred_2s = [], []
+    for img in imgs:
+        prob, pred_2 = predict(nnet, '../../image_clusters/code/{}'.format(img), local_img=True)
+        probs.append(prob)
+        pred_2s.append(pred_2)
+
