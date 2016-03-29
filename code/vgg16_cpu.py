@@ -27,128 +27,128 @@ import io
 np.set_printoptions(threshold=np.nan)
 
 
+class vgg16_cpu(object):
 
-def build_model():
-    net = {}
-    net['input'] = InputLayer((None, 3, 224, 224))
-    net['conv1_1'] = ConvLayer(
-        net['input'], 64, 3, pad=1, flip_filters=True)
-    net['conv1_2']  = ConvLayer(
-        net['conv1_1'], 64, 3, pad=1, flip_filters=True)
-    net['pool1'] = PoolLayer(net['conv1_2'], 2)
-    net['conv2_1'] = ConvLayer(
-        net['pool1'], 128, 3, pad=1, flip_filters=True)
-    net['conv2_2'] = ConvLayer(
-        net['conv2_1'], 128, 3, pad=1, flip_filters=True)
-    net['pool2'] = PoolLayer(net['conv2_2'], 2)
-    net['conv3_1'] = ConvLayer(
-        net['pool2'], 256, 3, pad=1, flip_filters=True)
-    net['conv3_2'] = ConvLayer(
-         net['conv3_1'], 256, 3, pad=1, flip_filters=True)
-    net['conv3_3'] = ConvLayer(
-        net['conv3_2'], 256, 3, pad=1, flip_filters=True)
-    net['pool3'] = PoolLayer(net['conv3_3'], 2)
-    net['conv4_1'] = ConvLayer(
-        net['pool3'], 512, 3, pad=1, flip_filters=True)
-    net['conv4_2'] = ConvLayer(
-        net['conv4_1'], 512, 3, pad=1, flip_filters=True)
-    net['conv4_3'] = ConvLayer(
-        net['conv4_2'], 512, 3, pad=1, flip_filters=True)
-    net['pool4'] = PoolLayer(net['conv4_3'], 2)
-    net['conv5_1'] = ConvLayer(
-        net['pool4'], 512, 3, pad=1, flip_filters=True)
-    net['conv5_2'] = ConvLayer(
-        net['conv5_1'], 512, 3, pad=1, flip_filters=True)
-    net['conv5_3'] = ConvLayer(
-        net['conv5_2'], 512, 3, pad=1, flip_filters=True)
-    net['pool5'] = PoolLayer(net['conv5_3'], 2)
-    net['fc6'] = DenseLayer(net['pool5'], num_units=4096)
-    net['fc6_dropout'] = DropoutLayer(net['fc6'], p=0.5)
-    net['fc7'] = DenseLayer(net['fc6_dropout'], num_units=4096)
-    net['fc7_dropout'] = DropoutLayer(net['fc7'], p=0.5)
-    net['fc8'] = DenseLayer(
-        net['fc7_dropout'], num_units=1000, nonlinearity=None)
-    net['prob'] = NonlinearityLayer(net['fc8'], softmax)
+    def __init__(self):
+        self.model = pickle.load(open('./vgg16.pkl'))
+        self.CLASSES = self.model['synset words']
+        self.MEAN_IMAGE = self.model['mean value'][:, np.newaxis, np.newaxis]
+        self.nnet = self.build_model()
+        lasagne.layers.set_all_param_values(self.nnet['prob'], self.model['param values'])
 
-    return net
+    def build_model(self):
+        net = {}
+        net['input'] = InputLayer((None, 3, 224, 224))
+        net['conv1_1'] = ConvLayer(
+            net['input'], 64, 3, pad=1, flip_filters=True)
+        net['conv1_2']  = ConvLayer(
+            net['conv1_1'], 64, 3, pad=1, flip_filters=True)
+        net['pool1'] = PoolLayer(net['conv1_2'], 2)
+        net['conv2_1'] = ConvLayer(
+            net['pool1'], 128, 3, pad=1, flip_filters=True)
+        net['conv2_2'] = ConvLayer(
+            net['conv2_1'], 128, 3, pad=1, flip_filters=True)
+        net['pool2'] = PoolLayer(net['conv2_2'], 2)
+        net['conv3_1'] = ConvLayer(
+            net['pool2'], 256, 3, pad=1, flip_filters=True)
+        net['conv3_2'] = ConvLayer(
+             net['conv3_1'], 256, 3, pad=1, flip_filters=True)
+        net['conv3_3'] = ConvLayer(
+            net['conv3_2'], 256, 3, pad=1, flip_filters=True)
+        net['pool3'] = PoolLayer(net['conv3_3'], 2)
+        net['conv4_1'] = ConvLayer(
+            net['pool3'], 512, 3, pad=1, flip_filters=True)
+        net['conv4_2'] = ConvLayer(
+            net['conv4_1'], 512, 3, pad=1, flip_filters=True)
+        net['conv4_3'] = ConvLayer(
+            net['conv4_2'], 512, 3, pad=1, flip_filters=True)
+        net['pool4'] = PoolLayer(net['conv4_3'], 2)
+        net['conv5_1'] = ConvLayer(
+            net['pool4'], 512, 3, pad=1, flip_filters=True)
+        net['conv5_2'] = ConvLayer(
+            net['conv5_1'], 512, 3, pad=1, flip_filters=True)
+        net['conv5_3'] = ConvLayer(
+            net['conv5_2'], 512, 3, pad=1, flip_filters=True)
+        net['pool5'] = PoolLayer(net['conv5_3'], 2)
+        net['fc6'] = DenseLayer(net['pool5'], num_units=4096)
+        net['fc6_dropout'] = DropoutLayer(net['fc6'], p=0.5)
+        net['fc7'] = DenseLayer(net['fc6_dropout'], num_units=4096)
+        net['fc7_dropout'] = DropoutLayer(net['fc7'], p=0.5)
+        net['fc8'] = DenseLayer(
+            net['fc7_dropout'], num_units=1000, nonlinearity=None)
+        net['prob'] = NonlinearityLayer(net['fc8'], softmax)
 
-def prep_image(img_path, local_img=True):
-    ext = img_path.split('.')[-1]
+        return net
 
-    if local_img:
-        im = plt.imread(img_path)
-    else: 
-        im = plt.imread(io.BytesIO(urllib.urlopen(img_path).read()), ext)
+    def prep_image(self, img_path, local_img=True):
+        ext = img_path.split('.')[-1]
 
-    # Resize so smallest dim = 256, preserving aspect ratio
-    h, w, _ = im.shape
-    if h < w:
-        im = skimage.transform.resize(im, (256, w*256/h), preserve_range=True)
-    else:
-        im = skimage.transform.resize(im, (h*256/w, 256), preserve_range=True)
+        if local_img:
+            im = plt.imread(img_path)
+        else: 
+            im = plt.imread(io.BytesIO(urllib.urlopen(img_path).read()), ext)
 
-    # Central crop to 224x224
-    h, w, _ = im.shape
-    im = im[h//2-112:h//2+112, w//2-112:w//2+112]
+        # Resize so smallest dim = 256, preserving aspect ratio
+        h, w, _ = im.shape
+        if h < w:
+            im = skimage.transform.resize(im, (256, w*256/h), preserve_range=True)
+        else:
+            im = skimage.transform.resize(im, (h*256/w, 256), preserve_range=True)
 
-    rawim = np.copy(im).astype('uint8')
+        # Central crop to 224x224
+        h, w, _ = im.shape
+        im = im[h//2-112:h//2+112, w//2-112:w//2+112]
 
-    # Shuffle axes to c01
-    im = np.swapaxes(np.swapaxes(im, 1, 2), 0, 1)
+        rawim = np.copy(im).astype('uint8')
 
-    # Convert to BGR
-    im = im[::-1, :, :]
+        # Shuffle axes to c01
+        im = np.swapaxes(np.swapaxes(im, 1, 2), 0, 1)
 
-    im = im - MEAN_IMAGE
-    return rawim, floatX(im[np.newaxis])
+        # Convert to BGR
+        im = im[::-1, :, :]
 
-def predict(nnet, img_path, local_img=True):
-    tic = time.clock()
-    print 'tic'
-    rawim, im = prep_image(img_path, local_img)
+        im = im - self.MEAN_IMAGE
+        return rawim, floatX(im[np.newaxis])
 
-    print 'calculating probs..'
-    prob = np.array(lasagne.layers.get_output(nnet['prob'], im, deterministic=True).eval())
-    fc8 = np.array(lasagne.layers.get_output(nnet['fc8'], im, deterministic=True).eval())
-    fc7 = np.array(lasagne.layers.get_output(nnet['fc7'], im, deterministic=True).eval())
+    def predict(self, img_path, local_img=True):
+        tic = time.clock()
+        print 'tic'
+        rawim, im = self.prep_image(img_path, local_img)
 
-    print 'got probs..'
-    top = np.argsort(prob[0])[-1:-4:-1]
-    # print 'preparing to plot'
-    # plt.figure()
-    # plt.imshow(rawim.astype('uint8'))
-    # plt.axis('off')
-    # print 'successfully plotted'
-    toc = time.clock()
+        print 'calculating probs..'
+        prob = np.array(lasagne.layers.get_output(self.nnet['prob'], im, deterministic=True).eval())
+        fc8 = np.array(lasagne.layers.get_output(self.nnet['fc8'], im, deterministic=True).eval())
+        fc7 = np.array(lasagne.layers.get_output(self.nnet['fc7'], im, deterministic=True).eval())
 
-    print 'img_path: {}'.format(img_path)
-    print 'predict time: {}'.format(toc-tic)
-    for n, label in enumerate(top):
-        plt.text(250, 70 + n * 20, '{}, {}'.format(n+1, CLASSES[label]), fontsize=14)
-        print '{}, Guess: {}.'.format(n+1, CLASSES[label])
-    return prob, fc8, fc7
+        print 'got probs..'
+        top = np.argsort(prob[0])[-1:-4:-1]
+        # print 'preparing to plot'
+        # plt.figure()
+        # plt.imshow(rawim.astype('uint8'))
+        # plt.axis('off')
+        # print 'successfully plotted'
+        toc = time.clock()
 
-def get_model():
-    model = pickle.load(open('./vgg16.pkl')) 
-    CLASSES = model['synset words']
-    MEAN_IMAGE = model['mean value'][:, np.newaxis, np.newaxis]
-    nnet = build_model()
-    lasagne.layers.set_all_param_values(nnet['prob'], model['param values'])
-    return nnet
+        print 'img_path: {}'.format(img_path)
+        print 'predict time: {}'.format(toc-tic)
+        for n, label in enumerate(top):
+            plt.text(250, 70 + n * 20, '{}, {}'.format(n+1, self.CLASSES[label]), fontsize=14)
+            print '{}, Guess: {}.'.format(n+1, self.CLASSES[label])
+        return prob[0], fc8[0], fc7[0]
 
 if __name__ == '__main__':
 
-    nnet = get_model()
+    nnet = vgg16_cpu()
 
     imgs = [f for f in os.listdir('.') if f.endswith('.jpg')]
 
     probs, fc8s, fc7s = [], [], []
     for img in imgs:
-        prob, fc8, fc7 = predict(nnet, '{}'.format(img), local_img=True)
+        prob, fc8, fc7 = nnet.predict('{}'.format(img), local_img=True)
         probs.append(prob)
-        fc8.append(fc8)
-        fc7.append(fc7)
-    
+        fc8s.append(fc8)
+        fc7s.append(fc7)
+
 
 
 
