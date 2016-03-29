@@ -128,8 +128,8 @@ class vgg16(object):
         # print 'successfully plotted'
         toc = time.clock()
 
-        print 'img_path: {}'.format(img_path)
-        print 'predict time: {}'.format(toc-tic)
+        print u'img_path: {}'.format(img_path)
+        print u'predict time: {}'.format(toc-tic)
         for n, label in enumerate(top):
             plt.text(250, 70 + n * 20, '{}, {}'.format(n+1, self.CLASSES[label]), fontsize=14)
             print '{}, Guess: {}.'.format(n+1, self.CLASSES[label])
