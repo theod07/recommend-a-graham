@@ -54,11 +54,11 @@ if __name__ == '__main__':
 		shorts_imgs = c.fetchall()
 		print 'shorts_imgs: {}'.format(shorts_imgs)
 
-	# 	for short, img in shorts_imgs:
-	# 		softmax, fc8, fc7 = predict(img)
-	# 		insert_softmax(short, softmax)
-	# 		insert_fc8(short, fc8)
-	# 		insert_fc7(short, fc7)
+		for short, img in shorts_imgs:
+			softmax, fc8, fc7 = predict(img)
+			insert_softmax(short, softmax)
+			insert_fc8(short, fc8)
+			insert_fc7(short, fc7)
 
-	# 	c.execute(update_predicted(shorts_imgs))
-	# 	conn.commit() #need execute in order to update db
+		c.execute(update_predicted(shorts_imgs))
+		conn.commit() #need execute in order to update db
