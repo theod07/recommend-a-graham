@@ -9,7 +9,7 @@ np.set_printoptions(threshold=np.nan)
 def get_shorts_imgs(username):
 	q = '''SELECT shortcode, img_id 
 			FROM tracker 
-			WHERE username='{}' 
+			WHERE username='{}' AND predicted=0
 			LIMIT 100;'''
 	return q.format(username)
 
@@ -39,14 +39,20 @@ if __name__ == '__main__':
 		usernames = usernames
 
 	# imgs = [ f for f in os.listdir('.') if f.endswith('.jpg')]
-	conn = pg2.connect(dbname='image_clusters')
+	
+	# connect to postgres
+	try:
+		conn = pg2.connect(dbname='image_clusters')
+	except:
+		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+
 	c = conn.cursor()
 	nnet = vgg16()
 	
-	# for username in usernames:
-	# 	c.execute(get_shorts_imgs(username))
-	# 	shorts_imgs = c.fetchall()
-	# 	print 'shorts_imgs: {}'.format(shorts_imgs)
+	for username in usernames:
+		c.execute(get_shorts_imgs(username))
+		shorts_imgs = c.fetchall()
+		print 'shorts_imgs: {}'.format(shorts_imgs)
 
 	# 	for short, img in shorts_imgs:
 	# 		softmax, fc8, fc7 = predict(img)
