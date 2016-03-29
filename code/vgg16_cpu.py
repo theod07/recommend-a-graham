@@ -27,7 +27,7 @@ import io
 np.set_printoptions(threshold=np.nan)
 
 
-class vgg16_cpu(object):
+class vgg16(object):
 
     def __init__(self):
         self.model = pickle.load(open('./vgg16.pkl'))
@@ -112,7 +112,6 @@ class vgg16_cpu(object):
 
     def predict(self, img_path, local_img=True):
         tic = time.clock()
-        print 'tic'
         rawim, im = self.prep_image(img_path, local_img)
 
         print 'calculating probs..'
@@ -138,7 +137,7 @@ class vgg16_cpu(object):
 
 if __name__ == '__main__':
 
-    nnet = vgg16_cpu()
+    nnet = vgg16()
 
     imgs = [f for f in os.listdir('.') if f.endswith('.jpg')]
 
