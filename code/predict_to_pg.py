@@ -55,10 +55,11 @@ if __name__ == '__main__':
 		print 'shorts_imgs: {}'.format(shorts_imgs)
 
 		for short, img in shorts_imgs:
-			softmax, fc8, fc7 = nnet.predict(img)
+			softmax, fc8, fc7 = nnet.predict('../data/{}/{}'.format(USER_GROUP, img)
+			print 'softmax.shape {}'.format(softmax.shape)
 			insert_softmax(short, softmax)
 			insert_fc8(short, fc8)
 			insert_fc7(short, fc7)
 
-		c.execute(update_predicted(shorts_imgs))
+		# c.execute(update_predicted(shorts_imgs))
 		conn.commit() #need execute in order to update db
