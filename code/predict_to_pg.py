@@ -55,7 +55,7 @@ if __name__ == '__main__':
 		print 'shorts_imgs: {}'.format(shorts_imgs)
 
 		for short, img in shorts_imgs:
-			softmax, fc8, fc7 = predict(img)
+			softmax, fc8, fc7 = nnet.predict(img)
 			insert_softmax(short, softmax)
 			insert_fc8(short, fc8)
 			insert_fc7(short, fc7)
