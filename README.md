@@ -10,16 +10,28 @@ CREATE TABLE tracker (
 	PRIMARY KEY(shortcode)
 );
 
-CREATE TABLE pred_1 (
+CREATE TABLE softmax (
 	shortcode text,
-	pred_1 decimal, 
+	softmax text, 
 	PRIMARY KEY(shortcode) 
 );
 
-CREATE TABLE pred_2 (
+CREATE TABLE fc8 (
 	shortcode text,
-	pred_2 decimal, 
+	fc8 text, 
 	PRIMARY KEY(shortcode) 
+);
+
+CREATE TABLE fc7 (
+	shortcode text,
+	fc7 text,
+	PRIMARY KEY(shortcode)
+);
+
+CREATE TABLE fc6 (
+	shortcode text,
+	fc6 text,
+	PRIMARY KEY(shortcode)
 );
 
 

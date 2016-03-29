@@ -24,6 +24,8 @@ import skimage.transform
 from lasagne.utils import floatX
 import urllib
 import io
+np.set_printoptions(threshold=np.nan)
+
 
 
 def build_model():
@@ -85,20 +87,20 @@ def prep_image(img_path, local_img=True):
     else:
         im = skimage.transform.resize(im, (h*256/w, 256), preserve_range=True)
 
-        # Central crop to 224x224
-        h, w, _ = im.shape
-        im = im[h//2-112:h//2+112, w//2-112:w//2+112]
+    # Central crop to 224x224
+    h, w, _ = im.shape
+    im = im[h//2-112:h//2+112, w//2-112:w//2+112]
 
-        rawim = np.copy(im).astype('uint8')
+    rawim = np.copy(im).astype('uint8')
 
-        # Shuffle axes to c01
-        im = np.swapaxes(np.swapaxes(im, 1, 2), 0, 1)
+    # Shuffle axes to c01
+    im = np.swapaxes(np.swapaxes(im, 1, 2), 0, 1)
 
-        # Convert to BGR
-        im = im[::-1, :, :]
+    # Convert to BGR
+    im = im[::-1, :, :]
 
-        im = im - MEAN_IMAGE
-        return rawim, floatX(im[np.newaxis])
+    im = im - MEAN_IMAGE
+    return rawim, floatX(im[np.newaxis])
 
 def predict(nnet, img_path, local_img=True):
     tic = time.clock()
@@ -107,7 +109,8 @@ def predict(nnet, img_path, local_img=True):
 
     print 'calculating probs..'
     prob = np.array(lasagne.layers.get_output(nnet['prob'], im, deterministic=True).eval())
-    pred_2 = np.array(lasagne.layers.get_output(nnet['fc8'], im, deterministic=True).eval())
+    fc8 = np.array(lasagne.layers.get_output(nnet['fc8'], im, deterministic=True).eval())
+    fc7 = np.array(lasagne.layers.get_output(nnet['fc7'], im, deterministic=True).eval())
 
     print 'got probs..'
     top = np.argsort(prob[0])[-1:-4:-1]
@@ -123,22 +126,29 @@ def predict(nnet, img_path, local_img=True):
     for n, label in enumerate(top):
         plt.text(250, 70 + n * 20, '{}, {}'.format(n+1, CLASSES[label]), fontsize=14)
         print '{}, Guess: {}.'.format(n+1, CLASSES[label])
-    return prob, pred_2
+    return prob, fc8, fc7
 
-
-if __name__ == '__main__':
-
+def get_model():
     model = pickle.load(open('./vgg16.pkl')) 
     CLASSES = model['synset words']
     MEAN_IMAGE = model['mean value'][:, np.newaxis, np.newaxis]
     nnet = build_model()
     lasagne.layers.set_all_param_values(nnet['prob'], model['param values'])
+    return nnet
 
-    imgs = [f for f in os.listdir('../../image_clusters/code/') if f.endswith('.jpg')]
+if __name__ == '__main__':
 
-    probs, pred_2s = [], []
+    nnet = get_model()
+
+    imgs = [f for f in os.listdir('.') if f.endswith('.jpg')]
+
+    probs, fc8s, fc7s = [], [], []
     for img in imgs:
-        prob, pred_2 = predict(nnet, '../../image_clusters/code/{}'.format(img), local_img=True)
+        prob, fc8, fc7 = predict(nnet, '{}'.format(img), local_img=True)
         probs.append(prob)
-        pred_2s.append(pred_2)
+        fc8.append(fc8)
+        fc7.append(fc7)
+    
+
+
 

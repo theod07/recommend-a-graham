@@ -5,28 +5,24 @@ from test_parse_html import href_to_shortcode
 from test_parse_html import src_to_img_id
 import random
 
-def insert(shortcode, username, id):
+def insert_tracker(shortcode, username, id):
 	q = " INSERT INTO tracker (shortcode, username, img_id) values ( '{}', '{}', '{}');"
 	return q.format(shortcode, username, id)
 
+def insert_softmax(connection, shortcode, vector):
+	q = '''INSERT INTO softmax (shortcode, softmax) values ('{}', '{}');'''
+	return q.format(shortcode, vector)
+
+def insert_fc8(connection, shortcode, vector):
+	q = '''INSERT INTO fc8 (shortcode, softmax) values ('{}', '{}');'''
+	return q.format(shortcode, vector)
+
+def insert_fc7(connection, shortcode, vector):
+	q = '''INSERT INTO fc7 (shortcode, softmax) values ('{}', '{}');'''
+	return q.format(shortcode, vector)
 
 
-if __name__ == '__main__':
-	'''
-		        Table "public.tracker"
-	  Column   |  Type   |    Modifiers
-	-----------+---------+-----------------
-	 shortcode | text    | not null
-	 username  | text    |
-	 img_id    | text    |
-	 predicted | integer | default 0
-	Indexes:
-	    "tracker_pkey" PRIMARY KEY, btree (shortcode)
-	'''
-
-	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
-	c = conn.cursor()
-
+def create_tracker():
 	DEBUG = False
 	USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
 
@@ -68,9 +64,29 @@ if __name__ == '__main__':
 			if user_count == 0:
 				print 'inserting for user {}'.format(username)
 				for (code, img_id) in pairs:
-					c.execute( insert(code, username, img_id) )
+					c.execute( insert_tracker(code, username, img_id) )
 				conn.commit()
 			else:
 				print '{} already has {} entries in tracker'.format(username, user_count)
 	conn.commit()
 	conn.close()
+
+
+if __name__ == '__main__':
+	'''
+		        Table "public.tracker"
+	  Column   |  Type   |    Modifiers
+	-----------+---------+-----------------
+	 shortcode | text    | not null
+	 username  | text    |
+	 img_id    | text    |
+	 predicted | integer | default 0
+	Indexes:
+	    "tracker_pkey" PRIMARY KEY, btree (shortcode)
+	'''
+
+	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+	c = conn.cursor()
+
+	create_tracker()
+	
