@@ -24,7 +24,7 @@ kcrw
 gymclassheroes
 bowerswilkins
 kevinjonas
-mchammer
+# mchammer
 questlove
 treysongz
 markhoppus
@@ -103,7 +103,7 @@ manrepeller
 nike
 adidas
 converse
-jamieoliver
+# jamieoliver
 dogfishbeer
 foodzie
 starbucks
@@ -125,8 +125,8 @@ todayshow
 washingtonpost
 cnnireport
 meetthepress
-mtv
-vh1
+# mtv
+# vh1
 popeater
 stylelist
 aol
@@ -358,7 +358,7 @@ markusprell
 wouter38
 convergence
 mexicotravel
-bobbyfresh
+# bobbyfresh
 gizzyboyy
 livepainter
 efrboy

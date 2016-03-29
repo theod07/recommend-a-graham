@@ -3,14 +3,14 @@
 # http://www.skyscanner.com/news/10-awesome-instagram-accounts-follow-nature-lovers
 # http://expertvagabond.com/instagram-travel/
 # http://www.harpersbazaar.com/culture/travel-dining/g5393/travel-bloggers-on-instagramtubeinblackandwhite
-astrodub
+# astrodub
 claireonline
 thetravellinglight
 michaelchristopherbrown
 vincentcroce
 japhetweeks
 sollsken
-MikeKus
+# MikeKus
 lebackpacker
 finn
 rickyohead
@@ -42,10 +42,10 @@ aladyinlondon
 danielkordan
 breakingnews
 brenton_clarke
-kevinruss
+# kevinruss
 passionpassport
 gess8
-kirstenalana
+# kirstenalana
 arcteryx
 nirl
 alice_tate
@@ -62,7 +62,7 @@ ovunno
 payphones
 coryrichards
 vagfrag
-memoryweaver
+# memoryweaver
 lepostcard
 parisinfourmonths
 youngadventuress
