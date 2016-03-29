@@ -10,7 +10,7 @@ def get_shorts_imgs(username):
 	q = '''SELECT shortcode, img_id 
 			FROM tracker 
 			WHERE username='{}' AND predicted=0
-			LIMIT 100;'''
+			LIMIT 20;'''
 	return q.format(username)
 
 def update_predicted(shorts_imgs):
@@ -20,8 +20,14 @@ def update_predicted(shorts_imgs):
 			WHERE done.shortcode=t.shortcode;'''
 	return q.format(', '.join(map(str, shorts_imgs)))
 	
-
-
+def get_dirmap():
+	with open('../data/html_map.txt', 'r') as f:
+		lines = f.read().splitlines()
+	dirs = {}
+	for line in lines:
+		kv = line.split('!@#$!@#$!@#$ ')
+		dirs[kv[0]] = kv[1]
+	return dirs
 
 if __name__ == '__main__':
 	
@@ -38,8 +44,9 @@ if __name__ == '__main__':
 	else:
 		usernames = usernames
 
-	# imgs = [ f for f in os.listdir('.') if f.endswith('.jpg')]
-	
+	# load the mapping from username to directoryname
+	dirmap = get_dirmap()
+
 	# connect to postgres
 	try:
 		conn = pg2.connect(dbname='image_clusters')
@@ -55,11 +62,15 @@ if __name__ == '__main__':
 		print 'shorts_imgs: {}'.format(shorts_imgs)
 
 		for short, img in shorts_imgs:
-			softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP,username, img))
-			print 'softmax.shape {}'.format(softmax.shape)
-			insert_softmax(short, softmax)
-			insert_fc8(short, fc8)
-			insert_fc7(short, fc7)
+			try:
+				softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP, username, img))
+				print 'softmax.shape {}'.format(softmax.shape)
+				insert_softmax(short, softmax)
+				insert_fc8(short, fc8)
+				insert_fc7(short, fc7)
+			except:
+				with open('../logs/log_predict_to_pg.txt', 'ab') as f:
+					f.write('fail predicting for {} {} {}\n'.format(USER_GROUP, username, img))
 
 		# c.execute(update_predicted(shorts_imgs))
 		conn.commit() #need execute in order to update db

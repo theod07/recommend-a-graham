@@ -34,4 +34,4 @@ print 'len(dirs): {}'.format(len(dirs))
 
 with open('../data/html_map.txt', 'ab') as f:
 	for k in dirs:
-		f.write('{}, {}\n'.format(k, dirs[k]))
+		f.write('{}!@#$!@#$!@#$ {}\n'.format(k, dirs[k]))
