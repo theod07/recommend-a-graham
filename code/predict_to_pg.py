@@ -20,31 +20,39 @@ def update_predicted(shorts_imgs):
 			WHERE done.shortcode=t.shortcode;'''
 	return q.format(', '.join(map(str, shorts_imgs)))
 	
-conn = pg2.connect(dbname='image_clusters')
-c = conn.cursor()
 
 
-usernames = ['taylorswift']
-for username in usernames:
-	c.execute(get_shorts_imgs(username))
-	shorts_imgs = c.fetchall()
-	print 'shorts_imgs: {}'.format(shorts_imgs)
-
-	# for short, img in shorts_imgs:
-	# 	softmax, fc8, fc7 = predict(img)
-	# 	insert_softmax(short, softmax)
-	# 	insert_fc8(short, fc8)
-	# 	insert_fc7(short, fc7)
-
-	# c.execute(update_predicted(shorts_imgs))
-	# conn.commit() #need execute in order to update db
 
 if __name__ == '__main__':
-	imgs = [ f for f in os.listdir('.') if f.endswith('.jpg')]
-	nnet = vgg16()
-	for img in imgs:
-		softmax, fc8, fc7 = nnet.predict(img, local_img='True')
+	
+	DEBUG = True
+	USER_GROUP = raw_input('enter user_group:')
 
-		print 'softmax.shape: {}'.format(softmax.shape)
-		print 'fc8.shape: {}'.format(fc8.shape)
-		print 'fc7.shape: {}'.format(fc7.shape) 
+	with open('../data/{}.txt'.format(USER_GROUP), 'r') as f:
+		lines = f.readlines()
+		lines = [l for l in lines if not l.startswith('#')]
+		usernames = [l.split('\n')[0] for l in lines]
+
+	if DEBUG:
+		usernames = usernames[:2]
+	else:
+		usernames = usernames
+
+	# imgs = [ f for f in os.listdir('.') if f.endswith('.jpg')]
+	conn = pg2.connect(dbname='image_clusters')
+	c = conn.cursor()
+	nnet = vgg16()
+	
+	# for username in usernames:
+	# 	c.execute(get_shorts_imgs(username))
+	# 	shorts_imgs = c.fetchall()
+	# 	print 'shorts_imgs: {}'.format(shorts_imgs)
+
+	# 	for short, img in shorts_imgs:
+	# 		softmax, fc8, fc7 = predict(img)
+	# 		insert_softmax(short, softmax)
+	# 		insert_fc8(short, fc8)
+	# 		insert_fc7(short, fc7)
+
+	# 	c.execute(update_predicted(shorts_imgs))
+	# 	conn.commit() #need execute in order to update db
