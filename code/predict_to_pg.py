@@ -10,7 +10,7 @@ def get_shorts_imgs(username):
 	q = '''SELECT shortcode, img_id 
 			FROM tracker 
 			WHERE username='{}' AND predicted=0
-			LIMIT 20;'''
+			LIMIT 5;'''
 	return q.format(username)
 
 def update_predicted(shorts_imgs):
@@ -56,21 +56,28 @@ if __name__ == '__main__':
 	c = conn.cursor()
 	nnet = vgg16()
 	
-	for username in usernames:
-		c.execute(get_shorts_imgs(username))
-		shorts_imgs = c.fetchall()
-		print 'shorts_imgs: {}'.format(shorts_imgs)
+	# c.execute(insert_softmax(conn, 'aaaaa', np.random.rand(1000)))
+	# c.execute(insert_fc8(conn, 'aaaaa', np.random.rand(4096)))
+	# c.execute(insert_fc7(conn, 'aaaaa', np.random.rand(4096)))
 
-		for short, img in shorts_imgs:
-			try:
-				softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP, username, img))
-				print 'softmax.shape {}'.format(softmax.shape)
-				insert_softmax(short, softmax)
-				insert_fc8(short, fc8)
-				insert_fc7(short, fc7)
-			except:
-				with open('../logs/log_predict_to_pg.txt', 'ab') as f:
-					f.write('fail predicting for {} {} {}\n'.format(USER_GROUP, username, img))
+	# conn.commit()
 
-		# c.execute(update_predicted(shorts_imgs))
-		conn.commit() #need execute in order to update db
+	for i in range(5000):	
+		for username in usernames:
+			c.execute(get_shorts_imgs(username))
+			shorts_imgs = c.fetchall()
+			print 'shorts_imgs: {}'.format(shorts_imgs)
+
+			for short, img in shorts_imgs:
+				try:
+					softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP, username, img))
+					print 'softmax.shape {}'.format(softmax.shape)
+					c.execute(insert_softmax(short, softmax))
+					c.execute(insert_fc8(short, fc8))
+					c.execute(insert_fc7(short, fc7))
+				except:					
+					with open('../logs/log_predict_to_pg.txt', 'ab') as f:
+						f.write('fail predicting for {} {} {}\n'.format(USER_GROUP, username, img))
+
+			c.execute(update_predicted(shorts_imgs))
+			conn.commit() #need execute in order to update db

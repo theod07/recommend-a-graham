@@ -9,16 +9,16 @@ def insert_tracker(shortcode, username, id):
 	q = " INSERT INTO tracker (shortcode, username, img_id) values ( '{}', '{}', '{}');"
 	return q.format(shortcode, username, id)
 
-def insert_softmax(connection, shortcode, vector):
+def insert_softmax(shortcode, vector):
 	q = '''INSERT INTO softmax (shortcode, softmax) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
-def insert_fc8(connection, shortcode, vector):
-	q = '''INSERT INTO fc8 (shortcode, softmax) values ('{}', '{}');'''
+def insert_fc8(shortcode, vector):
+	q = '''INSERT INTO fc8 (shortcode, fc8) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
-def insert_fc7(connection, shortcode, vector):
-	q = '''INSERT INTO fc7 (shortcode, softmax) values ('{}', '{}');'''
+def insert_fc7(shortcode, vector):
+	q = '''INSERT INTO fc7 (shortcode, fc7) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
 
@@ -88,5 +88,5 @@ if __name__ == '__main__':
 	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	c = conn.cursor()
 
-	create_tracker()
+	# create_tracker()
 	
