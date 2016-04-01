@@ -20,7 +20,7 @@ print 'len(users): {}'.format(len(users))
 
 dirs = {}
 for group in USER_GROUPS:
-	ds = [d for d in os.listdir('../data/{}'.format(group)) if d.endswith('.html')]
+	ds = [d for d in os.listdir('../data/{}'.format(group)) if d.endswith('files')]
 	with open('../data/{}.txt'.format(group), 'r') as f:
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]

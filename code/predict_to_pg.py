@@ -31,7 +31,7 @@ def get_dirmap():
 
 if __name__ == '__main__':
 	
-	DEBUG = True
+	DEBUG = False
 	USER_GROUP = raw_input('enter user_group:')
 
 	with open('../data/{}.txt'.format(USER_GROUP), 'r') as f:
@@ -68,14 +68,16 @@ if __name__ == '__main__':
 			shorts_imgs = c.fetchall()
 			print 'shorts_imgs: {}'.format(shorts_imgs)
 
+			if len(shorts_imgs) == 0:
+				continue
 			for short, img in shorts_imgs:
 				try:
-					softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP, username, img))
+					softmax, fc8, fc7 = nnet.predict('../data/{}/{}/{}'.format(USER_GROUP, dirmap[username], img))
 					print 'softmax.shape {}'.format(softmax.shape)
 					c.execute(insert_softmax(short, softmax))
 					c.execute(insert_fc8(short, fc8))
 					c.execute(insert_fc7(short, fc7))
-				except:					
+				except:				
 					with open('../logs/log_predict_to_pg.txt', 'ab') as f:
 						f.write('fail predicting for {} {} {}\n'.format(USER_GROUP, username, img))
 

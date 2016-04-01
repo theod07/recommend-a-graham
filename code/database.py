@@ -24,7 +24,8 @@ def insert_fc7(shortcode, vector):
 
 def create_tracker():
 	DEBUG = False
-	USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
+	# USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
+	USER_GROUPS = ['dogs', 'cats']
 
 	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
 
@@ -88,5 +89,5 @@ if __name__ == '__main__':
 	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	c = conn.cursor()
 
-	# create_tracker()
+	create_tracker()
 	
