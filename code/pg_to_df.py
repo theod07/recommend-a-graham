@@ -1,5 +1,6 @@
 import psycopg2 as pg2
 import pandas as pd
+import numpy as np
 
 try:
 	conn = pg2.connect(dbname='image_clusters')
@@ -20,12 +21,24 @@ except:
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
 
-def get_user_shortcodes(user, conn):
-	query = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
-	shortcodes = pd.read_sql(query, conn)
-	return shortcodes
+def get_user_shortcodes_csv(user, conn):
+	query1 = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
+	df = pd.read_sql(query1, conn)
+	# Strip bracket
+	shortcode_list = map(lambda x: "'"+str(x)+"'", df['shortcode'].values.flatten())
+	shortcodes_csv = ','.join(shortcode_list)
+	
+	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcode_csv)
+	softmaxs_df = pd.read_sql(query2, conn)
+
+	return 
+	
+
 
 softmaxs = []
 df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
 
 for user in df['username']:
+	shortcodes_csv = get_user_shortcodes(user, conn)
+	q = '({})'.format(shortcodes_csv)
+
