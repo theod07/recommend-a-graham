@@ -20,4 +20,12 @@ except:
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
 
-df = pd.DataFrame())
+def get_user_shortcodes(user, conn):
+	query = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
+	shortcodes = pd.read_sql(query, conn)
+	return shortcodes
+
+softmaxs = []
+df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
+
+for user in df['username']:
