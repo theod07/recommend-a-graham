@@ -28,7 +28,7 @@ def get_user_shortcodes_csv(user, conn):
 	shortcode_list = map(lambda x: "'"+str(x)+"'", df['shortcode'].values.flatten())
 	shortcodes_csv = ','.join(shortcode_list)
 	
-	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcode_csv)
+	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcodes_csv)
 	softmaxs_df = pd.read_sql(query2, conn)
 
 	return softmaxs_df
