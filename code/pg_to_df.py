@@ -31,14 +31,17 @@ def get_user_shortcodes_csv(user, conn):
 	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcode_csv)
 	softmaxs_df = pd.read_sql(query2, conn)
 
-	return 
+	return softmaxs_df
 	
 
 
 softmaxs = []
 df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
 
-for user in df['username']:
-	shortcodes_csv = get_user_shortcodes(user, conn)
-	q = '({})'.format(shortcodes_csv)
+# for user in df['username']:
+# 	shortcodes_csv = get_user_shortcodes(user, conn)
+# 	q = '({})'.format(shortcodes_csv)
 
+if __name__ == '__main__': 
+	username = 'marshanskiy'
+	print get_user_shortcodes_csv(username, conn)
