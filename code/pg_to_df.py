@@ -2,10 +2,6 @@ import psycopg2 as pg2
 import pandas as pd
 import numpy as np
 
-try:
-	conn = pg2.connect(dbname='image_clusters')
-except:
-	conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 
 # USER_GROUPS = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
 # 
@@ -41,22 +37,29 @@ def get_user_softmax_mean(user, conn):
 
 	soft_arr = df.softmax.values
 
-	return np.mean(soft_arr)
+	return np.mean(soft_arr)[np.newaxis, :]
 	
+def get_sm_matrix(conn):
+	sm_mean_vectors = []
+	df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
-sm_mean_vectors = []
-df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
+	for user in df['username']:
+		softmax_mean_vector = get_user_softmax_mean(user, conn)
+		sm_mean_vectors.append(softmax_mean_vector)
 
-# for user in df['username']:
-# 	shortcodes_csv = get_user_shortcodes(user, conn)
-# 	q = '({})'.format(shortcodes_csv)
+	sm_matrix = np.concatenate(sm_mean_vectors, axis=0)
+	
+	return sm_matrix
 
 if __name__ == '__main__': 
-	username = 'marshanskiy'
-	print get_user_softmax_mean(username, conn)
-	softmaxs
+	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
+	
+	try:
+		conn = pg2.connect(dbname='image_clusters')
+	except:
+		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 
-
+	sm_matrix = get_sm_matrix(conn)
 
 
 
