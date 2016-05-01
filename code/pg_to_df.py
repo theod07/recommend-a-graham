@@ -37,7 +37,7 @@ def get_user_softmax_avg(user, conn):
 	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcodes_csv)
 	df = pd.read_sql(query2, conn)
 
-	df.softmax = df.softmax.apply(lambda x: np.fromstring(x[1:-1], sep'\n'))
+	df.softmax = df.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
 	soft_arr = df.softmax.values
 
