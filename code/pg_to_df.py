@@ -80,10 +80,10 @@ if __name__ == '__main__':
 		np.save('../data/sm_arr', sm_arr)
 	else:
 		sm_arr = np.load('../data/sm_arr.npy')
-		
+
 	
 	pca_models = []
-	for n_comps in [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, None]:
+	for n_comps in [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, None]:
 		# create pca model that will retain 70% explained variance
 		pca = PCA(n_components=n_comps)
 		pca_models.append(pca)
