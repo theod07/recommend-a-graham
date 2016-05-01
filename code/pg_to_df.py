@@ -1,7 +1,8 @@
 import psycopg2 as pg2
 import pandas as pd
 import numpy as np
-
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 
 # USER_GROUPS = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
 # 
@@ -24,6 +25,7 @@ def get_user_softmax_mean(user, conn):
 
 	OUTPUT: user's mean softmax vector
 	"""
+	
 	query1 = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
 	df = pd.read_sql(query1, conn)
 	# strip brackets from string
@@ -40,6 +42,13 @@ def get_user_softmax_mean(user, conn):
 	return np.mean(soft_arr)
 	
 def get_sm_matrix(conn):
+	"""
+	INPUT: connection object to postgres database
+
+	OUTPUT: numpy array of users' mean softmax vectors.
+			row-by-colum :: user-by-softmax
+	"""
+
 	sm_mean_vectors = []
 	df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
@@ -49,9 +58,9 @@ def get_sm_matrix(conn):
 			sm_mean_vectors.append(softmax_mean_vector[np.newaxis, :])
 		except IndexError:
 			print 'invalid index for {}'.format(user)
-	sm_matrix = np.concatenate(sm_mean_vectors, axis=0)
+	sm_arr = np.concatenate(sm_mean_vectors, axis=0)
 	
-	return sm_matrix
+	return sm_arr
 
 if __name__ == '__main__': 
 	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
@@ -61,7 +70,17 @@ if __name__ == '__main__':
 	except:
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 
-	sm_matrix = get_sm_matrix(conn)
+	# calculate mean softmax vector for all users
+	# store vectors in matrix
+	sm_arr = get_sm_matrix(conn)
+	# create pca model that will retain 70% explained variance
+	pca = PCA(n_components=0.7)
+	# fit model on mean softmax vectors
+	# transform softmax vectors to reduced feature space
+	sm_pca = pca.fit_transform(sm_arr)
+	plt.plot(pca.explained_variance_)
+	plt.show()
+
 
 
 
