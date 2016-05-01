@@ -44,6 +44,7 @@ def get_sm_matrix(conn):
 	df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
 	for user in df['username']:
+		print user
 		softmax_mean_vector = get_user_softmax_mean(user, conn)
 		sm_mean_vectors.append(softmax_mean_vector[np.newaxis, :])
 
