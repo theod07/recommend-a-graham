@@ -37,7 +37,7 @@ def get_user_softmax_mean(user, conn):
 
 	soft_arr = df.softmax.values
 
-	return np.mean(soft_arr)[np.newaxis, :]
+	return np.mean(soft_arr)
 	
 def get_sm_matrix(conn):
 	sm_mean_vectors = []
@@ -45,7 +45,7 @@ def get_sm_matrix(conn):
 
 	for user in df['username']:
 		softmax_mean_vector = get_user_softmax_mean(user, conn)
-		sm_mean_vectors.append(softmax_mean_vector)
+		sm_mean_vectors.append(softmax_mean_vector[np.newaxis, :])
 
 	sm_matrix = np.concatenate(sm_mean_vectors, axis=0)
 	
