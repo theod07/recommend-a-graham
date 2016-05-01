@@ -21,22 +21,31 @@ except:
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
 
-def get_user_shortcodes_csv(user, conn):
+def get_user_softmax_avg(user, conn):
+	"""
+	INPUT: username for instagram,
+			connection object to postgres database
+
+	OUTPUT: user's average vector
+	"""
 	query1 = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
 	df = pd.read_sql(query1, conn)
-	# Strip bracket
+	# strip brackets from string
 	shortcode_list = map(lambda x: "'"+str(x)+"'", df['shortcode'].values.flatten())
 	shortcodes_csv = ','.join(shortcode_list)
-	
+	# create query string
 	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcodes_csv)
-	softmaxs_df = pd.read_sql(query2, conn)
+	df = pd.read_sql(query2, conn)
 
-	return softmaxs_df
+	df.softmax = df.softmax.apply(lambda x: np.fromstring(x[1:-1], sep'\n'))
+
+	soft_arr = df.softmax.values
+
+	return np.mean(soft_arr)
 	
-
 
 softmaxs = []
-df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
+df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
 # for user in df['username']:
 # 	shortcodes_csv = get_user_shortcodes(user, conn)
@@ -44,7 +53,7 @@ df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
 
 if __name__ == '__main__': 
 	username = 'marshanskiy'
-	print get_user_shortcodes_csv(username, conn)
+	print get_user_softmax_avg(username, conn)
 
 
 
