@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
+import os
+from tempfile import TemporaryFile
 plt.style.use('ggplot')
 
 # USER_GROUPS = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
@@ -73,7 +75,12 @@ if __name__ == '__main__':
 
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
-	# sm_arr = get_sm_arr(conn)
+	if not 'sm_arr.npy' in os.listdir('../data/'):
+		sm_arr = get_sm_arr(conn)
+		np.save('../data/sm_arr', sm_arr)
+	else:
+		sm_arr = np.load('../data/sm_arr.npy')
+		
 	
 	pca_models = []
 	for n_comps in [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, None]:
@@ -90,6 +97,25 @@ if __name__ == '__main__':
 		plt.ylabel('explained_variance_')
 		plt.title('Principal Component Analysis on Users')
 		plt.savefig('../data/pca_{}_components.jpg'.format(n_comps))
+
+		plt.figure()
+		plt.plot(pca.explained_variance_ratio_, linewidth=2)
+		plt.axis('tight')
+		plt.xlabel('n_components')
+		plt.ylabel('explained_variance_ratio_')
+		plt.title('Principal Component Analysis on Users')
+		plt.savefig('../data/pca_ratio_{}_components.jpg'.format(n_comps))
+
+		plt.figure()
+		plt.plot(pca.explained_variance_ratio_, linewidth=2)
+		plt.axis('tight')
+		plt.xlabel('n_components')
+		plt.ylabel('cumsum_variance_ratio_')
+		plt.title('PCA on Users, cumsum(explained_variance_ratio_)')
+		plt.savefig('../data/pca_cumsum_{}_components.jpg'.format(n_comps))
+
+		plt.close('all')
+
 
 
 
