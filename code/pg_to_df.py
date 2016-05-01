@@ -42,7 +42,7 @@ def get_user_softmax_mean(user, conn):
 
 	return np.mean(soft_arr)
 	
-def get_sm_matrix(conn):
+def get_sm_arr(conn):
 	"""
 	INPUT: connection object to postgres database
 
@@ -73,11 +73,13 @@ if __name__ == '__main__':
 
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
-	sm_arr = get_sm_matrix(conn)
+	# sm_arr = get_sm_arr(conn)
 	
-	for n_comps in [None, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+	pca_models = []
+	for n_comps in [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, None]:
 		# create pca model that will retain 70% explained variance
-		pca = PCA(n_components=0.7)
+		pca = PCA(n_components=n_comps)
+		pca_models.append(pca)
 		# fit model on mean softmax vectors
 		# transform softmax vectors to reduced feature space
 		sm_pca = pca.fit_transform(sm_arr)
