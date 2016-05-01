@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 
 # USER_GROUPS = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
 # 
@@ -73,13 +74,20 @@ if __name__ == '__main__':
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
 	sm_arr = get_sm_matrix(conn)
-	# create pca model that will retain 70% explained variance
-	pca = PCA(n_components=0.7)
-	# fit model on mean softmax vectors
-	# transform softmax vectors to reduced feature space
-	sm_pca = pca.fit_transform(sm_arr)
-	plt.plot(pca.explained_variance_)
-	plt.show()
+	
+	for n_comps in [None, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+		# create pca model that will retain 70% explained variance
+		pca = PCA(n_components=0.7)
+		# fit model on mean softmax vectors
+		# transform softmax vectors to reduced feature space
+		sm_pca = pca.fit_transform(sm_arr)
+		plt.figure()
+		plt.plot(pca.explained_variance_, linewidth=2)
+		plt.axis('tight')
+		plt.xlabel('n_components')
+		plt.ylabel('explained_variance_')
+		plt.title('Principal Component Analysis on Users')
+		plt.savefig('../data/pca_{}_components.jpg'.format(n_comps))
 
 
 
