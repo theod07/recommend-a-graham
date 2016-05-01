@@ -45,3 +45,10 @@ df = pd.read_sql('''SELECT DISTINCT USERNAME FROM TRACKER;''', conn)
 if __name__ == '__main__': 
 	username = 'marshanskiy'
 	print get_user_shortcodes_csv(username, conn)
+
+
+
+
+
+
+	
