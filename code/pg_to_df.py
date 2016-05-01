@@ -21,12 +21,12 @@ except:
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
 
-def get_user_softmax_avg(user, conn):
+def get_user_softmax_mean(user, conn):
 	"""
 	INPUT: username for instagram,
 			connection object to postgres database
 
-	OUTPUT: user's average vector
+	OUTPUT: user's mean softmax vector
 	"""
 	query1 = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
 	df = pd.read_sql(query1, conn)
@@ -44,7 +44,7 @@ def get_user_softmax_avg(user, conn):
 	return np.mean(soft_arr)
 	
 
-softmaxs = []
+sm_mean_vectors = []
 df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
 # for user in df['username']:
@@ -53,8 +53,8 @@ df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
 if __name__ == '__main__': 
 	username = 'marshanskiy'
-	print get_user_softmax_avg(username, conn)
-
+	print get_user_softmax_mean(username, conn)
+	softmaxs
 
 
 
