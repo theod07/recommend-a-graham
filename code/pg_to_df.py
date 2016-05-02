@@ -161,8 +161,8 @@ if __name__ == '__main__':
 
 	show_imgs = random_pick_imgs()
 
-	user_short_pred_df = new_user_softmax_mean(show_imgs)
-	
+	user_short_pred_df = new_user_softmax_mean(show_imgs, conn)
+
 
 
 
