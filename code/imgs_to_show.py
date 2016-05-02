@@ -34,4 +34,4 @@ def imgs_to_show(CATEGORIES):
 					f.write('{}, {}\n'.format(user, jpg))
 
 if __name__ == '__main__':
-	imgs_to_show(HTMLS_DIR, CATEGORIES)
+	imgs_to_show(CATEGORIES)
