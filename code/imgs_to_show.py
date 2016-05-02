@@ -24,14 +24,16 @@ def imgs_to_show(CATEGORIES):
 			users = [l.split('\n')[0] for l in lines]
 
 		for user in users:
-			files = os.listdir('../data/{}/{}'.format(category,dirmap[user]))
-			jpgs = [f for f in files if f.endswith('.jpg')]
-			selected = np.random.choice(jpgs, size=10, replace=False)
+			try:
+				files = os.listdir('../data/{}/{}'.format(category,dirmap[user]))
+				jpgs = [f for f in files if f.endswith('.jpg')]
+				selected = np.random.choice(jpgs, size=10, replace=False)
 
-			with open('../data/imgs_to_show.csv', 'a') as f:
-				for jpg in selected:
-					print jpg
-					f.write('{}, {}\n'.format(user, jpg))
-
+				with open('../data/imgs_to_show.csv', 'a') as f:
+					for jpg in selected:
+						print jpg
+						f.write('{}, {}\n'.format(user, jpg))
+			except KeyError:
+				continue
 if __name__ == '__main__':
 	imgs_to_show(CATEGORIES)
