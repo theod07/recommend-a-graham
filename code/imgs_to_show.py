@@ -1,4 +1,5 @@
 import numpy as np
+import psycopg2 as pg2
 import os
 import random
 from pg_to_df import CATEGORIES
