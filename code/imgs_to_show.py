@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import psycopg2 as pg2
 import os
 import random
