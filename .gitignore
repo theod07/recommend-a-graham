@@ -7,3 +7,4 @@ data/photographers/
 *.tar.bz2
 *.pyc
 *.pkl
+code/*.jpg

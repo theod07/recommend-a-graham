@@ -22,13 +22,10 @@ CATEGORIES = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'c
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
 
+
 def shortcodes_from_tracker(username, conn):
-	q = '''SELECT shortcode 
-			FROM tracker 
-			WHERE username = '{}' 
-			AND predicted=1;'''.format(username)
-	df = pd.read_sql(q, conn)
-	return df.shortcode.values
+	
+	return username, df.shortcode.values
 
 def get_user_softmax_mean(user, conn):
 	"""
@@ -118,14 +115,25 @@ def get_pca_models(sm_arr):
 
 	return pca_models
 
-def show_images_to_user(conn):
+def random_pick_imgs(conn):
 	for category in CATEGORIES:
 		with open('../data/{}.txt'.format(category), 'r') as f:
 			lines = f.readlines()
 			lines = [l for l in lines if not l.startswith('#')]
 			users = [l.split('\n')[0] for l in lines]
+		
+		imgs = []
 		for user in np.random.choice(users, size=10, replace=False):
-			shortcodes = shortcodes_from_tracker(user, conn)
+			q = '''SELECT shortcode, img_id
+			FROM tracker 
+			WHERE username = '{}' 
+			AND predicted=1;'''.format(username)
+			df = pd.read_sql(q, conn)
+
+			i = np.random.choice(xrange(df.shape[0]))
+			imgs.append((user, df.shortcode[i], df.img_id[i]))
+
+
 
 if __name__ == '__main__': 
 	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
