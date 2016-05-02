@@ -85,7 +85,7 @@ def sample_predicted_imgs(category, conn):
 			for i in sample:
 				f.write('{}, {}\n'.format(df.ix[i]['username'],df.ix[i]['img_id']))
 
-def copy_imgs_to_dir(category):
+def copy_imgs_to_dir(category, dirmap):
 	with open('../data/{}_imgs_to_show.csv'.format(category), 'r') as f:
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('username')]
@@ -96,7 +96,7 @@ def copy_imgs_to_dir(category):
 			shutil.copy2('../data/{}/{}/{}'.format(cat, dirmap[user], img_id), '../imgs/{}_{}'.format(user, img_id))
 		except:
 			print 'error {}, {}'.format(user, img_id)
-	
+
 
 if __name__ == '__main__':
 	try:
@@ -106,6 +106,8 @@ if __name__ == '__main__':
 
 	# imgs_to_show(CATEGORIES)
 
+	dirmap = get_dirmap()
+	
 	for cat in CATEGORIES:
 	# make a file of imgs to choose from (already predicted)
 	# 	sample_predicted_imgs(cat, conn)
