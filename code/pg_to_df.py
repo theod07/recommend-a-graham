@@ -5,9 +5,10 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import os
 from tempfile import TemporaryFile
+from sklearn.preprocessing import StandardScaler
 plt.style.use('ggplot')
 
-# USER_GROUPS = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
+CATEGORIES = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
 # 
 # for group in USER_GROUPS:
 # 	print 'retrieving data for {}'.format(group)
@@ -20,6 +21,14 @@ plt.style.use('ggplot')
 # 		.format("'"+"', '".join(usernames)+"'"), conn)
 # 
 # 	df.to_pickle('./{}.pkl'.format(group))
+
+def shortcodes_from_tracker(username, conn):
+	q = '''SELECT shortcode 
+			FROM tracker 
+			WHERE username = '{}' 
+			AND predicted=1;'''.format(username)
+	df = pd.read_sql(q, conn)
+	return df.shortcode.values
 
 def get_user_softmax_mean(user, conn):
 	"""
@@ -65,23 +74,14 @@ def get_sm_arr(conn):
 	
 	return sm_arr
 
-if __name__ == '__main__': 
-	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
-	
-	try:
-		conn = pg2.connect(dbname='image_clusters')
-	except:
-		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+def get_pca_models(sm_arr):
+	"""
+	INPUT: scaled 2D array of softmax vectors
 
-	# calculate mean softmax vector for all users
-	# store vectors in matrix
-	if not 'sm_arr.npy' in os.listdir('../data/'):
-		sm_arr = get_sm_arr(conn)
-		np.save('../data/sm_arr', sm_arr)
-	else:
-		sm_arr = np.load('../data/sm_arr.npy')
+	OUTPUT: list of pca models of various amount of variance explained
+			save plots of explained variance in ../data/ directory
+	"""
 
-	
 	pca_models = []
 	for n_comps in [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, None]:
 		# create pca model that will retain 70% explained variance
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 		pca_models.append(pca)
 		# fit model on mean softmax vectors
 		# transform softmax vectors to reduced feature space
-		sm_pca = pca.fit_transform(sm_arr)
+		sm_pca = pca.fit_transform(sm_arr_scaled)
 		plt.figure()
 		plt.plot(pca.explained_variance_, linewidth=2)
 		plt.axis('tight')
@@ -115,6 +115,40 @@ if __name__ == '__main__':
 		plt.savefig('../data/pca_cumsum_{}_components.jpg'.format(n_comps))
 
 		plt.close('all')
+
+	return pca_models
+
+def show_images_to_user(conn):
+	for category in CATEGORIES:
+		with open('../data/{}.txt'.format(category), 'r') as f:
+			lines = f.readlines()
+			lines = [l for l in lines if not l.startswith('#')]
+			users = [l.split('\n')[0] for l in lines]
+		for user in np.random.choice(users, size=10, replace=False):
+			shortcodes = shortcodes_from_tracker(user, conn)
+
+if __name__ == '__main__': 
+	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
+	
+	try:
+		conn = pg2.connect(dbname='image_clusters')
+	except:
+		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+
+	# calculate mean softmax vector for all users
+	# store vectors in matrix
+	if not 'sm_arr.npy' in os.listdir('../data/'):
+		sm_arr = get_sm_arr(conn)
+		np.save('../data/sm_arr', sm_arr)
+	else:
+		sm_arr = np.load('../data/sm_arr.npy')
+
+	# standardize features by removing mean and scaling to unit variance
+	scaler = StandardScaler()
+	sm_arr_scaled = scaler.fit_transform(sm_arr)
+	
+	pca_models = get_pca_models(sm_arr_scaled)
+
 
 
 
