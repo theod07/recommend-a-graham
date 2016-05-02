@@ -49,7 +49,7 @@ def imgs_to_show(CATEGORIES):
 				continue
 
 def sample_predicted_imgs(category, conn):
-	usernamess = get_usernames(category)
+	usernames = get_usernames(category)
 
 	q = '''
 		SELECT shortcode,
