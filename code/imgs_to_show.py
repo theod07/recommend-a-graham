@@ -66,7 +66,11 @@ def sample_predicted_imgs(category, conn):
 
 	for username in df.username.unique():
 		user_df = df[df.username==username]
-		sample = np.random.choice(user_df.index, size=10, replace=False)
+		if user_df.shape[0] < 10:
+			sample = user_df.index
+		else:
+			sample = np.random.choice(user_df.index, size=10, replace=False)
+			
 		with open('../data/{}_imgs_to_show.csv', 'a') as f:
 			for i in sample:
 				f.write('{}, {}\n'.format(df.ix[i]['username'],df.ix[i]['img_id']))
