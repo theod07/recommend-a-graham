@@ -69,7 +69,7 @@ def sample_predicted_imgs(category, conn):
 		sample = np.random.choice(user_df.index, size=10, replace=False)
 		with open('../data/{}_imgs_to_show.csv', 'a') as f:
 			for i in sample:
-				f.write('{}, {}\n'.format(df.ix[i][['username','img_id']]))
+				f.write('{}, {}\n'.format(df.ix[i]['username'],df.ix[i]['img_id']))
 
 
 if __name__ == '__main__':
