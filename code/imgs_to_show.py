@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import random
 from pg_to_df import CATEGORIES
 
 # HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
@@ -41,5 +42,30 @@ def imgs_to_show(CATEGORIES):
 				continue
 			except OSError:
 				continue
+
+def select_predicted(category, conn):
+	q = '''
+		SELECT shortcode,
+				username, 
+				img_id
+		FROM tracker 
+		WHERE username 
+		IN ('{}')
+		AND predicted = 1;
+		'''.format("','".join(usernames))
+
+	df = pd.read_sql(q, conn)
+
+	for user in df.username.unique():
+		sample = df.ix[]
+
+
 if __name__ == '__main__':
-	imgs_to_show(CATEGORIES)
+	try:
+		conn = pg2.connect(dbname='image_clusters')
+	except:
+		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+
+	# imgs_to_show(CATEGORIES)
+
+	for cat in CATEGORIES:
