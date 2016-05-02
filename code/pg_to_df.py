@@ -25,10 +25,6 @@ CATEGORIES = ['cats', 'dogs']
 # 	df.to_pickle('./{}.pkl'.format(group))
 
 
-def shortcodes_from_tracker(username, conn):
-	
-	return username, df.shortcode.values
-
 def get_user_softmax_mean(user, conn):
 	"""
 	INPUT: username for instagram,
@@ -123,9 +119,23 @@ def random_pick_imgs():
 		df = pd.read_csv('../data/{}_imgs_to_show.csv'.format(cat), sep=', ', engine='python')
 
 		choices = np.random.choice(xrange(df.shape[0]), size=10, replace=False)
-		for z in zip(df.username[choices], df.img_id[choices]):
-			imgs.append(z)
+		# for z in zip(df.username[choices], df.img_id[choices]):
+		# 	imgs.append(z)
+		for c in choices:
+			imgs.append(df.img_id[c])
 	return imgs
+
+def new_user_softmax_mean(imgs, conn):
+	q1 = '''
+		SELECT username, 
+				shortcode, 
+				predicted
+		FROM tracker
+		WHERE img_id IN ({});
+		'''.format(','.join(imgs))
+	
+	df = pd.read_sql(q1, conn)
+	return df
 
 if __name__ == '__main__': 
 	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
@@ -149,8 +159,10 @@ if __name__ == '__main__':
 	
 	pca_models = get_pca_models(sm_arr_scaled)
 
-	select_imgs = random_pick_imgs()
+	show_imgs = random_pick_imgs()
 
+	user_short_pred_df = new_user_softmax_mean(show_imgs)
+	
 
 
 
