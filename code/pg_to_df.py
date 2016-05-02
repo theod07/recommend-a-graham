@@ -107,7 +107,7 @@ if __name__ == '__main__':
 		plt.savefig('../data/pca_ratio_{}_components.jpg'.format(n_comps))
 
 		plt.figure()
-		plt.plot(pca.explained_variance_ratio_, linewidth=2)
+		plt.plot(np.cumsum(pca.explained_variance_ratio_), linewidth=2)
 		plt.axis('tight')
 		plt.xlabel('n_components')
 		plt.ylabel('cumsum_variance_ratio_')
