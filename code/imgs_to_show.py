@@ -14,19 +14,23 @@ def get_dirmap():
 		dirs[kv[0]] = kv[1]
 	return dirs
 
+def get_usernames(category):
+	with open('../data/{}.txt'.format(category), 'r') as f:
+		lines = f.readlines()
+		lines = [l for l in lines if not l.startswith('#')]
+		usernames = [l.split('\n')[0] for l in lines]
+	
+
 def imgs_to_show(CATEGORIES):
 	
 	dirmap = get_dirmap()
 
 	for category in CATEGORIES:
-		with open('../data/{}.txt'.format(category), 'r') as f:
-			lines = f.readlines()
-			lines = [l for l in lines if not l.startswith('#')]
-			users = [l.split('\n')[0] for l in lines]
+		usernames = get_usernames(category)	
 
-		for user in users:
+		for username in usernames:
 			try:
-				files = os.listdir('../data/{}/{}'.format(category,dirmap[user]))
+				files = os.listdir('../data/{}/{}'.format(category,dirmap[username]))
 				jpgs = [f for f in files if f.endswith('.jpg')]
 
 				if len(jpgs) < 10:
@@ -37,13 +41,15 @@ def imgs_to_show(CATEGORIES):
 				with open('../data/{}_imgs_to_show.csv'.format(category), 'a') as f:
 					for jpg in selected:
 						print jpg
-						f.write('{}, {}\n'.format(user, jpg))
+						f.write('{}, {}\n'.format(username, jpg))
 			except KeyError:
 				continue
 			except OSError:
 				continue
 
-def select_predicted(category, conn):
+def sample_predicted_imgs(category, conn):
+	usernamess = get_usernames(category)
+
 	q = '''
 		SELECT shortcode,
 				username, 
@@ -56,8 +62,12 @@ def select_predicted(category, conn):
 
 	df = pd.read_sql(q, conn)
 
-	for user in df.username.unique():
-		sample = df.ix[]
+	for username in df.username.unique():
+		user_df = df[df.username==username]
+		sample = np.random.choice(user_df.index, size=10, replace=False)
+		with open('../data/{}_imgs_to_show.csv', 'a') as f:
+			for i in sample:
+				f.write('{}, {}, {}\n'.format(df.ix[i][['username','img_id']]))
 
 
 if __name__ == '__main__':
@@ -69,3 +79,4 @@ if __name__ == '__main__':
 	# imgs_to_show(CATEGORIES)
 
 	for cat in CATEGORIES:
+		sample_predicted_imgs(cat, conn)
