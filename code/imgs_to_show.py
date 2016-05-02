@@ -3,6 +3,7 @@ import pandas as pd
 import psycopg2 as pg2
 import os
 import random
+import shutil
 from pg_to_df import CATEGORIES
 
 # HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
@@ -58,7 +59,7 @@ def sample_predicted_imgs(category, conn):
 			connection object to postgres database
 	OUTPUT: None. (write to file)
 	'''
-	
+
 	usernames = get_usernames(category)
 
 	q = '''
@@ -84,6 +85,18 @@ def sample_predicted_imgs(category, conn):
 			for i in sample:
 				f.write('{}, {}\n'.format(df.ix[i]['username'],df.ix[i]['img_id']))
 
+def copy_imgs_to_dir(category):
+	with open('../data/{}_imgs_to_show.csv'.format(category), 'r') as f:
+		lines = f.readlines()
+		lines = [l for l in lines if not l.startswith('username')]
+	for line in lines:
+		user, img_id = line.split(', ')
+		img_id = img_id.split('\n')[0]
+		try:
+			shutil.copy2('../data/{}/{}/{}'.format(cat, dirmap[user], img_id), '../imgs/{}_{}'.format(user, img_id))
+		except:
+			print 'error {}, {}'.format(user, img_id)
+	
 
 if __name__ == '__main__':
 	try:
@@ -94,4 +107,8 @@ if __name__ == '__main__':
 	# imgs_to_show(CATEGORIES)
 
 	for cat in CATEGORIES:
-		sample_predicted_imgs(cat, conn)
+	# make a file of imgs to choose from (already predicted)
+	# 	sample_predicted_imgs(cat, conn)
+	
+
+
