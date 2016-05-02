@@ -8,7 +8,7 @@ from tempfile import TemporaryFile
 from sklearn.preprocessing import StandardScaler
 plt.style.use('ggplot')
 
-CATEGORIES = ['photographers', 'travel', 'most_popular', 'foodies', 'models', 'cats', 'dogs']
+CATEGORIES = ['photographers', 'travel', 'foodies', 'models', 'cats', 'dogs'] # excluding 'most_popular' because useless
 # 
 # for group in USER_GROUPS:
 # 	print 'retrieving data for {}'.format(group)
