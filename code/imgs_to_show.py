@@ -20,7 +20,7 @@ def get_usernames(category):
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]
 		usernames = [l.split('\n')[0] for l in lines]
-	
+	return usernames
 
 def imgs_to_show(CATEGORIES):
 	
