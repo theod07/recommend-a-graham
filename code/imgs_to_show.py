@@ -107,10 +107,8 @@ if __name__ == '__main__':
 	# imgs_to_show(CATEGORIES)
 
 	dirmap = get_dirmap()
-	
+
 	for cat in CATEGORIES:
 	# make a file of imgs to choose from (already predicted)
 	# 	sample_predicted_imgs(cat, conn)
-	
-
-
+		copy_imgs_to_dir(cat, dirmap)
