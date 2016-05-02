@@ -117,8 +117,8 @@ def get_pca_models(sm_arr):
 
 def random_pick_imgs():
 	imgs = []
-	for category in CATEGORIES:
-		df = pd.read_csv('../data/{}_imgs_to_show.csv', sep=', ', engine='python')
+	for cat in CATEGORIES:
+		df = pd.read_csv('../data/{}_imgs_to_show.csv'.format(cat), sep=', ', engine='python')
 
 		choices = np.random.choice(xrange(df.shape[0]), size=10, replace=False)
 		for z in zip(df.username[choices], df.img_id[choices]):
