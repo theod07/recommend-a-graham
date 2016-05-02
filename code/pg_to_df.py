@@ -8,8 +8,8 @@ from tempfile import TemporaryFile
 from sklearn.preprocessing import StandardScaler
 plt.style.use('ggplot')
 
-CATEGORIES = ['most_popular','photographers', 'travel', 'foodies', 'models', 'cats', 'dogs'] # excluding 'most_popular' because useless
-# CATEGORIES = ['cats', 'dogs']
+# CATEGORIES = ['most_popular','photographers', 'travel', 'foodies', 'models', 'cats', 'dogs'] # excluding 'most_popular' because useless
+CATEGORIES = ['cats', 'dogs']
 
 # 
 # for group in USER_GROUPS:
@@ -91,7 +91,7 @@ def get_pca_models(sm_arr):
 		plt.xlabel('n_components')
 		plt.ylabel('explained_variance_')
 		plt.title('Principal Component Analysis on Users')
-		plt.savefig('../data/pca_{}_components.jpg'.format(n_comps))
+		plt.savefig('../figures/pca_{}_components.jpg'.format(n_comps))
 
 		plt.figure()
 		plt.plot(pca.explained_variance_ratio_, linewidth=2)
@@ -99,7 +99,7 @@ def get_pca_models(sm_arr):
 		plt.xlabel('n_components')
 		plt.ylabel('explained_variance_ratio_')
 		plt.title('Principal Component Analysis on Users')
-		plt.savefig('../data/pca_ratio_{}_components.jpg'.format(n_comps))
+		plt.savefig('../figures/pca_ratio_{}_components.jpg'.format(n_comps))
 
 		plt.figure()
 		plt.plot(np.cumsum(pca.explained_variance_ratio_), linewidth=2)
@@ -107,13 +107,19 @@ def get_pca_models(sm_arr):
 		plt.xlabel('n_components')
 		plt.ylabel('cumsum_variance_ratio_')
 		plt.title('PCA on Users, cumsum(explained_variance_ratio_)')
-		plt.savefig('../data/pca_cumsum_{}_components.jpg'.format(n_comps))
+		plt.savefig('../figures/pca_cumsum_{}_components.jpg'.format(n_comps))
 
 		plt.close('all')
 
 	return pca_models
 
 def random_pick_imgs():
+	'''
+	Randomly select 10 imgs from each category to be shown to new user.
+	INPUT: None
+	
+	OUTPUT: None
+	'''
 	imgs = []
 	for cat in CATEGORIES:
 		df = pd.read_csv('../data/{}_imgs_to_show.csv'.format(cat), sep=', ', engine='python')
@@ -136,6 +142,8 @@ def new_user_softmax_mean(imgs, conn):
 	
 	df = pd.read_sql(q1, conn)
 	return df
+
+
 
 if __name__ == '__main__': 
 	username = 'marshanskiy' # 'paolatonight', 'ashleyrparker', 'eyemediaa', 'parisinfourmonths'
