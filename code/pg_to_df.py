@@ -131,8 +131,8 @@ def new_user_softmax_mean(imgs, conn):
 				shortcode, 
 				predicted
 		FROM tracker
-		WHERE img_id IN ({});
-		'''.format(','.join(imgs))
+		WHERE img_id IN ('{}');
+		'''.format("','".join(imgs))
 	
 	df = pd.read_sql(q1, conn)
 	return df
