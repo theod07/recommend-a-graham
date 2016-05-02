@@ -2,7 +2,7 @@ import numpy as np
 import os
 from pg_to_df import CATEGORIES
 
-HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
+# HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
 
 def get_dirmap():
 	with open('../data/html_map.txt', 'r') as f:
@@ -13,7 +13,7 @@ def get_dirmap():
 		dirs[kv[0]] = kv[1]
 	return dirs
 
-def imgs_to_show(HTMLS_DIR, CATEGORIES):
+def imgs_to_show(CATEGORIES):
 	
 	dirmap = get_dirmap()
 
@@ -24,7 +24,7 @@ def imgs_to_show(HTMLS_DIR, CATEGORIES):
 			users = [l.split('\n')[0] for l in lines]
 
 		for user in users:
-			files = os.listdir(HTMLS_DIR + '/{}/{}'.format(category,dirmap[user]))
+			files = os.listdir('../data/{}/{}'.format(category,dirmap[user]))
 			jpgs = [f for f in files if f.endswith('.jpg')]
 			selected = np.random.choice(jpgs, size=10, replace=False)
 
