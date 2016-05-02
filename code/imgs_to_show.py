@@ -50,6 +50,15 @@ def imgs_to_show(CATEGORIES):
 				continue
 
 def sample_predicted_imgs(category, conn):
+	'''
+	Generate a list of imgs that have already been predicted for each category.
+	These lists will be used to draw random sample of imgs from to present to new user
+
+	INPUT: category 
+			connection object to postgres database
+	OUTPUT: None. (write to file)
+	'''
+	
 	usernames = get_usernames(category)
 
 	q = '''
