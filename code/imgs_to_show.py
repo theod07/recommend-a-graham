@@ -33,7 +33,9 @@ def imgs_to_show(CATEGORIES):
 					for jpg in selected:
 						print jpg
 						f.write('{}, {}\n'.format(user, jpg))
-			except KeyError, OSError:
+			except KeyError:
+				continue
+			except OSError:
 				continue
 if __name__ == '__main__':
 	imgs_to_show(CATEGORIES)
