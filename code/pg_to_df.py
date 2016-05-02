@@ -116,13 +116,12 @@ def get_pca_models(sm_arr):
 	return pca_models
 
 def random_pick_imgs(conn):
+
+	imgs = []
 	for category in CATEGORIES:
-		with open('../data/{}.txt'.format(category), 'r') as f:
-			lines = f.readlines()
-			lines = [l for l in lines if not l.startswith('#')]
-			users = [l.split('\n')[0] for l in lines]
-		
-		imgs = []
+		df = pd.read_csv('../data/{}_imgs_to_show.csv', sep=', ', engine='python')
+
+		choices = 
 		for user in np.random.choice(users, size=10, replace=False):
 			q = '''SELECT shortcode, img_id
 			FROM tracker 
