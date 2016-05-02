@@ -27,7 +27,11 @@ def imgs_to_show(CATEGORIES):
 			try:
 				files = os.listdir('../data/{}/{}'.format(category,dirmap[user]))
 				jpgs = [f for f in files if f.endswith('.jpg')]
-				selected = np.random.choice(jpgs, size=10, replace=False)
+				
+				if len(jpgs) < 10:
+					selected = jpgs
+				else:
+					selected = np.random.choice(jpgs, size=10, replace=False)
 
 				with open('../data/imgs_to_show.csv', 'a') as f:
 					for jpg in selected:
