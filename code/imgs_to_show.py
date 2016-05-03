@@ -94,7 +94,7 @@ def copy_imgs_to_dir(category, dirmap):
 		img_id = img_id.split('\n')[0]
 		try:
 			shutil.copy2('../data/{}/{}/{}'.format(cat, dirmap[user], img_id), 
-						'../imgs/{}/{}_{}'.format(category, user, img_id))
+						'../imgs/{}/{}_{}'.format(category, user, img_id)
 		except:
 			print 'error {}, {}'.format(user, img_id)
 
