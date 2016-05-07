@@ -1,7 +1,8 @@
 import os
 import numpy as np
+from operator import xor
 import matplotlib.pyplot as plt
-from sklearn.io import imshow
+from skimage.io import imshow
 
 
 def get_user_preference(imgs):
@@ -15,9 +16,18 @@ def get_user_preference(imgs):
 	'''
 	prefs = []
 	for img in imgs:
-		imshow(img)
-		pref = raw_input('Like? 1   No Like? 0')
-		prefs.append(pref)
+		fname = '../imgs/{}'.format(img)
+		print fname
+		# imshow(fname)
+		imshow(fname)
+		plt.show()
+
+		pref = ''
+		# logical xor in python is != ... i know, right??
+		while (not pref == '0') != (not pref == '1'):
+			print 'you entered: {}'.format(pref)
+			pref = raw_input('Did you like that photo? Yes:1, No:0...')
+		prefs.append(int(pref))
 	return prefs
 
 
@@ -31,8 +41,8 @@ def random_pick_imgs(categories):
 	imgs = []
 	for cat in categories:
 		choices = np.random.choice(os.listdir('../imgs/{}'.format(cat)), size=10, replace=False)
-		imgs.append(choices)
-
+		for choice in choices:
+			imgs.append('{}/{}'.format(cat,choice))
 	return imgs
 
 def new_user_softmax_mean(imgs, conn):
@@ -53,7 +63,10 @@ if __name__ == '__main__':
 	CATEGORIES = ['cats', 'dogs']
 
 	imgs = random_pick_imgs(CATEGORIES)
-	prefs = get_user_preferences(imgs)
+	print imgs
+	prefs = get_user_preference(imgs)
+
+
 
 
 	# user_short_pred_df = new_user_softmax_mean(imgs, conn)

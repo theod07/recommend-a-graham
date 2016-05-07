@@ -113,35 +113,6 @@ def get_pca_models(sm_arr):
 
 	return pca_models
 
-def random_pick_imgs():
-	'''
-	Randomly select 10 imgs from each category to be shown to new user.
-	INPUT: None
-	
-	OUTPUT: None
-	'''
-	imgs = []
-	for cat in CATEGORIES:
-		df = pd.read_csv('../data/{}_imgs_to_show.csv'.format(cat), sep=', ', engine='python')
-
-		choices = np.random.choice(xrange(df.shape[0]), size=10, replace=False)
-		# for z in zip(df.username[choices], df.img_id[choices]):
-		# 	imgs.append(z)
-		for c in choices:
-			imgs.append(df.img_id[c])
-	return imgs
-
-def new_user_softmax_mean(imgs, conn):
-	q1 = '''
-		SELECT username, 
-				shortcode, 
-				predicted
-		FROM tracker
-		WHERE img_id IN ('{}');
-		'''.format("','".join(imgs))
-	
-	df = pd.read_sql(q1, conn)
-	return df
 
 
 
@@ -167,9 +138,7 @@ if __name__ == '__main__':
 	
 	pca_models = get_pca_models(sm_arr_scaled)
 
-	show_imgs = random_pick_imgs()
 
-	user_short_pred_df = new_user_softmax_mean(show_imgs, conn)
 
 
 
