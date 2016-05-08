@@ -75,6 +75,7 @@ def new_user_softmax_mean(imgs, conn):
 	df2.softmax = df2.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
 	softmax_mean = np.mean(df2.softmax.values)
+
 	return softmax_mean
 
 
