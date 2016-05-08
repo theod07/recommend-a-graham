@@ -3,6 +3,7 @@ import numpy as np
 from operator import xor
 import matplotlib.pyplot as plt
 from skimage.io import imshow
+import psycopg2 as pg2
 
 
 def show_user_imgs(imgs):
