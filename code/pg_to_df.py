@@ -25,7 +25,7 @@ CATEGORIES = ['cats', 'dogs']
 # 	df.to_pickle('./{}.pkl'.format(group))
 
 
-def get_mean_vectors(user,vec_name='softmax', conn):
+def get_mean_vectors(user, conn, vec_name='softmax'):
 	"""
 	INPUT: username for instagram,
 			connection object to postgres database
@@ -61,7 +61,7 @@ def get_users_arr(conn, vtype):
 
 	for user in df['username']:
 		try:
-			mean_vector = get_mean_vectors(user, vec_name=vtype, conn)
+			mean_vector = get_mean_vectors(user, conn, vec_name=vtype)
 			mean_vectors.append(mean_vector[np.newaxis, :])
 		except IndexError:
 			print 'invalid index for {}'.format(user)
