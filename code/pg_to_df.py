@@ -128,11 +128,11 @@ if __name__ == '__main__':
 	vtype = 'fc8'
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
-	if not '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
-		mean_arr = get_users_arr(conn, vtype)
-		np.save('../data/{}_arr'.vtype, mean_arr)
-	else:
+	if '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
 		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
+	else:
+		mean_arr = get_users_arr(conn, vtype)
+		np.save('../data/{}_arr'.format(vtype), mean_arr)
 
 	# standardize features by removing mean and scaling to unit variance
 	scaler = StandardScaler()
