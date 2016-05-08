@@ -48,31 +48,32 @@ def random_pick_imgs(categories):
 	return imgs
 
 
-def new_user_softmax_mean(imgs):
+def new_user_softmax_mean(imgs, conn):
 	# extract img_id from imgs
 	parsed = map(lambda x: x.split('_'), imgs)
 	img_ids = map(lambda x: '_'.join(x[-4:]), parsed)
 
-	return img_ids
-
-
-
-	# q1 = '''
-	# 	SELECT username, 
-	# 			shortcode, 
-	# 			predicted
-	# 	FROM tracker
-	# 	WHERE img_id IN ('{}');
-	# 	'''.format("','".join(imgs))
+	q1 = '''
+		SELECT username, 
+				shortcode, 
+				predicted
+		FROM tracker
+		WHERE img_id IN ('{}');
+		'''.format("','".join(imgs))
 	
-	# df = pd.read_sql(q1, conn)
-	# return df
+	df = pd.read_sql(q1, conn)
+	return df
 
 
 if __name__ == '__main__':
 
 	CATEGORIES = ['cats', 'dogs']
-
+	
+	try:
+		conn = pg2.connect(dbname='image_clusters')
+	except:
+		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+	
 	imgs = random_pick_imgs(CATEGORIES)
 	print imgs
 	# likes = show_user_imgs(imgs)
@@ -81,6 +82,6 @@ if __name__ == '__main__':
 	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
 	liked_photos = imgs[like_idx]
 
-	img_ids = new_user_softmax_mean(liked_photos)
+	df = new_user_softmax_mean(liked_photos, conn)
 
 	# user_short_pred_df = new_user_softmax_mean(imgs, conn)
