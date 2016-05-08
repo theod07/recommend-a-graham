@@ -25,12 +25,12 @@ CATEGORIES = ['cats', 'dogs']
 # 	df.to_pickle('./{}.pkl'.format(group))
 
 
-def get_mean_softmax_vecs(user, conn):
+def get_mean_vectors(user,vec_name='softmax', conn):
 	"""
 	INPUT: username for instagram,
 			connection object to postgres database
 
-	OUTPUT: user's mean softmax vector
+	OUTPUT: user's mean vector, taken from table vec_name
 	"""
 	
 	query1 = '''SELECT shortcode FROM tracker WHERE username = '{}';'''.format(user)
@@ -39,37 +39,37 @@ def get_mean_softmax_vecs(user, conn):
 	shortcode_list = map(lambda x: "'"+str(x)+"'", df['shortcode'].values.flatten())
 	shortcodes_csv = ','.join(shortcode_list)
 	# create query string
-	query2 = '''SELECT softmax FROM softmax WHERE shortcode IN ({});'''.format(shortcodes_csv)
+	query2 = '''SELECT {0} FROM {0} WHERE shortcode IN ({1});'''.format(vec_name, shortcodes_csv)
 	df = pd.read_sql(query2, conn)
 
-	df.softmax = df.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+	df[vec_name] = df[vec_name].apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
-	soft_arr = df.softmax.values
+	vector_arr = df[vec_name].values
 
-	return np.mean(soft_arr)
+	return np.mean(vector_arr)
 	
-def get_sm_arr(conn):
+def get_users_arr(conn):
 	"""
 	INPUT: connection object to postgres database
 
-	OUTPUT: numpy array of users' mean softmax vectors.
-			row-by-colum :: user-by-softmax
+	OUTPUT: numpy array of users' mean vectors.
+			row-by-colum :: user-by-features
 	"""
 
-	sm_mean_vectors = []
+	mean_vectors = []
 	df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
 	for user in df['username']:
 		try:
-			softmax_mean_vector = get_mean_softmax_vecs(user, conn)
-			sm_mean_vectors.append(softmax_mean_vector[np.newaxis, :])
+			mean_vector = get_mean_vectors(user, vec_name='softmax', conn)
+			mean_vectors.append(mean_vector[np.newaxis, :])
 		except IndexError:
 			print 'invalid index for {}'.format(user)
-	sm_arr = np.concatenate(sm_mean_vectors, axis=0)
+	mean_arr = np.concatenate(mean_vectors, axis=0)
 	
-	return sm_arr
+	return mean_arr
 
-def get_pca_models(sm_arr):
+def get_pca_models(mean_arr):
 	"""
 	INPUT: scaled 2D array of softmax vectors
 
@@ -124,19 +124,22 @@ if __name__ == '__main__':
 	except:
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 
+	# choose the vector type you want to inspect
+	vtype = 'fc8'
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
-	if not 'sm_arr.npy' in os.listdir('../data/'):
-		sm_arr = get_sm_arr(conn)
-		np.save('../data/sm_arr', sm_arr)
+	if not '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
+		mean_arr = get_users_arr(conn)
+		np.save('../data/{}_arr'.vtype, mean_arr)
 	else:
-		sm_arr = np.load('../data/sm_arr.npy')
+		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 
 	# standardize features by removing mean and scaling to unit variance
 	scaler = StandardScaler()
-	sm_arr_scaled = scaler.fit_transform(sm_arr)
+	mean_arr_scaled = scaler.fit_transform(mean_arr)
 	
-	pca_models = get_pca_models(sm_arr_scaled)
+	# create a pca_model for different values of explained variance
+	# pca_models = get_pca_models(sm_arr_scaled)
 
 
 
