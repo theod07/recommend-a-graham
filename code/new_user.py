@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from skimage.io import imshow
 
 
-def get_user_preference(imgs):
+def show_user_imgs(imgs):
 	'''
 	Display images to new_user and prompt for response (Like/NoLike)
 	Keep track of preferences in a list.
@@ -14,7 +14,7 @@ def get_user_preference(imgs):
 
 	OUTPUT: list of new_user's preferences (zero or one)
 	'''
-	prefs = []
+	likes = []
 	for img in imgs:
 		fname = '../imgs/{}'.format(img)
 		print fname
@@ -24,11 +24,12 @@ def get_user_preference(imgs):
 
 		pref = ''
 		# logical xor in python is != ... i know, right??
-		while (not pref == '0') != (not pref == '1'):
+		while not pref in ['0', '1']:
 			print 'you entered: {}'.format(pref)
 			pref = raw_input('Did you like that photo? Yes:1, No:0...')
-		prefs.append(int(pref))
-	return prefs
+			likes.append(int(pref))
+	likes = np.array(likes).astype('bool')
+	return likes
 
 
 def random_pick_imgs(categories):
@@ -43,19 +44,29 @@ def random_pick_imgs(categories):
 		choices = np.random.choice(os.listdir('../imgs/{}'.format(cat)), size=10, replace=False)
 		for choice in choices:
 			imgs.append('{}/{}'.format(cat,choice))
+	imgs = np.array(imgs)
 	return imgs
 
-def new_user_softmax_mean(imgs, conn):
-	q1 = '''
-		SELECT username, 
-				shortcode, 
-				predicted
-		FROM tracker
-		WHERE img_id IN ('{}');
-		'''.format("','".join(imgs))
+
+def new_user_softmax_mean(imgs):
+	# extract img_id from imgs
+	parsed = map(lambda x: x.split('_'), imgs)
+	img_ids = map(lambda x: '_'.join(x[-4:]), parsed)
+
+	return img_ids
+
+
+
+	# q1 = '''
+	# 	SELECT username, 
+	# 			shortcode, 
+	# 			predicted
+	# 	FROM tracker
+	# 	WHERE img_id IN ('{}');
+	# 	'''.format("','".join(imgs))
 	
-	df = pd.read_sql(q1, conn)
-	return df
+	# df = pd.read_sql(q1, conn)
+	# return df
 
 
 if __name__ == '__main__':
@@ -64,9 +75,12 @@ if __name__ == '__main__':
 
 	imgs = random_pick_imgs(CATEGORIES)
 	print imgs
-	prefs = get_user_preference(imgs)
+	# likes = show_user_imgs(imgs)
 
+	# simulate getting new_user's preference
+	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
+	liked_photos = imgs[like_idx]
 
-
+	img_ids = new_user_softmax_mean(liked_photos)
 
 	# user_short_pred_df = new_user_softmax_mean(imgs, conn)
