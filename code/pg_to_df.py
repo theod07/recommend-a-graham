@@ -125,7 +125,7 @@ if __name__ == '__main__':
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 
 	# choose the vector type you want to inspect
-	vtype = 'fc8'
+	vtype = 'fc7'
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
 	if '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
