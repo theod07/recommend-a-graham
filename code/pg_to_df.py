@@ -48,10 +48,10 @@ def get_mean_vectors(user,vec_name='softmax', conn):
 
 	return np.mean(vector_arr)
 	
-def get_users_arr(conn):
+def get_users_arr(conn, vtype):
 	"""
 	INPUT: connection object to postgres database
-
+			vtype: either 'softmax', 'fc8', 'fc7'
 	OUTPUT: numpy array of users' mean vectors.
 			row-by-colum :: user-by-features
 	"""
@@ -61,7 +61,7 @@ def get_users_arr(conn):
 
 	for user in df['username']:
 		try:
-			mean_vector = get_mean_vectors(user, vec_name='softmax', conn)
+			mean_vector = get_mean_vectors(user, vec_name=vtype, conn)
 			mean_vectors.append(mean_vector[np.newaxis, :])
 		except IndexError:
 			print 'invalid index for {}'.format(user)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 	# calculate mean softmax vector for all users
 	# store vectors in matrix
 	if not '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
-		mean_arr = get_users_arr(conn)
+		mean_arr = get_users_arr(conn, vtype)
 		np.save('../data/{}_arr'.vtype, mean_arr)
 	else:
 		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
