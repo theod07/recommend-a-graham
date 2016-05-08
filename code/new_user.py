@@ -70,7 +70,7 @@ def new_user_softmax_mean(imgs, conn):
 		FROM softmax
 		where shortcode IN ('{}');
 		'''.format("','".join(df.shortcode.values))
-	df2 = 
+	df2 = pd.read_sql(q2, conn)
 	return df2
 
 
