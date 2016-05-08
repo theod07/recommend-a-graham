@@ -61,7 +61,7 @@ def new_user_softmax_mean(imgs, conn):
 				predicted
 		FROM tracker
 		WHERE img_id IN ('{}');
-		'''.format("','".join(imgs))
+		'''.format("','".join(img_ids))
 	
 	df = pd.read_sql(q1, conn)
 	return df
