@@ -69,9 +69,12 @@ def new_user_softmax_mean(imgs, conn):
 		SELECT softmax 
 		FROM softmax
 		where shortcode IN ('{}');
-		'''.format("','".join(df.shortcode.values))
+		'''.format("','".join(df1.shortcode.values))
 	df2 = pd.read_sql(q2, conn)
-	return df2
+	df2.softmax = df2.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+
+	softmax_mean = np.mean(df2.softmax.values)
+	return softmax_mean, df2
 
 
 if __name__ == '__main__':
@@ -91,6 +94,6 @@ if __name__ == '__main__':
 	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
 	liked_photos = imgs[like_idx]
 
-	df = new_user_softmax_mean(liked_photos, conn)
+	sm_mean, df = new_user_softmax_mean(liked_photos, conn)
 
 	# user_short_pred_df = new_user_softmax_mean(imgs, conn)
