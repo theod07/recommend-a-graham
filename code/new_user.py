@@ -55,6 +55,7 @@ def new_user_softmax_mean(imgs, conn):
 	parsed = map(lambda x: x.split('_'), imgs)
 	img_ids = map(lambda x: '_'.join(x[-4:]), parsed)
 
+	# create query to extract shortcodes
 	q1 = '''
 		SELECT username, 
 				shortcode, 
@@ -62,9 +63,15 @@ def new_user_softmax_mean(imgs, conn):
 		FROM tracker
 		WHERE img_id IN ('{}');
 		'''.format("','".join(img_ids))
-	
-	df = pd.read_sql(q1, conn)
-	return df
+	df1 = pd.read_sql(q1, conn)
+
+	q2 = '''
+		SELECT softmax 
+		FROM softmax
+		where shortcode IN ('{}');
+		'''.format("','".join(df.shortcode.values))
+	df2 = 
+	return df2
 
 
 if __name__ == '__main__':
