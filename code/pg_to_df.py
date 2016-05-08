@@ -25,7 +25,7 @@ CATEGORIES = ['cats', 'dogs']
 # 	df.to_pickle('./{}.pkl'.format(group))
 
 
-def get_user_softmax_mean(user, conn):
+def get_mean_softmax_vecs(user, conn):
 	"""
 	INPUT: username for instagram,
 			connection object to postgres database
@@ -61,7 +61,7 @@ def get_sm_arr(conn):
 
 	for user in df['username']:
 		try:
-			softmax_mean_vector = get_user_softmax_mean(user, conn)
+			softmax_mean_vector = get_mean_softmax_vecs(user, conn)
 			sm_mean_vectors.append(softmax_mean_vector[np.newaxis, :])
 		except IndexError:
 			print 'invalid index for {}'.format(user)

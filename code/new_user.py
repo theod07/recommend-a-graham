@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from skimage.io import imshow
 import psycopg2 as pg2
 import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 def show_user_imgs(imgs):
@@ -74,7 +75,8 @@ def new_user_softmax_mean(imgs, conn):
 	df2.softmax = df2.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
 	softmax_mean = np.mean(df2.softmax.values)
-	return softmax_mean, df2
+
+	return softmax_mean
 
 
 if __name__ == '__main__':
@@ -89,11 +91,13 @@ if __name__ == '__main__':
 	imgs = random_pick_imgs(CATEGORIES)
 	print imgs
 	# likes = show_user_imgs(imgs)
-
 	# simulate getting new_user's preference
 	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
 	liked_photos = imgs[like_idx]
 
-	sm_mean, df = new_user_softmax_mean(liked_photos, conn)
+	sm_mean = new_user_softmax_mean(liked_photos, conn)
+	sm_arr = np.load('../data/sm_arr.npy')
 
-	# user_short_pred_df = new_user_softmax_mean(imgs, conn)
+	cosine_sims = cosine_similarity(sm_arr, sm_mean)
+	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
+
