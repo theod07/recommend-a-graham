@@ -4,6 +4,7 @@ from operator import xor
 import matplotlib.pyplot as plt
 from skimage.io import imshow
 import psycopg2 as pg2
+import pandas as pd
 
 
 def show_user_imgs(imgs):
