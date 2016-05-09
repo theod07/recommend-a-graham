@@ -66,11 +66,12 @@ def new_user_mean_vector(imgs, conn, vtype='softmax'):
 		'''.format("','".join(img_ids))
 	df1 = pd.read_sql(q1, conn)
 
+	shortcodes_csv = "','".join(df1.shortcode.values)
 	q2 = '''
 		SELECT {0}
 		FROM {0}
 		where shortcode IN ('{1}');
-		'''.format("','".join(vtype, df1.shortcode.values))
+		'''.format(vtype, shortcodes_csv)
 	df2 = pd.read_sql(q2, conn)
 	df2['vtype'] = df2['vtype'].apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
