@@ -51,7 +51,7 @@ def random_pick_imgs(categories):
 	return imgs
 
 
-def new_user_softmax_mean(imgs, conn):
+def new_user_mean_vector(imgs, conn):
 	# extract img_id from imgs
 	parsed = map(lambda x: x.split('_'), imgs)
 	img_ids = map(lambda x: '_'.join(x[-4:]), parsed)
@@ -88,6 +88,9 @@ if __name__ == '__main__':
 	except:
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	
+	# choose the vector type you want to inspect
+	vtype = 'fc7'
+	# pick imgs to show new_user
 	imgs = random_pick_imgs(CATEGORIES)
 	print imgs
 	# likes = show_user_imgs(imgs)
@@ -95,9 +98,10 @@ if __name__ == '__main__':
 	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
 	liked_photos = imgs[like_idx]
 
-	sm_mean = new_user_softmax_mean(liked_photos, conn)
-	sm_arr = np.load('../data/sm_arr.npy')
+	mean_vector = new_user_mean_vector(liked_photos, conn)
+	mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 
-	cosine_sims = cosine_similarity(sm_arr, sm_mean)
+	cosine_sims = cosine_similarity(mean_arr, mean_vector)
 	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
 
+	
