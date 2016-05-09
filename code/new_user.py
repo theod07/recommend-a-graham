@@ -73,9 +73,9 @@ def new_user_mean_vector(imgs, conn, vtype='softmax'):
 		where shortcode IN ('{1}');
 		'''.format(vtype, shortcodes_csv)
 	df2 = pd.read_sql(q2, conn)
-	df2['vtype'] = df2['vtype'].apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+	df2[vtype] = df2[vtype].apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
-	mean_vector = np.mean(df2['vtype'].values)
+	mean_vector = np.mean(df2[vtype].values)
 
 	return mean_vector
 
