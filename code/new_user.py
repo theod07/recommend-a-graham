@@ -51,7 +51,7 @@ def random_pick_imgs(categories):
 	return imgs
 
 
-def new_user_mean_vector(imgs, conn):
+def new_user_mean_vector(imgs, conn, vtype='softmax'):
 	# extract img_id from imgs
 	parsed = map(lambda x: x.split('_'), imgs)
 	img_ids = map(lambda x: '_'.join(x[-4:]), parsed)
@@ -67,16 +67,16 @@ def new_user_mean_vector(imgs, conn):
 	df1 = pd.read_sql(q1, conn)
 
 	q2 = '''
-		SELECT softmax 
-		FROM softmax
-		where shortcode IN ('{}');
-		'''.format("','".join(df1.shortcode.values))
+		SELECT {0}
+		FROM {0}
+		where shortcode IN ('{1}');
+		'''.format("','".join(vtype, df1.shortcode.values))
 	df2 = pd.read_sql(q2, conn)
-	df2.softmax = df2.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+	df2['vtype'] = df2['vtype'].apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 
-	softmax_mean = np.mean(df2.softmax.values)
+	mean_vector = np.mean(df2['vtype'].values)
 
-	return softmax_mean
+	return mean_vector
 
 
 if __name__ == '__main__':
@@ -98,10 +98,10 @@ if __name__ == '__main__':
 	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
 	liked_photos = imgs[like_idx]
 
-	mean_vector = new_user_mean_vector(liked_photos, conn)
+	mean_vector = new_user_mean_vector(liked_photos, conn, vtype)
 	mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 
 	cosine_sims = cosine_similarity(mean_arr, mean_vector)
 	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
 
-	
+
