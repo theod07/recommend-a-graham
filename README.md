@@ -37,5 +37,9 @@ CREATE TABLE fc6 (
 
 To Do:
 
-1. Modify image preprocessing step. Rescale image to match  `net['input'] = InputLayer((None, 3, 224, 224))`
-2. 
+1. Calculate mean vector for each existing_user (softmax, fc8, fc7)
+2. Calculate mean vector for new_user
+3. Calculate cosine_similarity(existing_users, new_user)
+4. Get top20_most_similar users. Do they make sense?
+
+

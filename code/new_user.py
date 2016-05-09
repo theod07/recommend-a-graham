@@ -90,19 +90,23 @@ if __name__ == '__main__':
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	
 	# choose the vector type you want to inspect
-	vtype = 'fc7'
-	# pick imgs to show new_user
-	imgs = random_pick_imgs(CATEGORIES)
-	print imgs
-	# likes = show_user_imgs(imgs)
-	# simulate getting new_user's preference
-	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
-	liked_photos = imgs[like_idx]
+	for vtype in ['fc7', 'fc8', 'softmax']:
+		# pick imgs to show new_user
+		imgs = random_pick_imgs(CATEGORIES)
 
-	mean_vector = new_user_mean_vector(liked_photos, conn, vtype)
-	mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
+		# likes = show_user_imgs(imgs)
+		# simulate getting new_user's preference
+		like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
+		liked_photos = imgs[like_idx]
 
-	cosine_sims = cosine_similarity(mean_arr, mean_vector)
-	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
+		mean_vector = new_user_mean_vector(liked_photos, conn, vtype)
+		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 
+		cosine_sims = cosine_similarity(mean_arr, mean_vector)
+		users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
+
+		top20 = np.argsort(cosine_sims, axis=0)[-20:]
+		most_sim = users[top20]
+		print 'categories: {}, prefs: {}'.format(CATEGORIES, like_idx)
+		print 'most_sim_users : {}'.format(users[top20].flatten())
 
