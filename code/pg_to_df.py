@@ -59,15 +59,17 @@ def get_users_arr(conn, vtype):
 	mean_vectors = []
 	df = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn)
 
+	users = []
 	for user in df['username']:
 		try:
 			mean_vector = get_mean_vectors(user, conn, vec_name=vtype)
 			mean_vectors.append(mean_vector[np.newaxis, :])
+			users.append(user)
 		except IndexError:
 			print 'invalid index for {}'.format(user)
 	mean_arr = np.concatenate(mean_vectors, axis=0)
 	
-	return mean_arr
+	return mean_arr, users
 
 def get_pca_models(mean_arr):
 	"""
@@ -131,7 +133,7 @@ if __name__ == '__main__':
 	if '{}_arr.npy'.format(vtype) in os.listdir('../data/'):
 		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 	else:
-		mean_arr = get_users_arr(conn, vtype)
+		mean_arr, users = get_users_arr(conn, vtype)
 		np.save('../data/{}_arr'.format(vtype), mean_arr)
 
 	# standardize features by removing mean and scaling to unit variance

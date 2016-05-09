@@ -108,11 +108,12 @@ def main(vtype='fc7'):
 	print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
 	print 'most_sim_users : {}'.format(users[top20].flatten())
 
+	# print out results of most similar users along with their user_group
 	for sim in most_sim:
 		for k,v in user_group_dictionary.items():
 			if sim in v:
 				print 'group: {}  user: {} '.format(v,sim)
-	
+
 
 if __name__ == '__main__':
 

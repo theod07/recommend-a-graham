@@ -43,7 +43,7 @@ def make_html_map():
 def user_group_dictionary():
 	d = {}
 	for group in USER_GROUPS:
-		with open('../data{}.txt'.format(group), 'r') as f:
+		with open('../data/{}.txt'.format(group), 'r') as f:
 			lines = f.readlines()
 			lines = [l for l in lines if not l.startswith('#')]
 			usernames = set([l.split('\n')[0] for l in lines])
