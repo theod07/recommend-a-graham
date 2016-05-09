@@ -107,6 +107,6 @@ if __name__ == '__main__':
 
 		top20 = np.argsort(cosine_sims, axis=0)[-20:]
 		most_sim = users[top20]
-		print 'categories: {}, prefs: {}'.format(CATEGORIES, like_idx)
+		print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
 		print 'most_sim_users : {}'.format(users[top20].flatten())
 
