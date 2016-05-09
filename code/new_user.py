@@ -6,6 +6,7 @@ from skimage.io import imshow
 import psycopg2 as pg2
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+from html_map import user_group_dictionary
 
 
 def show_user_imgs(imgs):
@@ -80,8 +81,7 @@ def new_user_mean_vector(imgs, conn, vtype='softmax'):
 	return mean_vector
 
 
-if __name__ == '__main__':
-
+def main(vtype='fc7'):
 	CATEGORIES = ['cats', 'dogs']
 	
 	try:
@@ -89,24 +89,33 @@ if __name__ == '__main__':
 	except:
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 	
-	# choose the vector type you want to inspect
-	for vtype in ['fc7', 'fc8', 'softmax']:
-		# pick imgs to show new_user
-		imgs = random_pick_imgs(CATEGORIES)
+	# pick imgs to show new_user
+	imgs = random_pick_imgs(CATEGORIES)
 
-		# likes = show_user_imgs(imgs)
-		# simulate getting new_user's preference
-		like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
-		liked_photos = imgs[like_idx]
+	# likes = show_user_imgs(imgs)
+	# simulate getting new_user's preference
+	like_idx = np.array([[1]*10, [0]*10]).astype('bool').reshape(20)
+	liked_photos = imgs[like_idx]
 
-		mean_vector = new_user_mean_vector(liked_photos, conn, vtype)
-		mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
+	mean_vector = new_user_mean_vector(liked_photos, conn, vtype)
+	mean_arr = np.load('../data/{}_arr.npy'.format(vtype))
 
-		cosine_sims = cosine_similarity(mean_arr, mean_vector)
-		users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
+	cosine_sims = cosine_similarity(mean_arr, mean_vector)
+	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
 
-		top20 = np.argsort(cosine_sims, axis=0)[-20:]
-		most_sim = users[top20]
-		print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
-		print 'most_sim_users : {}'.format(users[top20].flatten())
+	top20 = np.argsort(cosine_sims, axis=0)[-5:-1:-1]
+	most_sim = users[top20]
+	print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
+	print 'most_sim_users : {}'.format(users[top20].flatten())
 
+	for sim in most_sim:
+		for k,v in user_group_dictionary.items():
+			if sim in v:
+				print 'group: {}  user: {} '.format(v,sim)
+	
+
+if __name__ == '__main__':
+
+	vtype = 'fc7'
+	main(vtype)
+	
