@@ -111,8 +111,7 @@ def main(vtype='fc7'):
 	# print out results of most similar users along with their user_group
 	for sim in most_sim:
 		print 'sim: {} '.format(sim)
-		for k,v in user_group_dictionary.items():
-			print 'k: {} '.format(k)
+		for k,v in user_group_dictionary.items()
 			if sim in v:
 				print 'group: {}  user: {} '.format(v,sim)
 
