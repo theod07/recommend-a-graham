@@ -103,7 +103,7 @@ def main(vtype='fc7'):
 	cosine_sims = cosine_similarity(mean_arr, mean_vector)
 	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
 
-	top20 = np.argsort(cosine_sims, axis=0)[-5:-1:1]
+	top20 = np.argsort(cosine_sims, axis=0)[-6:-1:1]
 	most_sim = users[top20].flatten()
 	print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
 	print 'most_sim_users : {}'.format(users[top20].flatten())
