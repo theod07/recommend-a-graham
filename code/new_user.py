@@ -104,7 +104,7 @@ def main(vtype='fc7'):
 	users = pd.read_sql('''SELECT DISTINCT username FROM tracker;''', conn).values
 
 	top20 = np.argsort(cosine_sims, axis=0)[-5:-1:1]
-	most_sim = users[top20]
+	most_sim = users[top20].flatten()
 	print 'categories: {}, vtype: {}'.format(CATEGORIES, vtype)
 	print 'most_sim_users : {}'.format(users[top20].flatten())
 
