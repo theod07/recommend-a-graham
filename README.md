@@ -87,4 +87,42 @@ group: foodies  user: tifforelie
 
 What if we change the preferences around to all dogs, no cats?
 
-1. 
+1. categories: ['dogs', 'cats'], vtype: fc7
+most_sim_users : ['makicocomo' 'manchesterunited' 'sellsneakershere' 'rapo4' 'arishapiro']
+group: cats  user: makicocomo 
+group: most_popular  user: manchesterunited 
+group: most_popular  user: sellsneakershere 
+group: foodies  user: rapo4 
+group: most_popular  user: arishapiro 
+
+2. categories: ['dogs', 'cats'], vtype: fc7
+most_sim_users : ['nasagoddard' 'ryan.abernathy' 'rapo4' 'sellsneakershere' 'humative']
+group: most_popular  user: nasagoddard 
+group: travel  user: ryan.abernathy 
+group: foodies  user: rapo4 
+group: most_popular  user: sellsneakershere 
+group: dogs  user: humative 
+
+3. categories: ['dogs', 'cats'], vtype: fc7
+most_sim_users : ['lonelyplanet' 'jimmyfallon' 'onedirection' 'thegrammys' 'milwaukeebucks']
+group: travel  user: lonelyplanet 
+group: most_popular  user: jimmyfallon 
+group: most_popular  user: onedirection 
+group: most_popular  user: thegrammys 
+group: most_popular  user: milwaukeebucks
+
+4. categories: ['dogs', 'cats'], vtype: fc7
+most_sim_users : ['theonion' 'rapo4' '9gag' 'sellsneakershere' 'arishapiro']
+group: most_popular  user: theonion 
+group: foodies  user: rapo4 
+group: most_popular  user: 9gag 
+group: most_popular  user: sellsneakershere 
+group: most_popular  user: arishapiro 
+
+5. categories: ['dogs', 'cats'], vtype: fc7
+most_sim_users : ['rapjuggernaut' 'simonebirch' 'humative' '49ers' 'reuters']
+group: most_popular  user: rapjuggernaut 
+group: travel  user: simonebirch 
+group: dogs  user: humative 
+group: most_popular  user: 49ers 
+group: most_popular  user: reuters 
