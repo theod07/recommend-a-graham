@@ -417,3 +417,146 @@ group: models  user: danielvanderdeen
 group: foodies  user: alexandracooks 
 group: cats  user: mayrilyn 
 group: most_popular  user: eyemediaa 
+
+
+Models vs photographers
+
+1. categories: ['models', 'photographers'], vtype: fc7
+most_sim_users : ['kirstenalana' 'princessyahrini' 'channingtatum' 'gucci' 'photojojo'
+ 'claudjdean' 'zendaya' 'warbyparker' 'samhorine' 'mattblack_blackmatt']
+group: photographers  user: kirstenalana 
+group: most_popular  user: princessyahrini 
+group: most_popular  user: channingtatum 
+group: most_popular  user: gucci 
+group: most_popular  user: photojojo 
+group: models  user: claudjdean 
+group: most_popular  user: zendaya 
+group: most_popular  user: warbyparker 
+group: photographers  user: samhorine 
+group: photographers  user: mattblack_blackmatt 
+
+2. categories: ['models', 'photographers'], vtype: fc7
+most_sim_users : ['drizzleanddip' 'convergence' 'gwneff' 'pozzialessio' 'sacramentokings'
+ 'thesorensen' 'theaccessoryqueen_mrsdds' 'toppeopleworld' 'mfj57'
+ 'gothiphop']
+group: most_popular  user: convergence 
+group: models  user: gwneff 
+group: models  user: pozzialessio 
+group: most_popular  user: sacramentokings 
+group: models  user: thesorensen 
+group: most_popular  user: theaccessoryqueen_mrsdds 
+group: most_popular  user: toppeopleworld 
+group: most_popular  user: mfj57 
+group: most_popular  user: gothiphop 
+
+3. categories: ['models', 'photographers'], vtype: fc7
+most_sim_users : ['gothiphop' 'iamzlatanibrahimovic' 'miamiheat' 'milesmcmillan' 'jaybling'
+ 'maggie_rawlins' 'realmadrid' 'gucci' 'theroxy' 'burkhartsokc']
+group: most_popular  user: gothiphop 
+group: most_popular  user: iamzlatanibrahimovic 
+group: most_popular  user: miamiheat 
+group: models  user: milesmcmillan 
+group: most_popular  user: jaybling 
+group: models  user: maggie_rawlins 
+group: most_popular  user: realmadrid 
+group: most_popular  user: gucci 
+group: most_popular  user: theroxy 
+group: photographers  user: burkhartsokc 
+
+4. categories: ['models', 'photographers'], vtype: fc7
+most_sim_users : ['kaka' 'thesorensen' 'riverviiperi' 'rainyseasonshop' 'mexicotravel'
+ 'evys_mom' 'jesse_burke' 'thekatvond' 'realfoodz' 'convergence']
+group: most_popular  user: kaka 
+group: models  user: thesorensen 
+group: models  user: riverviiperi 
+group: most_popular  user: rainyseasonshop 
+group: most_popular  user: mexicotravel 
+group: dogs  user: evys_mom 
+group: photographers  user: jesse_burke 
+group: most_popular  user: thekatvond 
+group: most_popular  user: convergence 
+
+5. categories: ['models', 'photographers'], vtype: fc7
+most_sim_users : ['halno' 'foooodieee' 'gothiphop' 'donalskehan' 'samariaregalado'
+ 'ediblebrooklyn' 'popeater' 'erinandrews' 'amanda.leefans' 'skinart_mag']
+group: photographers  user: halno 
+group: most_popular  user: gothiphop 
+group: models  user: samariaregalado 
+group: foodies  user: ediblebrooklyn 
+group: most_popular  user: popeater 
+group: most_popular  user: erinandrews 
+group: models  user: amanda.leefans 
+group: most_popular  user: skinart_mag 
+
+
+Most popular vs models?
+
+1. categories: ['most_popular', 'models'], vtype: fc7
+most_sim_users : ['alexandracooks' 'beybleedblue' 'giggstage' 'wouter38' 'mtv'
+ 'deanthebasset' 'adidasoriginals' 'seanopry55' 'spoonforkbacon'
+ 'gavinkaysen']
+group: foodies  user: alexandracooks 
+group: most_popular  user: beybleedblue 
+group: most_popular  user: giggstage 
+group: most_popular  user: wouter38 
+group: most_popular  user: mtv 
+group: dogs  user: deanthebasset 
+group: most_popular  user: adidasoriginals 
+group: models  user: seanopry55 
+group: foodies  user: spoonforkbacon 
+group: foodies  user: gavinkaysen
+
+2. categories: ['most_popular', 'models'], vtype: fc7
+most_sim_users : ['wouter38' 'kimkardashian' 'markhoppus' 'mistercap' 'cnnireport'
+ 'bythebrush' 'exopassion' 'alexandracooks' 'adidas' 'breakingnews']
+group: most_popular  user: wouter38 
+group: most_popular  user: kimkardashian 
+group: most_popular  user: markhoppus 
+group: most_popular  user: mistercap 
+group: most_popular  user: cnnireport 
+group: photographers  user: bythebrush 
+group: most_popular  user: exopassion 
+group: foodies  user: alexandracooks 
+group: most_popular  user: adidas 
+group: travel  user: breakingnews 
+
+3. categories: ['most_popular', 'models'], vtype: fc7
+most_sim_users : ['camerondallas' 'dogumantry' 'newtgingrich' 'feedprojects'
+ 'ryannealcordwell' 'claudiaalende' 'stressedouthams' 'mistercap' 'janske'
+ 'lil_rufio']
+group: most_popular  user: camerondallas 
+group: dogs  user: dogumantry 
+group: most_popular  user: newtgingrich 
+group: most_popular  user: feedprojects 
+group: photographers  user: ryannealcordwell 
+group: most_popular  user: stressedouthams 
+group: most_popular  user: mistercap 
+group: photographers  user: janske 
+group: dogs  user: lil_rufio 
+
+4. categories: ['most_popular', 'models'], vtype: fc7
+most_sim_users : ['katyperry' 'cnnireport' 'chrisburkard' 'theultimateclub' 'luissuarez9'
+ 'inestrocchia' 'redbull' 'gess8' 'nbcnews' 'skylerandsabrina']
+group: most_popular  user: katyperry 
+group: most_popular  user: cnnireport 
+group: travel  user: chrisburkard 
+group: most_popular  user: theultimateclub 
+group: most_popular  user: luissuarez9 
+group: models  user: inestrocchia 
+group: most_popular  user: redbull 
+group: travel  user: gess8 
+group: most_popular  user: nbcnews 
+group: dogs  user: skylerandsabrina 
+
+5. categories: ['most_popular', 'models'], vtype: fc7
+most_sim_users : ['emil_valentino' 'mtv' 'misvincent' 'deanthebasset' 'adidasoriginals'
+ 'utosh' 'caiocastro' 'toms' 'victoriassecret' 'karaswisher']
+group: most_popular  user: emil_valentino 
+group: most_popular  user: mtv 
+group: photographers  user: misvincent 
+group: dogs  user: deanthebasset 
+group: most_popular  user: adidasoriginals 
+group: most_popular  user: caiocastro 
+group: most_popular  user: toms 
+group: most_popular  user: victoriassecret 
+group: most_popular  user: karaswisher 
