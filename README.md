@@ -269,3 +269,151 @@ group: travel  user: uncornered_market
 group: foodies  user: gjelinatakeaway 
 group: foodies  user: acouplecooks 
 group: foodies  user: jackswifefreda 
+
+
+Travel vs foodies?
+
+1. categories: ['travel', 'foodies'], vtype: fc7
+most_sim_users : ['parisinfourmonths' 'barbershopconnect' 'floydmayweather' 'treyratcliff'
+ 'budgettraveller' 'cirquedusoleil' 'oceana' 'danrubin' 'mayrilyn'
+ 'lacikaysomers']
+group: travel  user: parisinfourmonths 
+group: most_popular  user: barbershopconnect 
+group: most_popular  user: floydmayweather 
+group: travel  user: treyratcliff 
+group: travel  user: budgettraveller 
+group: most_popular  user: cirquedusoleil 
+group: most_popular  user: oceana 
+group: photographers  user: danrubin 
+group: cats  user: mayrilyn
+
+2. categories: ['travel', 'foodies'], vtype: fc7
+most_sim_users : ['year' 'elnuevodiariord' 'shakira' 'stevenchevrin' 'zachking' 'foodzie'
+ 'vanessahudgens' 'paniexx_shop' 'starbucks' 'macenzo']
+group: most_popular  user: year 
+group: most_popular  user: elnuevodiariord 
+group: most_popular  user: shakira 
+group: models  user: stevenchevrin 
+group: most_popular  user: zachking 
+group: most_popular  user: foodzie 
+group: most_popular  user: vanessahudgens 
+group: most_popular  user: paniexx_shop 
+group: most_popular  user: starbucks 
+group: photographers  user: macenzo 
+
+3. categories: ['travel', 'foodies'], vtype: fc7
+most_sim_users : ['year' 'elnuevodiariord' 'shakira' 'stevenchevrin' 'zachking' 'foodzie'
+ 'vanessahudgens' 'paniexx_shop' 'starbucks' 'macenzo']
+group: most_popular  user: year 
+group: most_popular  user: elnuevodiariord 
+group: most_popular  user: shakira 
+group: models  user: stevenchevrin 
+group: most_popular  user: zachking 
+group: most_popular  user: foodzie 
+group: most_popular  user: vanessahudgens 
+group: most_popular  user: paniexx_shop 
+group: most_popular  user: starbucks 
+group: photographers  user: macenzo 
+
+4. categories: ['travel', 'foodies'], vtype: fc7
+most_sim_users : ['foofighters' 'starbucks' 'lakers' 'vanessahudgens' 'laudyacynthiabella'
+ 'champagnepapi' 'macenzo' 'onedirection' 'shakira' 'rontez']
+group: most_popular  user: foofighters 
+group: most_popular  user: starbucks 
+group: most_popular  user: lakers 
+group: most_popular  user: vanessahudgens 
+group: most_popular  user: laudyacynthiabella 
+group: most_popular  user: champagnepapi 
+group: photographers  user: macenzo 
+group: most_popular  user: onedirection 
+group: most_popular  user: shakira 
+group: models  user: rontez 
+
+
+5. categories: ['travel', 'foodies'], vtype: fc7
+most_sim_users : ['vanessahudgens' 'starbucks' 'buzzfeedfood' 'onedirection'
+ 'elnuevodiariord' 'macenzo' 'paniexx_shop' 'kicks4sale' 'alexstrohl'
+ 'zachking']
+group: most_popular  user: vanessahudgens 
+group: most_popular  user: starbucks 
+group: foodies  user: buzzfeedfood 
+group: most_popular  user: onedirection 
+group: most_popular  user: elnuevodiariord 
+group: photographers  user: macenzo 
+group: most_popular  user: paniexx_shop 
+group: most_popular  user: kicks4sale 
+group: travel  user: alexstrohl 
+group: most_popular  user: zachking 
+
+
+
+Photographers vs travel?
+
+1. categories: ['photographers', 'travel'], vtype: fc7
+most_sim_users : ['alexandracooks' 'onedirection' 'imchasingdreamz' 'japhetweeks'
+ 'tru_chadd' 'giggstage' 'serenawilliams' 'food52' 'jeffonline' 'opry']
+group: foodies  user: alexandracooks 
+group: most_popular  user: onedirection 
+group: most_popular  user: imchasingdreamz 
+group: travel  user: japhetweeks 
+group: most_popular  user: tru_chadd 
+group: most_popular  user: giggstage 
+group: most_popular  user: serenawilliams 
+group: foodies  user: food52 
+group: photographers  user: jeffonline 
+group: most_popular  user: opry 
+
+2. categories: ['photographers', 'travel'], vtype: fc7
+most_sim_users : ['japhetweeks' 'npr' 'alexandracooks' 'onedirection' 'ivmikspb' 'food52'
+ 'treyratcliff' 'imchasingdreamz' 'wideeyedlegless' 'bythebrush']
+group: travel  user: japhetweeks 
+group: most_popular  user: npr 
+group: foodies  user: alexandracooks 
+group: most_popular  user: onedirection 
+group: most_popular  user: ivmikspb 
+group: foodies  user: food52 
+group: travel  user: treyratcliff 
+group: most_popular  user: imchasingdreamz 
+group: photographers  user: wideeyedlegless 
+group: photographers  user: bythebrush 
+
+3. categories: ['photographers', 'travel'], vtype: fc7
+most_sim_users : ['addzim' 'travelnoire' 'dvl' 'imchasingdreamz' 'vanessahudgens'
+ 'whiskey_theaussie' 'thegrammys' 'elnuevodiariord' 'onedirection'
+ 'new_fork_city']
+group: foodies  user: addzim 
+group: travel  user: travelnoire 
+group: photographers  user: dvl 
+group: most_popular  user: imchasingdreamz 
+group: most_popular  user: vanessahudgens 
+group: dogs  user: whiskey_theaussie 
+group: most_popular  user: thegrammys 
+group: most_popular  user: elnuevodiariord 
+group: most_popular  user: onedirection 
+
+4. categories: ['photographers', 'travel'], vtype: fc7
+most_sim_users : ['treyratcliff' 'addzim' 'travelnoire' 'katyperry' 'ivmikspb'
+ 'paigehathaway' 'dvl' 'mayrilyn' 'elnuevodiariord' 'kicks4sale']
+group: travel  user: treyratcliff 
+group: foodies  user: addzim 
+group: travel  user: travelnoire 
+group: most_popular  user: katyperry 
+group: most_popular  user: ivmikspb 
+group: models  user: paigehathaway 
+group: photographers  user: dvl 
+group: cats  user: mayrilyn 
+group: most_popular  user: elnuevodiariord 
+group: most_popular  user: kicks4sale
+
+5. categories: ['photographers', 'travel'], vtype: fc7
+most_sim_users : ['jeffonline' 'treyratcliff' 'maluma' 'asos' 'japhetweeks' 'alukoyanov'
+ 'danielvanderdeen' 'alexandracooks' 'mayrilyn' 'eyemediaa']
+group: photographers  user: jeffonline 
+group: travel  user: treyratcliff 
+group: most_popular  user: maluma 
+group: travel  user: japhetweeks 
+group: most_popular  user: alukoyanov 
+group: models  user: danielvanderdeen 
+group: foodies  user: alexandracooks 
+group: cats  user: mayrilyn 
+group: most_popular  user: eyemediaa 
