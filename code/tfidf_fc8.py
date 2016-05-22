@@ -46,6 +46,8 @@ tfidf_norm[tfidf_norm == 0] = 1
 tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
 
 def vector_to_document(vector):
+	# convert vector to integers to avoid confusion
+	vector = vector.astype(int)
 	list_of_words = [['{}'.format(i)]*j for i,j in enumerate(vector)]
 	list_of_words = [item for sublist in list_of_words for item in sublist]
 	document = ' '.join(list_of_words)
