@@ -49,3 +49,4 @@ def vector_to_document(vector):
 	list_of_words = [['{}'.format(i)]*j for i,j in enumerate(vector)]
 	list_of_words = [item for sublist in list_of_words for item in sublist]
 	document = ' '.join(list_of_words)
+	return document
