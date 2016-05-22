@@ -23,7 +23,8 @@ vectorsums = []
 for i, user in enumerate(sample_users):
 	vectorsum = users_vectors[i].fc8.values.sum()
 	vectorsums.append(vectorsum)
-
+# matrix of documents vs words
+# each entry is a word count 
 word_counts = np.concatenate([vectorsums[0][np.newaxis,:], 
 							vectorsums[1][np.newaxis,:],
 							vectorsums[2][np.newaxis,:], 
@@ -31,3 +32,15 @@ word_counts = np.concatenate([vectorsums[0][np.newaxis,:],
 # calculate document frequency for each word
 # results in a 1000-element array of count of documents
 df = np.sum(word_counts > 0, axis=0)
+# normalize word_count matrix to get term frequencies 
+# ie. divide each term frequency by total count of number of words in that document 
+tf_norm = np.sqrt((word_counts ** 2).sum(axis=1))
+tf_norm[tf_norm == 0] = 1 # avoid divide by zero
+tf = word_counts / tf_norm.reshape(4,1)
+# inverse document frequency
+idf = np.log((4 + 1.) / (1. + df)) + 1.
+tfidf = tf * idf
+# normalize tfidf matrix by dividing by l2 norm
+tfidf_norm = np.sqrt((tfidf ** 2).sum(axis=1))
+tfidf_norm[tfidf_norm == 0] = 1
+tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
