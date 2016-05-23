@@ -1,8 +1,12 @@
 import pandas as pd
 import numpy as np
+import psycopg2 as pg2
 
 sample_users = ['goemon16', 'andrew_icant', 'instagramtop50', 'lebackpacker']
 tracker_df = pd.read_pickle('./tracker.pkl')
+
+conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+
 
 shortcodes = [] # len4 list of len100 lists of shortcodes
 for user in sample_users:
