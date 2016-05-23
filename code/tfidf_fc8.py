@@ -53,7 +53,7 @@ def get_user_fc8_pkls(category, img_per_user=100):
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]
 		users = [l.split('\n')[0] for l in lines]
-	
+
 	for user in users:
 		print user
 		user_df = tracker_df[tracker_df.username == user]
@@ -125,14 +125,25 @@ def pilot_test3_add_more_users():
 	lines = []
 	with open('../data/cats.txt', 'r') as f:
 		lines.append(f.readlines())
-	with oen('../data/dogs.txt', 'r') as f:
+	with open('../data/dogs.txt', 'r') as f:
 		lines.append(f.readlines())
 	with open('../data/foodies.txt', 'r') as f:
 		lines.append(f.readlines())
+	with open('../data/models.txt', 'r') as f:
+		lines.append(f.readlines())
+	with open('../data/photographers.txt', 'r') as f:
+		lines.append(f.readlines())
+	with open('../data/travel.txt', 'r') as f:
+		lines.append(f.readlines())
+	with open('../data/most_popular.txt', 'r') as f:
+		lines.append(f.readlines())
+	lines = [item for sublist in lines for item in sublist]
+	lines = [l for l in lines if not l.startswith('#')]
+	usernames = [l.split('\n')[0] for l in lines]
 
 	users_vectors = []
 	vectorsums = []
-	for i, user in enumerate(sample_users):
+	for i, user in enumerate(usernames):
 		# df = pd.read_pickle('./fc8_10imgs_{}.pkl'.format(user))
 		df = pd.read_pickle('./fc8_100imgs_{}.pkl'.format(user))
 		users_vectors.append(df)
@@ -145,11 +156,11 @@ def pilot_test3_add_more_users():
 	tfidf = TfidfVectorizer()
 	tfidf_vectorized = tfidf.fit_transform(corpus)
 
-	cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
+	cosine_sims = linear_kernel(tfidf_vectorized, tfidf_vectorized)
 	for i, sim in enumerate(cosine_sims):
-		print sample_users[i], '===', sample_users[np.argsort(sim)[-1]],\
-							 '===', sample_users[np.argsort(sim)[-2]],\
-							 '===', sample_users[np.argsort(sim)[-3]],\
-							 '===', sample_users[np.argsort(sim)[-4]]
+		print usernames[i], '===', usernames[np.argsort(sim)[-1]],\
+							 '===', usernames[np.argsort(sim)[-2]],\
+							 '===', usernames[np.argsort(sim)[-3]],\
+							 '===', usernames[np.argsort(sim)[-4]]
 
 	return cosine_similarities
