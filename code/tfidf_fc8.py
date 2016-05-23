@@ -77,11 +77,19 @@ def pilot_test():
 
 	cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
 
-	for i,user in enumerate(sample_users):
+	new_docs = []
+	for i, user in enumerate(sample_users):
 		for j, img_vec in enumerate(users_vectors[i].fc8):
 			doc = vector_to_document(img_vec)
-			vectorized = tfidf.transform([doc])
-			sims = linear_kernel(vectorized, tfidf_vectorized)[0]
-			most_sims = np.argsort(sims)[::-1]
+			new_docs.append(doc)
+			# vectorized = tfidf.transform([doc])
+			# sims = linear_kernel(vectorized, tfidf_vectorized)[0]
+			# most_sims = np.argsort(sims)[::-1]
+			#
+			# print '{} img {} most similar to \n{}'.format(user, j, [(sample_users[i], sims[i]) for i in most_sims] )
 
-			print '{} img {} most similar to \n{}'.format(user, j, [(sample_users[i], sims[i]) for i in most_sims] )
+	new_docs_vectorized = tfidf.transform(new_docs)
+	cosine_similarities = linear_kernel(new_docs_vectorized, tfidf_vectorized)
+
+	for sim in cosine_similarities:
+		print 'top score: {}     top user: {}'.format(sim.max(), sample_users[np.argmax(sim)])
