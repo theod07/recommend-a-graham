@@ -9,7 +9,7 @@ thetravellinglight
 michaelchristopherbrown
 vincentcroce
 japhetweeks
-sollsken
+# sollsken
 # MikeKus
 lebackpacker
 finn
@@ -26,7 +26,7 @@ chrisburkard
 maurice
 uncornered_market
 alexstrohl
-TuulaVintage
+# TuulaVintage
 colerise
 bemytravelmuse
 ravenreviews

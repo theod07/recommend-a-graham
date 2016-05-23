@@ -17,13 +17,13 @@ juanpaoloroldan
 imgmodels
 paigehathaway
 anacheri
-Kayla_Itsines
-ChantelZales
-ClaudiaAlende
-AbigailRatchford
-LaciKaySomers
+# Kayla_Itsines
+# ChantelZales
+# ClaudiaAlende
+# AbigailRatchford
+# LaciKaySomers
 amanda.leefans
-AlexaJeanBrown
+# AlexaJeanBrown
 # iblamejordan
 septumpapi
 pozzialessio
