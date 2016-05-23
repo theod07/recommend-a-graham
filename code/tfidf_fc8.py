@@ -11,7 +11,7 @@ def explore1():
 	for user in sample_users:
 		user_df = tracker_df[tracker_df.username == user]
 		user_df = user_df[user_df.predicted == 1]
-		shorts = np.random.choice(user_df.shortcode.values, size=10, replace=False)
+		shorts = np.random.choice(user_df.shortcode.values, size=100, replace=False)
 		shortcodes.append(shorts)
 
 	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
@@ -47,6 +47,32 @@ def explore1():
 	tfidf_norm = np.sqrt((tfidf ** 2).sum(axis=1))
 	tfidf_norm[tfidf_norm == 0] = 1
 	tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
+
+def get_user_fc8_pkls(category, img_per_user=100):
+	with open('../data/{}.txt'.format(category), 'r') as f:
+		lines = f.readlines()
+		lines = [l for l in lines if not l.startswith('#')]
+		users = [l.split('\n')[0] for l in lines]
+	
+	for user in users:
+		print user
+		user_df = tracker_df[tracker_df.username == user]
+		user_df = user_df[user_df.predicted == 1]
+		try:
+			shorts = np.random.choice(user_df.shortcode.values, size=img_per_user, replace=False)
+		except:
+			shorts = np.random.choice(user_df.shortcode.values, size=df.shape[0], replace=False)
+		shortcodes.append(shorts)
+
+	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
+
+	users_vectors = []
+	for i, user in enumerate(users):
+		df = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode in ('{}');'''.format(shortcodes_csv[i]), conn)
+		df.fc8 = df.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+		fname = './fc8_{}imgs_{}.pkl'.format(img_per_user, user)
+		df.to_pickle(fname)
+
 
 def vector_to_document(vector):
 	# convert vector to integers to avoid confusion
@@ -93,37 +119,3 @@ def pilot_test():
 
 	for sim in cosine_similarities:
 		print 'top score: {}     top user: {}'.format(sim.max(), sample_users[np.argmax(sim)])
-
-
-def pilot_test3_add_more_users():
-	lines = []
-	with open('../data/cats.txt', 'r') as f:
-		lines.append(f.readlines())
-	with open('../data/dogs.txt', 'r') as f:
-		lines.append(f.readlines())
-	with open('../data/foodies.txt', 'r') as f:
-		lines.append(f.readlines())
-	flattened = [item for sublist in lines for item in sublist]
-	lines = [l for l in flattened if not l.startswith('#')]
-	sample_users = [l.split('\n')[0] for l in lines]
-
-	users_vectors = []
-	vectorsums = []
-	for i, user in enumerate(sample_users):
-		# df = pd.read_pickle('./fc8_10imgs_{}.pkl'.format(user))
-		df = pd.read_pickle('./fc8_100imgs_{}.pkl'.format(user))
-		users_vectors.append(df)
-		vectorsums.append(df.fc8.values.sum())
-
-	corpus = []
-	for vector in vectorsums:
-		corpus.append(vector_to_document(vector))
-
-	tfidf = TfidfVectorizer()
-	tfidf_vectorized = tfidf.fit_transform(corpus)
-
-	cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
-	for i,sim in enumerate(cosine_sims):
-	    print sample_users[i], '===', sample_users[np.argsort(sim)[-1]], '===', sample_users[np.argsort(sim)[-2]], '===', sample_users[np.argsort(sim)[-3]], '===', sample_users[np.argsort(sim)[-4]]
-
-	return cosine_similarities
