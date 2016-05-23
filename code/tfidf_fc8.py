@@ -1,12 +1,10 @@
 import pandas as pd
 import numpy as np
-import psycopg2 as pg2
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
 
 sample_users = ['goemon16', 'andrew_icant', 'instagramtop50', 'lebackpacker']
-tracker_df = pd.read_pickle('./tracker.pkl')
-
-conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
-
+# tracker_df = pd.read_pickle('./tracker.pkl')
 
 def explore1():
 	shortcodes = [] # len4 list of len100 lists of shortcodes
@@ -61,31 +59,29 @@ def vector_to_document(vector):
 	document = ' '.join(list_of_words)
 	return document
 
+def pilot_test():
+	users_vectors = []
+	vectorsums = []
+	for i, user in enumerate(sample_users):
+		# df = pd.read_pickle('./fc8_10imgs_{}.pkl'.format(user))
+		df = pd.read_pickle('./fc8_100imgs_{}.pkl'.format(user))
+		users_vectors.append(df)
+		vectorsums.append(df.fc8.values.sum())
 
+	corpus = []
+	for vector in vectorsums:
+		corpus.append(vector_to_document(vector))
 
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
-users_vectors = []
-vectorsums = []
-for i, user in enumerate(sample_users):
-	df = pd.read_pickle('./fc8_10imgs_{}'.format(user))
-	users_vectors.append(df)
-	vectorsums.append(df.fc8.values.sum())
+	tfidf = TfidfVectorizer()
+	tfidf_vectorized = tfidf.fit_transform(corpus)
 
-corpus = []
-for vector in vectorsums:
-	corpus.append(vector_to_document(vector))
+	cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
 
-tfidf = TfidfVectorizer()
-tfidf_vectorized = tfidf.fit_transform(corpus)
+	for i,user in enumerate(sample_users):
+		for j, img_vec in enumerate(users_vectors[i].fc8):
+			doc = vector_to_document(img_vec)
+			vectorized = tfidf.transform([doc])
+			sims = linear_kernel(vectorized, tfidf_vectorized)[0]
+			most_sims = np.argsort(sims)[::-1]
 
-cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
-
-for i,user in enumerate(sample_users):
-	for j, img_vec in enumerate(users_vectors[i].fc8):
-		doc = vector_to_document(img_vec)
-		vectorized = tfidf.transform([doc])
-		sims = linear_kernel(vectorized, tfidf_vectorized)[0]
-		most_sims = np.argsort(sims)[::-1]
-
-		print '{} img {} most similar to {}\n'.format(user, j, [(sample_users[i], sims[i]) for i in most_sims] )
+			print '{} img {} most similar to \n{}'.format(user, j, [(sample_users[i], sims[i]) for i in most_sims] )
