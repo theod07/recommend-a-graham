@@ -49,7 +49,39 @@ def explore1():
 def vector_to_document(vector):
 	# convert vector to integers to avoid confusion
 	vector = vector.astype(int)
-	list_of_words = [['{}'.format(i)]*j for i,j in enumerate(vector)]
+	# use zfill to pad strings with zeros. '1'.zfill(3) == '001'
+	list_of_words = [['{}'.format(i).zfill(3)]*j for i,j in enumerate(vector)]
+	# flatten the list
 	list_of_words = [item for sublist in list_of_words for item in sublist]
+	# put everything into one string to represent a document
 	document = ' '.join(list_of_words)
 	return document
+
+
+
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+users_vectors = []
+vectorsums = []
+for i, user in enumerate(sample_users):
+	df = pd.read_pickle('./fc8_10imgs_{}'.format(user))
+	users_vectors.append(df)
+	vectorsums.append(df.fc8.values.sum())
+
+corpus = []
+for vector in vectorsums:
+	corpus.append(vector_to_document(vector))
+
+tfidf = TfidfVectorizer()
+tfidf_vectorized = tfidf.fit_transform(corpus)
+
+cosine_similarities = linear_kernel(tfidf_vectorized, tfidf_vectorized)
+
+for i,user in enumerate(sample_users):
+	for j, img_vec in enumerate(users_vectors[i].fc8):
+		doc = vector_to_document(img_vec)
+		vectorized = tfidf.transform([doc])
+		sims = linear_kernel(vectorized, tfidf_vectorized)[0]
+		most_sims = np.argsort(sims)[::-1]
+
+		print '{} img {} most similar to {}\n'.format(user, j, [(sample_users[i], sims[i]) for i in most_sims] )
