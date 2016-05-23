@@ -4,13 +4,13 @@
 # http://www.buzzfeed.com/mackenziekruvant/food-instagrams-to-follow-in-2014
 # http://www.gq.com/gallery/best-food-instagram-accounts
 spoonuniversity
-deedubbayew
+# deedubbayew
 iamafoodblog
 andreagentl
 infatuation
 smittenkitchen
 timmelideo
-BehindFoodCarts
+# BehindFoodCarts
 sprinklesforbreakfast
 edibleliving
 elleventy
@@ -19,8 +19,8 @@ acouplecooks
 tifforelie
 foodintheair
 aprilbloomfield
-food
-gjelinatakeaway
+# food
+# gjelinatakeaway
 joythebaker
 jamieoliver
 abckitchen
@@ -28,37 +28,37 @@ andrewoknowlton
 rapo4
 cerealmag
 chefmattybee
-culinarybrodown
+# culinarybrodown
 eatingnyc
 cannellevanille
 gavinkaysen
 lindsaymaitland
 meatballssmama
-BonAppetitMag
-HungryBetches
+# BonAppetitMag
+# HungryBetches
 sundaysuppers
-New_Fork_City
+# New_Fork_City
 thenaughtyfork
 julieskitchen
 swagfoodphilly
-RealFoodz
+# RealFoodz
 mollyyeh
 cookrepublic
 indiefarmer
-CulinaryBroDown
+# CulinaryBroDown
 spoonforkbacon
 addzim
 tartinebaker
-Foooodieee
+# Foooodieee
 chitra
 thefeedfeed
 pissinginthepunchbowl
-AndrewScrivani
+# AndrewScrivani
 coffeenclothes
 njinla
 mugaritz
 camillebecerra
-DonalSkehan
+# DonalSkehan
 dylanandjeni
 bonappetitmag
 ediblebrooklyn
@@ -66,27 +66,27 @@ jamesransom_nyc
 idafrosk
 punch_drink
 alifewortheating
-Fatandfuriousburger
+# Fatandfuriousburger
 food52
 jackswifefreda
 em.peachy
 buzzfeedfood
 alexandracooks
 dailyfoodfeed
-DrizzleandDip
+# DrizzleandDip
 luckypeach
 alice_gao
 pedenmunk
-HowSweetEats
+# HowSweetEats
 twohandsnyc
 tastingtable
 keiyamazaki
-FoodintheAir
+# FoodintheAir
 pheebsfoods
 alisoneroman
 sliceofpai
 thrillist
-Utosh
+# Utosh
 superbafoodandbread
 takeamegabite
 danielkrieger

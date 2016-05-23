@@ -14,8 +14,8 @@ corgnelius
 _donald
 twopinktoes
 auggnatious
-oliver
-the_labs
+# oliver
+# the_labs
 harrythedowniepug
 snowyfoxterrier
 evys_mom
@@ -26,7 +26,7 @@ leagueoftheunsane
 chloetheminifrenchie
 cayenneiam
 whiskey_theaussie
-skylerandsabrina
+# skylerandsabrina
 otisbarkington
 jaymiheimbuch
 fetchingimages
@@ -36,21 +36,21 @@ ginny_jrt
 doghikers
 tunameltsmyheart
 andrew_icant
-burrito_the_corgi
-nalu_bear
+# burrito_the_corgi
+# nalu_bear
 marniethedog
 lucyfarted
 graciethelabrador
 mensweardog
 trotterpup
-lillyandthehairless
+# lillyandthehairless
 majortheyorkie
 bestofpack
 tobypuff
 johnstortz
 lil_rufio
 ichaity
-bordernerd
+# bordernerd
 dogumantry
 itsdougthepug
 muttadventures

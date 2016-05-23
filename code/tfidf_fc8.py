@@ -11,7 +11,7 @@ def explore1():
 	for user in sample_users:
 		user_df = tracker_df[tracker_df.username == user]
 		user_df = user_df[user_df.predicted == 1]
-		shorts = np.random.choice(user_df.shortcode.values, size=10, replace=False)
+		shorts = np.random.choice(user_df.shortcode.values, size=100, replace=False)
 		shortcodes.append(shorts)
 
 	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
@@ -47,6 +47,29 @@ def explore1():
 	tfidf_norm = np.sqrt((tfidf ** 2).sum(axis=1))
 	tfidf_norm[tfidf_norm == 0] = 1
 	tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
+
+def get_user_fc8_pkls(category, img_per_user=100):
+	with open('../data/{}.txt'.format(category), 'r') as f:
+		lines = f.readlines()
+		lines = [l for l in lines if not l.startswith('#')]
+		users = [l.split('\n')[0] for l in lines]
+	
+	for user in users:
+		print user
+		user_df = tracker_df[tracker_df.username == user]
+		user_df = user_df[user_df.predicted == 1]
+		shorts = np.random.choice(user_df.shortcode.values, size=img_per_user, replace=False)
+		shortcodes.append(shorts)
+
+	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
+
+	users_vectors = []
+	for i, user in enumerate(sample_users):
+		df = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode in ('{}');'''.format(shortcodes_csv[i]), conn)
+		df.fc8 = df.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+		fname = './fc8_{}imgs_{}.pkl'.format(img_per_user, user)
+		df.to_pickle(fname)
+
 
 def vector_to_document(vector):
 	# convert vector to integers to avoid confusion

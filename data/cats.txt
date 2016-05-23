@@ -13,7 +13,7 @@ samhaseyebrows
 princessmonstertruck
 emonemon
 realgrumpycat
-ryotukoro
+# ryotukoro
 sakuracos
 mayrilyn
 richard_kitty
@@ -24,4 +24,4 @@ pudgethecat
 tomochunba
 snoopybabe
 colonelmeow
-nala_cat
+# nala_cat
