@@ -124,19 +124,19 @@ def pilot_test():
 def pilot_test3_add_more_users():
 	lines = []
 	with open('../data/cats.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/dogs.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/foodies.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/models.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/photographers.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/travel.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	with open('../data/most_popular.txt', 'r') as f:
-		lines.append(f.readlines())
+		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
 	lines = [item for sublist in lines for item in sublist]
 	lines = [l for l in lines if not l.startswith('#')]
 	usernames = [l.split('\n')[0] for l in lines]
@@ -162,5 +162,4 @@ def pilot_test3_add_more_users():
 							 '===', usernames[np.argsort(sim)[-2]],\
 							 '===', usernames[np.argsort(sim)[-3]],\
 							 '===', usernames[np.argsort(sim)[-4]]
-
-	return cosine_similarities
+	return cosine_sims, usernames
