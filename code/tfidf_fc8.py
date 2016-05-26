@@ -137,35 +137,15 @@ def make_user_category_dict():
 user_cat_dict = make_user_category_dict()
 
 def pilot_test3_add_more_users():
+	categories = ['cats', 'dogs', 'foodies', 'models',
+					'photographers', 'travel', 'most_popular']
 	lines = []
-	with open('../data/cats.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	with open('../data/dogs.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	with open('../data/foodies.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	with open('../data/models.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	with open('../data/photographers.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	with open('../data/travel.txt', 'r') as f:
-		subset = np.random.choice(f.readlines(), size=20, replace=False)
-		print 'num_users from cats: ', len(subset)
-		lines.append(subset)
-	# with open('../data/most_popular.txt', 'r') as f:
-	# 	subset = np.random.choice(f.readlines(), size=20, replace=False)
-	# 	print 'num_users from cats: ', len(subset)
-	# 	lines.append(subset)
+	for categ in categories[:-1]:
+		with open('../data/{}.txt'.format(categ), 'r') as f:
+			subset = np.random.choice(f.readlines(), size=10, replace=False)
+			print 'num_users from {}: '.format(categ), len(subset)
+			lines.append(subset)
+
 	lines = [item for sublist in lines for item in sublist]
 	lines = [l for l in lines if not l.startswith('#')]
 	usernames = [l.split('\n')[0] for l in lines]
@@ -187,8 +167,10 @@ def pilot_test3_add_more_users():
 
 	cosine_sims = linear_kernel(tfidf_vectorized, tfidf_vectorized)
 	for i, sim in enumerate(cosine_sims):
-		print usernames[i], '===', usernames[np.argsort(sim)[-1]],\
-							 '===', usernames[np.argsort(sim)[-2]],\
-							 '===', usernames[np.argsort(sim)[-3]],\
-							 '===', usernames[np.argsort(sim)[-4]]
+		top4 = [usernames[np.argsort(sim)[-j]] for j in xrange(1,5)]
+
+		print user_cat_dict[usernames[i]], '===', usernames[i]
+		for j, user in enumerate(top4):
+			print '\t {}. {} ==={}'.format(j, user_cat_dict[user], user)
+
 	return cosine_sims, usernames
