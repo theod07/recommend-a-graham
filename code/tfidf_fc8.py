@@ -120,23 +120,52 @@ def pilot_test():
 	for sim in cosine_similarities:
 		print 'top score: {}     top user: {}'.format(sim.max(), sample_users[np.argmax(sim)])
 
+def make_user_category_dict():
+	categories = ['cats', 'dogs', 'foodies', 'models',
+					'photographers', 'travel', 'most_popular']
+
+	user_cat_dict = {}
+	for categ in categories:
+		with open('../data/{}.txt'.format(categ), 'r') as f:
+			lines = f.readlines()
+			lines = [l for l in lines if not l.startswith('#')]
+			usernames = [l.split('\n')[0] for l in lines]
+			for username in usernames:
+				user_cat_dict[username] = categ
+	return user_cat_dict
+
+user_cat_dict = make_user_category_dict()
 
 def pilot_test3_add_more_users():
 	lines = []
 	with open('../data/cats.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
 	with open('../data/dogs.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
 	with open('../data/foodies.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
 	with open('../data/models.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
 	with open('../data/photographers.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
 	with open('../data/travel.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
-	with open('../data/most_popular.txt', 'r') as f:
-		lines.append(np.random.choice(f.readlines(), size=20, replace=False))
+		subset = np.random.choice(f.readlines(), size=20, replace=False)
+		print 'num_users from cats: ', len(subset)
+		lines.append(subset)
+	# with open('../data/most_popular.txt', 'r') as f:
+	# 	subset = np.random.choice(f.readlines(), size=20, replace=False)
+	# 	print 'num_users from cats: ', len(subset)
+	# 	lines.append(subset)
 	lines = [item for sublist in lines for item in sublist]
 	lines = [l for l in lines if not l.startswith('#')]
 	usernames = [l.split('\n')[0] for l in lines]
@@ -144,8 +173,8 @@ def pilot_test3_add_more_users():
 	users_vectors = []
 	vectorsums = []
 	for i, user in enumerate(usernames):
-		# df = pd.read_pickle('./fc8_10imgs_{}.pkl'.format(user))
-		df = pd.read_pickle('./fc8_100imgs_{}.pkl'.format(user))
+		# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
+		df = pd.read_pickle('../fc8_pkls/fc8_100imgs_{}.pkl'.format(user))
 		users_vectors.append(df)
 		vectorsums.append(df.fc8.values.sum())
 
