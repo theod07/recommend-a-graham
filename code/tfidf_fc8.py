@@ -69,6 +69,9 @@ def get_user_vector_pkls(category):
 		df7 = pd.read_sql('''SELECT * FROM fc7 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
 		df8 = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
 		smax = pd.read_sql('''SELECT * FROM softmax WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
+		print 'df7: ', df7.shape
+		print 'df8: ', df8.shape
+		print 'smax: ', smax.shape
 
 		df7.fc7 = df7.fc7.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 		df8.fc8 = df8.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
@@ -87,7 +90,7 @@ def vector_to_document(vector):
 	# convert vector to integers to avoid confusion
 	vector = vector.astype(int)
 	# use zfill to pad strings with zeros. '1'.zfill(3) == '001'
-	list_of_words = [['{}'.format(i).zfill(3)]*j for i,j in enumerate(vector)]
+	list_of_words = [['{}'.format(i).zfill(4)]*j for i,j in enumerate(vector)]
 	# flatten the list
 	list_of_words = [item for sublist in list_of_words for item in sublist]
 	# put everything into one string to represent a document
