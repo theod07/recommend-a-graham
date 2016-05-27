@@ -136,13 +136,14 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3_add_more_users():
+def pilot_test3(users_per_group=10, feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
+
 	lines = []
 	for categ in categories[:-1]:
 		with open('../data/{}.txt'.format(categ), 'r') as f:
-			subset = np.random.choice(f.readlines(), size=10, replace=False)
+			subset = np.random.choice(f.readlines(), size=users_per_group, replace=False)
 			print 'num_users from {}: '.format(categ), len(subset)
 			lines.append(subset)
 
@@ -152,11 +153,16 @@ def pilot_test3_add_more_users():
 
 	users_vectors = []
 	vectorsums = []
+
 	for i, user in enumerate(usernames):
-		# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
-		df = pd.read_pickle('../fc8_pkls/fc8_100imgs_{}.pkl'.format(user))
+		fname = '../{0}_pkls/{0}_100imgs_{1}.pkl'.format(feat_type, user)
+		df = pd.read_pickle(fname)
 		users_vectors.append(df)
+
+	if feat_type == 'fc8':
 		vectorsums.append(df.fc8.values.sum())
+	if feat_type == 'fc7':
+		vectorsums.append(df.fc7.values.sum())
 
 	corpus = []
 	for vector in vectorsums:
