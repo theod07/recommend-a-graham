@@ -48,7 +48,7 @@ def explore1():
 	tfidf_norm[tfidf_norm == 0] = 1
 	tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
 
-def get_user_fc8_pkls(category, img_per_user=100):
+def get_user_vector_pkls(category):
 	with open('../data/{}.txt'.format(category), 'r') as f:
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]
@@ -58,20 +58,29 @@ def get_user_fc8_pkls(category, img_per_user=100):
 		print user
 		user_df = tracker_df[tracker_df.username == user]
 		user_df = user_df[user_df.predicted == 1]
-		try:
-			shorts = np.random.choice(user_df.shortcode.values, size=img_per_user, replace=False)
-		except:
-			shorts = np.random.choice(user_df.shortcode.values, size=user_df.shape[0], replace=False)
+
+		shorts = user_df.shortcode.values
 		shortcodes.append(shorts)
 
 	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
 
 	users_vectors = []
 	for i, user in enumerate(users):
-		df = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode in ('{}');'''.format(shortcodes_csv[i]), conn)
-		df.fc8 = df.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
-		fname = './fc8_{}imgs_{}.pkl'.format(img_per_user, user)
-		df.to_pickle(fname)
+		df7 = pd.read_sql('''SELECT * FROM fc7 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
+		df8 = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
+		smax = pd.read_sql('''SELECT * FROM softmax WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
+
+		df7.fc7 = df7.fc7.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+		df8.fc8 = df8.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+		smax.softmax = smax.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
+
+		fname7 = './fc7_{}.pkl'.format(user)
+		fname8 = './fc8_{}.pkl'.format(user)
+		fnamesmax = './smax_{}.pkl'.format(user)
+
+		df7.to_pickle(fname7)
+		df8.to_pickle(fname8)
+		smax.to_pickle(fnamesmax)
 	return
 
 def vector_to_document(vector):
@@ -136,12 +145,12 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3(users_per_group=10, feat_type='fc8'):
+def pilot_test3(users_per_group=10, img_per_user = feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
-
 	lines = []
-	for categ in categories[:-1]:
+	# for categ in categories[:-1]:
+	for categ in ['cats', 'dogs', 'models']:
 		with open('../data/{}.txt'.format(categ), 'r') as f:
 			subset = np.random.choice(f.readlines(), size=users_per_group, replace=False)
 			print 'num_users from {}: '.format(categ), len(subset)
@@ -154,15 +163,19 @@ def pilot_test3(users_per_group=10, feat_type='fc8'):
 	users_vectors = []
 	vectorsums = []
 
-	for i, user in enumerate(usernames):
-		fname = '../{0}_pkls/{0}_100imgs_{1}.pkl'.format(feat_type, user)
-		df = pd.read_pickle(fname)
-		users_vectors.append(df)
-
 	if feat_type == 'fc8':
-		vectorsums.append(df.fc8.values.sum())
+		for i, user in enumerate(usernames):
+			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
+			df = pd.read_pickle('../fc8_pkls/fc8_100imgs_{}.pkl'.format(user))
+			users_vectors.append(df)
+			vectorsums.append(df.fc8.values.sum())
+
 	if feat_type == 'fc7':
-		vectorsums.append(df.fc7.values.sum())
+		for i, user in enumerate(usernames):
+			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
+			df = pd.read_pickle('../fc7_pkls/fc7_100imgs_{}.pkl'.format(user))
+			users_vectors.append(df)
+			vectorsums.append(df.fc7.values.sum())
 
 	corpus = []
 	for vector in vectorsums:
