@@ -54,6 +54,7 @@ def get_user_vector_pkls(category):
 		lines = [l for l in lines if not l.startswith('#')]
 		users = [l.split('\n')[0] for l in lines]
 
+	shortcodes = []
 	for user in users:
 		print user
 		user_df = tracker_df[tracker_df.username == user]
