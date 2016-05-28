@@ -148,7 +148,7 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3(users_per_group=10, img_per_user = feat_type='fc8'):
+def pilot_test3(users_per_group=10, feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
@@ -169,14 +169,14 @@ def pilot_test3(users_per_group=10, img_per_user = feat_type='fc8'):
 	if feat_type == 'fc8':
 		for i, user in enumerate(usernames):
 			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
-			df = pd.read_pickle('../fc8_pkls/fc8_100imgs_{}.pkl'.format(user))
+			df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
 			users_vectors.append(df)
 			vectorsums.append(df.fc8.values.sum())
 
 	if feat_type == 'fc7':
 		for i, user in enumerate(usernames):
 			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
-			df = pd.read_pickle('../fc7_pkls/fc7_100imgs_{}.pkl'.format(user))
+			df = pd.read_pickle('../fc7_pkls/fc7_{}.pkl'.format(user))
 			users_vectors.append(df)
 			vectorsums.append(df.fc7.values.sum())
 
