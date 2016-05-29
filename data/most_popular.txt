@@ -101,7 +101,7 @@ gucci
 levisbrasil
 manrepeller
 # nike
-adidas
+# adidas
 converse
 # jamieoliver
 dogfishbeer
@@ -173,7 +173,7 @@ theroxy
 opry
 highlinenyc
 cirquedusoleil
-instagram
+# instagram
 selenagomez
 arianagrande
 beyonce
