@@ -89,7 +89,7 @@ def get_user_vector_pkls(category):
 		df7.to_pickle(fname7)
 		df8.to_pickle(fname8)
 		smax.to_pickle(fnamesmax)
-	return 
+	return
 
 def vector_to_document(vector):
 	# convert vector to integers to avoid confusion
@@ -153,7 +153,7 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3(users_per_group=40, feat_type='fc7'):
+def pilot_test3(users_per_group=50, feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
@@ -161,10 +161,10 @@ def pilot_test3(users_per_group=40, feat_type='fc7'):
 	# for categ in ['cats', 'dogs', 'foodies', 'models']:
 		with open('../data/{}.txt'.format(categ), 'r') as f:
 			rawlines = f.readlines()
-			if len(lines) > users_per_group:
-				subset = np.random.choice(rawlines, size=users_per_group, replace=False)
-			else:
+			if len(rawlines) < users_per_group:
 				subset = rawlines
+			else:
+				subset = np.random.choice(rawlines, size=users_per_group, replace=False)
 			print 'num_users from {}: '.format(categ), len(subset)
 			lines.append(subset)
 
