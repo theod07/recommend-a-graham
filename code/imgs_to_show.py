@@ -99,33 +99,24 @@ def copy_imgs_to_dir(dirmap):
 	user_cat_dict = make_user_category_dict()
 
 	for fname in user_pkls:
+		print fname
 		user = fname.split('fc8_')[-1].split('.pkl')[0]
 		df = pd.read_pickle('../fc8_pkls/{}'.format(fname))
-		shortcodes = df.shortcode.values[:100]
+		if df.shape[0] < 100:
+			shortcodes = df.shortcode.values
+		else:
+			shortcodes = df.shortcode.values[:100]
 		# shortcodes_csv = "','".join(shortcodes)
-		img_ids = tracker_df[tracker_df.shortcode.apply(lambda x: x in shortcode)]['img_id']
+		img_ids = tracker_df[tracker_df.shortcode.apply(lambda x: x in shortcodes)]['img_id']
 		category = user_cat_dict[user]
 
+		if not user in os.listdir('../imgs/{}/'.format(category)):
+			os.mkdir('../imgs/{}/{}'.format(category, user))
+
 		for img_id in img_ids:
-			try:
-				shutil.copy2('../data/{}/{}/{}'.format(category, dirmap[user], img_id),
-							'../imgs/{}/{}'.format(user, img_id))
-			except:
-				print 'error: {}, {}'.format(user, img_id)
+			shutil.copy2('../data/{}/{}/{}'.format(category, dirmap[user], img_id),
+							'../imgs/{}/{}/{}'.format(category, user, img_id))
 
-
-
-	# with open('../data/{}_imgs_to_show.csv'.format(category), 'r') as f:
-	# 	lines = f.readlines()
-	# 	lines = [l for l in lines if not l.startswith('username')]
-	# for line in lines:
-	# 	user, img_id = line.split(', ')
-	# 	img_id = img_id.split('\n')[0]
-	# 	try:
-	# 		shutil.copy2('../data/{}/{}/{}'.format(cat, dirmap[user], img_id),
-	# 					'../imgs/{}/{}_{}'.format(category, user, img_id)
-	# 	except:
-	# 		print 'error {}, {}'.format(user, img_id)
 
 
 if __name__ == '__main__':
