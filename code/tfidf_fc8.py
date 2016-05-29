@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+import psycopg2 as pg2
+conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
+
 
 sample_users = ['goemon16', 'andrew_icant', 'instagramtop50', 'lebackpacker']
 # tracker_df = pd.read_pickle('./tracker.pkl')
@@ -49,6 +52,7 @@ def explore1():
 	tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
 
 def get_user_vector_pkls(category):
+	tracker_df = pd.read_pickle('./tracker.pkl')
 	with open('../data/{}.txt'.format(category), 'r') as f:
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]
@@ -66,10 +70,10 @@ def get_user_vector_pkls(category):
 	shortcodes_csv = map(lambda x: "','".join(x), shortcodes)
 
 	users_vectors = []
-	for i, user in enumerate(users):
-		df7 = pd.read_sql('''SELECT * FROM fc7 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
-		df8 = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
-		smax = pd.read_sql('''SELECT * FROM softmax WHERE shortcode IN ('{}');'''.format(shortcodes_csv[i]), conn)
+	for user, shorts in zip(users, shortcodes_csv):
+		df7 = pd.read_sql('''SELECT * FROM fc7 WHERE shortcode IN ('{}');'''.format(shorts), conn)
+		df8 = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode IN ('{}');'''.format(shorts), conn)
+		smax = pd.read_sql('''SELECT * FROM softmax WHERE shortcode IN ('{}');'''.format(shorts), conn)
 		print 'df7: ', df7.shape
 		print 'df8: ', df8.shape
 		print 'smax: ', smax.shape
@@ -85,7 +89,7 @@ def get_user_vector_pkls(category):
 		df7.to_pickle(fname7)
 		df8.to_pickle(fname8)
 		smax.to_pickle(fnamesmax)
-	return
+	return 
 
 def vector_to_document(vector):
 	# convert vector to integers to avoid confusion
