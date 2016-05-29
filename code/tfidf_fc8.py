@@ -157,7 +157,7 @@ def pilot_test3(users_per_group=50, feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
-	for categ in categories[:-1]:
+	for categ in categories:
 	# for categ in ['cats', 'dogs', 'foodies', 'models']:
 		with open('../data/{}.txt'.format(categ), 'r') as f:
 			rawlines = f.readlines()
@@ -172,20 +172,16 @@ def pilot_test3(users_per_group=50, feat_type='fc8'):
 	lines = [l for l in lines if not l.startswith('#')]
 	usernames = [l.split('\n')[0] for l in lines]
 
-	users_vectors = []
 	vectorsums = []
 
 	if feat_type == 'fc8':
 		for i, user in enumerate(usernames):
 			df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
-			users_vectors.append(df)
 			vectorsums.append(df.fc8.values.sum())
 
 	if feat_type == 'fc7':
 		for i, user in enumerate(usernames):
-			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
 			df = pd.read_pickle('../fc7_pkls/fc7_{}.pkl'.format(user))
-			users_vectors.append(df)
 			vectorsums.append(df.fc7.values.sum())
 
 	corpus = []
@@ -198,10 +194,10 @@ def pilot_test3(users_per_group=50, feat_type='fc8'):
 
 	cosine_sims = linear_kernel(tfidf_vectorized, tfidf_vectorized)
 	for i, sim in enumerate(cosine_sims):
-		top4 = [usernames[np.argsort(sim)[-j]] for j in xrange(1,5)]
+		top = [usernames[np.argsort(sim)[-j]] for j in xrange(1,5)]
 
 		print user_cat_dict[usernames[i]], '===', usernames[i]
-		for j, user in enumerate(top4):
+		for j, user in enumerate(top):
 			print '\t {}. {} === {}'.format(j, user_cat_dict[user], user)
 
 	return cosine_sims, usernames
