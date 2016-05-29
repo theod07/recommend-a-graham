@@ -149,14 +149,18 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3(users_per_group=10, feat_type='fc8'):
+def pilot_test3(users_per_group=40, feat_type='fc7'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
-	# for categ in categories[:-1]:
-	for categ in ['cats', 'dogs', 'models']:
+	for categ in categories[:-1]:
+	# for categ in ['cats', 'dogs', 'foodies', 'models']:
 		with open('../data/{}.txt'.format(categ), 'r') as f:
-			subset = np.random.choice(f.readlines(), size=users_per_group, replace=False)
+			rawlines = f.readlines()
+			if len(lines) > users_per_group:
+				subset = np.random.choice(rawlines, size=users_per_group, replace=False)
+			else:
+				subset = rawlines
 			print 'num_users from {}: '.format(categ), len(subset)
 			lines.append(subset)
 
@@ -169,7 +173,6 @@ def pilot_test3(users_per_group=10, feat_type='fc8'):
 
 	if feat_type == 'fc8':
 		for i, user in enumerate(usernames):
-			# df = pd.read_pickle('../fc8_pkls/fc8_10imgs_{}.pkl'.format(user))
 			df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
 			users_vectors.append(df)
 			vectorsums.append(df.fc8.values.sum())
@@ -182,7 +185,8 @@ def pilot_test3(users_per_group=10, feat_type='fc8'):
 			vectorsums.append(df.fc7.values.sum())
 
 	corpus = []
-	for vector in vectorsums:
+	for i, vector in enumerate(vectorsums):
+		print i, usernames[i]
 		corpus.append(vector_to_document(vector))
 
 	tfidf = TfidfVectorizer()
@@ -194,6 +198,6 @@ def pilot_test3(users_per_group=10, feat_type='fc8'):
 
 		print user_cat_dict[usernames[i]], '===', usernames[i]
 		for j, user in enumerate(top4):
-			print '\t {}. {} ==={}'.format(j, user_cat_dict[user], user)
+			print '\t {}. {} === {}'.format(j, user_cat_dict[user], user)
 
 	return cosine_sims, usernames
