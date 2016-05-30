@@ -201,3 +201,23 @@ def pilot_test3(users_per_group=50, img_per_user=100, feat_type='fc8'):
 			print '\t {}. {} === {}'.format(j, user_cat_dict[user], user)
 
 	return cosine_sims, usernames
+
+
+def visualize_tsne():
+	import matplotlib.pyplot as plt
+	from tsne import bh_sne
+	tracker_df = pd.read_pickle('./tracker.pkl')
+
+	dfs = []
+	for category in listdir('/Volumes/micro/recommend-a-graham/imgs/'):
+		for user in listdir('/Volumes/micro/recommend-a-graham/imgs/'+category):
+			img_ids = listdir('/Volumes/micro/recommend-a-graham/imgs/{}/{}/'.format(category, user))
+
+			sub_df = tracker_df[tracker_df.img_id.apply(lambda x: x in img_ids)]
+
+			user_df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
+			user_df = user_df[user_df.shortcode.apply(lambda x: x in sub_df.shortcode.values)]
+			dfs.append(pd.merge(sub_df, user_df, on='shortcode'))
+
+	dfs = pd.concat(dfs, axis=0)
+	x_data = dfs.fc8.values
