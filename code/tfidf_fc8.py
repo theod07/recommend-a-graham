@@ -153,7 +153,7 @@ def make_user_category_dict():
 
 user_cat_dict = make_user_category_dict()
 
-def pilot_test3(users_per_group=50, feat_type='fc8'):
+def pilot_test3(users_per_group=50, img_per_user=100, feat_type='fc8'):
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
@@ -177,12 +177,12 @@ def pilot_test3(users_per_group=50, feat_type='fc8'):
 	if feat_type == 'fc8':
 		for i, user in enumerate(usernames):
 			df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
-			vectorsums.append(df.fc8.values.sum())
+			vectorsums.append(df.fc8.values[:img_per_user].sum())
 
 	if feat_type == 'fc7':
 		for i, user in enumerate(usernames):
 			df = pd.read_pickle('../fc7_pkls/fc7_{}.pkl'.format(user))
-			vectorsums.append(df.fc7.values.sum())
+			vectorsums.append(df.fc7.values[:img_per_user].sum())
 
 	corpus = []
 	for i, vector in enumerate(vectorsums):
