@@ -139,6 +139,8 @@ Transfer Learning
 - ImageNet -- annual challenge to detect/identify objects and classification/localization
 - Training can take months, even on GPU.
 - Fortunately, smart people have done the work for us which allowed me to implement it quickly in Lasagne, which is a python wrapper for the Theano-based model.
+- Neural networks provide an engine for us to featurize our data for us so that we don't have to go through and manually engineer features. This is a huge benefit for data of this size!
+- Can use neural network as a black box to generate features!
 
 
 VGG-16 Architecture
@@ -149,6 +151,63 @@ VGG-16 Architecture
 - 3x Fully connected layers, separated by dropout layers (p=0.5)
 - Softmax output layer
 
+
+Example Outputs:
+We're not only limited to the final output of the network. Also have access to intermediate layers!
 Softmax Output -- 1000-element stored in postgres database
 fc8 Output -- 1000-element stored in postgres database
 fc7 Output -- 4096-element stored in postgres database
+**sparse vector**
+
+Methodology & Approach
+- Now that we have vectors for our images, we can group them together to represent various Instagram profiles.
+- The natural idea would be to represent a user by the mean of their images
+- We could then represent every profile as the mean of their images and compare similarity between them, eg. cosine similarity
+(img1 + img2 + ... + imgN)/N = UserPreference or UserStyle
+- Can take a np.mean([img for img in imgs]), easy!
+
+Results
+- Easy? Yes!
+- Useful? No!
+- Results did not seem very good. No signal.
+- What could it be...?
+
+
+What is the Curse of Dimensionality?
+- Any data we have comes with features/predictors/variables that we can use to guess an outcome
+- It's not uncommon to want more information about a situation to make a more informed decision
+- However, it turns out that there is a point where having more features/predictors/variables becomes detrimental to our ability to decide!
+- As we increase the number of features in our model, the distance between points quickly explodes and we lose the density required for statistical significance. Our feature space quickly becomes sparse and unhelpful.
+- So we went from 196,608 dimensions per image to 4096 dimensions per image (fc7) to 1000 dimensions per image (fc8, softmax). That's a huge improvement!
+- But we still have fewer observations (Instagram profiles) than our feature space!
+- How can we resolve this issue?
+
+
+Dimensionality Reduction to the Rescue!
+- Principle Component Analysis helps us reduce dimensionality further by finding new basis for our data.
+- Matrix decomposition method through calculating the eigenvalue/eigenvectors of our feature covariance matrix.
+- Eigenvectors give us the new basis for dimensions.
+- Eigenvalues tell us the variance along each dimension.
+- Goal: reduce dimensionality so that most variance in data is still explained
+
+
+Results of PCA
+- This curve is so round! OH NO!
+- Hoping to see a sharp decay that will help us determine cutoff point. No luck.
+- Try it anyway for 90% explained.. no good
+- Try it anyway for 80% explained.. no good
+- Try it anyway for 70% explained.. no good
+- Try it anyway for 60% explained.. no good
+- Try it anyway for 50% explained.. down to # features now, and results are still no good
+- Why do celebrities keep showing up in my results?
+- I cannot recommend JustinBieber to people in good conscience!
+
+
+Cry.. Take a coffee break. Coffee break lasts a week.
+What's going on??
+
+
+Maybe taking the mean of a bunch of images is tainting my results. If I have a user who really enjoys posting photos of their cat and photos of natural landscape, the average of those vectors will be significantly different from the average of a bunch of cat photos and the average of a bunch of landscape photos. Taking the mean like this wipes away any signal we extracted from our neural network
+The key is to not take the mean!
+
+Enter Tf-Idf!
