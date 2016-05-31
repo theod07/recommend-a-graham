@@ -89,32 +89,32 @@ Data management
 - Calculated values stored and managed via Postgres Relational Database
 - Access Postgres data via python wrapper psycopg2
 
-Postgres Tables
-CREATE TABLE tracker (
-	shortcode text,
-	username text,
-	img_id text,
-	predicted int DEFAULT 0,
-	PRIMARY KEY(shortcode)
-);
+  Postgres Tables
+  CREATE TABLE tracker (
+  	shortcode text,
+  	username text,
+  	img_id text,
+  	predicted int DEFAULT 0,
+  	PRIMARY KEY(shortcode)
+  );
 
-CREATE TABLE softmax (
-	shortcode text,
-	softmax text,
-	PRIMARY KEY(shortcode)
-);
+  CREATE TABLE softmax (
+  	shortcode text,
+  	softmax text,
+  	PRIMARY KEY(shortcode)
+  );
 
-CREATE TABLE fc8 (
-	shortcode text,
-	fc8 text,
-	PRIMARY KEY(shortcode)
-);
+  CREATE TABLE fc8 (
+  	shortcode text,
+  	fc8 text,
+  	PRIMARY KEY(shortcode)
+  );
 
-CREATE TABLE fc7 (
-	shortcode text,
-	fc7 text,
-	PRIMARY KEY(shortcode)
-);
+  CREATE TABLE fc7 (
+  	shortcode text,
+  	fc7 text,
+  	PRIMARY KEY(shortcode)
+  );
 
 
 Neural Networks

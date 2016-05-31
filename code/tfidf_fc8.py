@@ -215,9 +215,39 @@ def visualize_tsne():
 
 			sub_df = tracker_df[tracker_df.img_id.apply(lambda x: x in img_ids)]
 
-			user_df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
+			# user_df = pd.read_pickle('../fc8_pkls/fc8_{}.pkl'.format(user))
+			user_df = pd.read_pickle('../fc7_pkls/fc7_{}.pkl'.format(user))
 			user_df = user_df[user_df.shortcode.apply(lambda x: x in sub_df.shortcode.values)]
 			dfs.append(pd.merge(sub_df, user_df, on='shortcode'))
 
 	dfs = pd.concat(dfs, axis=0)
-	x_data = dfs.fc8.values
+	dfs.reset_index(inplace=True)
+	# dfs.fc8 = dfs.fc8.apply(lambda x: x.reshape(1, x.shape[0]))
+	dfs.fc7 = dfs.fc7.apply(lambda x: x.reshape(1, x.shape[0]))
+
+	# vectors = dfs.fc8.values
+	vectors = dfs.fc7.values
+
+	x_data = vectors[0]
+	for vector in vectors[1:]:
+		x_data = np.concatenate((x_data, vector), axis=0)
+	print x_data.shape
+
+	y_dict = {k:i for i,k in enumerate(dfs.username.unique())}
+	# y_dict = {k:i for i,k in enumerate(['cats', 'dogs', 'foodies',
+	# 									'models','most_popular',
+	# 									'photographers', 'travel'])}
+	y_data = dfs.username.apply(lambda x: y_dict[x]).values
+
+	vis_data = bh_sne(x_data)
+	vis_x = vis_data[:,0]
+	vis_y = vis_data[:,1]
+
+	plt.scatter(vis_x, vis_y, c=y_data, cmap=plt.cm.get_cmap("jet", 28))
+	cbar = plt.colorbar()
+	cbar.set_ticks([i*29./28 + 29./56 for i in range(28)])
+	# cbar.set_ticklabels(y_dict.keys())
+	cbar.set_ticklabels(zip(dfs.username.unique(), [user_cat_dict[i] for i in dfs.username.unique()]))
+	plt.clim(0, 29)
+	plt.title('tsne, fc7, 100img_per_user, 4user_per_categ')
+	plt.show()
