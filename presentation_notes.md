@@ -210,4 +210,36 @@ What's going on??
 Maybe taking the mean of a bunch of images is tainting my results. If I have a user who really enjoys posting photos of their cat and photos of natural landscape, the average of those vectors will be significantly different from the average of a bunch of cat photos and the average of a bunch of landscape photos. Taking the mean like this wipes away any signal we extracted from our neural network
 The key is to not take the mean!
 
-Enter Tf-Idf!
+
+Enter Tf-Idf! Term Frequency - Inverse Document Frequency
+- Used in Natural Language Processing for information retrieval
+- Terminology:
+  - Corpus -- a dataset of text, eg. newspaper, tweets, etc...
+  - Document --  a single body of text from Corpus
+  - Vocabulary -- distinct list of all words in Corpus
+  - Token -- an instance of a word in a document
+
+
+Tf-Idf: How it works
+- Treats each document as a bag of words:
+Featurizes a body of text by counting the number of times each word appears, don't care about language structure. Call that the Term Frequency.
+Example from Kamil's ipynb
+- Document Freqency is the ratio of number of documents that contain a term to the total number of documents in corpus
+- Inverse Document Frequency = log( 1/df(term, corpus) )
+
+
+So what? How does it relate to Neural Networks and Recommenders?
+- Excellent question, I'm glad you asked!
+- Document => Image
+- Term Frequency => NN Output Vector
+- Corpus => Collection of images
+- use the vectors from Neural Network as the term-frequency for each image
+- represent each user as the sum of their images
+- calculate tfidf for all users
+- Benefit: tfidf is not adversely affected by summation of vectors!
+
+
+Results
+
+
+Future Work
