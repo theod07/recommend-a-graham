@@ -35,15 +35,16 @@ def insert_fc7(shortcode, vector):
 
 
 def create_tracker():
-
+	"""
+	Populate table 'tracker' with information from each image from each user from each group
+	"""
+	# debug flag to help with troubleshooting
 	DEBUG = False
-	# USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
-	USER_GROUPS = ['dogs', 'cats']
-
-	# dirs = [dir for dir in os.listdir('../data/raw/')+os.listdir('../data/travel/')+os.listdir('../data/foodies/') if dir.endswith('.html')]
-
+	# seven categories of user profiles. 'raw' will be called 'most_popular' later in pipeline
+	USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models', 'dogs', 'cats']
 
 	for group in USER_GROUPS:
+		# get a list of profile directories for a given user group; directory contains images
 		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html') and not dir.startswith('._')]
 
 		if DEBUG:
