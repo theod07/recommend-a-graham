@@ -6,23 +6,36 @@ from test_parse_html import src_to_img_id
 import random
 
 def insert_tracker(shortcode, username, id):
+	"""
+	Add a row into table 'tracker' for new image
+	"""
 	q = " INSERT INTO tracker (shortcode, username, img_id) values ( '{}', '{}', '{}');"
 	return q.format(shortcode, username, id)
 
 def insert_softmax(shortcode, vector):
+	"""
+	Add a row into table 'softmax' for new image
+	"""
 	q = '''INSERT INTO softmax (shortcode, softmax) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
 def insert_fc8(shortcode, vector):
+	"""
+	Add a row into table 'fc8' for new image
+	"""
 	q = '''INSERT INTO fc8 (shortcode, fc8) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
 def insert_fc7(shortcode, vector):
+	"""
+	Add a row into table 'fc7' for new image
+	"""
 	q = '''INSERT INTO fc7 (shortcode, fc7) values ('{}', '{}');'''
 	return q.format(shortcode, vector)
 
 
 def create_tracker():
+
 	DEBUG = False
 	# USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models']
 	USER_GROUPS = ['dogs', 'cats']
