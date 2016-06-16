@@ -7,8 +7,6 @@ import random
 import shutil
 import os
 
-# HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
-
 def get_dirmap():
 	"""
 	load dictionary
@@ -39,7 +37,9 @@ def get_usernames(category):
 	return username
 
 def imgs_to_show(CATEGORIES):
-
+	"""
+	show images
+	"""
 	dirmap = get_dirmap()
 
 	for category in CATEGORIES:
@@ -105,27 +105,38 @@ def copy_imgs_to_dir(dirmap):
 	extract shortcodes
 	extract img_id for first 100imgs for user
 	copy each img_id from html dir to ./imgs/<user>
+	will allow us to access a sample of images more quickly
 	"""
+	# generate list of pkl files
 	dirs = os.listdir('../fc8_pkls/')
+	# filter out any irrelevant files
 	user_pkls = [dir for dir in dirs if dir.startswith('fc8_')]
+	# load tracker_df from saved file
 	tracker_df = pd.read_pickle('./tracker.pkl')
+	# load dictionary of user categories
 	user_cat_dict = make_user_category_dict()
-
+	# iterate through pkl files
 	for fname in user_pkls:
+		# print status to terminal
 		print fname
+
 		user = fname.split('fc8_')[-1].split('.pkl')[0]
+		# create dataframe from file
 		df = pd.read_pickle('../fc8_pkls/{}'.format(fname))
+		# choose a subset of a user's images to transfer
 		if df.shape[0] < 100:
+			# select all images if user has fewer than 100
 			shortcodes = df.shortcode.values
 		else:
+			# select first 100 images if user has more than 100
 			shortcodes = df.shortcode.values[:100]
-		# shortcodes_csv = "','".join(shortcodes)
+		# determine the corresponding img_ids
 		img_ids = tracker_df[tracker_df.shortcode.apply(lambda x: x in shortcodes)]['img_id']
 		category = user_cat_dict[user]
-
+		# create directory for user if it's not there already
 		if not user in os.listdir('../imgs/{}/'.format(category)):
 			os.mkdir('../imgs/{}/{}'.format(category, user))
-
+		# copy the selected images to new directory for easy access
 		for img_id in img_ids:
 			shutil.copy2('../data/{}/{}/{}'.format(category, dirmap[user], img_id),
 							'../imgs/{}/{}/{}'.format(category, user, img_id))
