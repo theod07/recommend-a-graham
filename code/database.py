@@ -38,7 +38,7 @@ def create_tracker():
 	"""
 	Populate table 'tracker' with information from each image from each user from each group
 	"""
-	# debug flag to help with troubleshooting
+	# flag to help with debugging
 	DEBUG = False
 	# seven categories of user profiles. 'raw' will be called 'most_popular' later in pipeline
 	USER_GROUPS = ['raw', 'foodies', 'photographers', 'travel', 'models', 'dogs', 'cats']
@@ -46,37 +46,36 @@ def create_tracker():
 	for group in USER_GROUPS:
 		# get a list of profile directories for a given user group; directory contains images
 		dirs = [dir for dir in os.listdir('../data/{}/'.format(group)) if dir.endswith('.html') and not dir.startswith('._')]
-
+		# print out directories to see where problem is happening
 		if DEBUG:
 			dirs = dirs[:5]
-	            	print 'dirs: {}'.format(dirs)
-
+	            print 'dirs: {}'.format(dirs)
+	    # go through each file
 		while len(dirs) > 0:
 			fname = dirs.pop()
+			# extract href and source information from file
 			hrefs, srcs = get_hrefs_srcs(fname, group)
-			print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
-
-
-			if len(hrefs) == 0 or len(srcs) == 0:
-				print 'len(hrefs): {}, len(srcs): {}'. format(len(hrefs), len(srcs))
-				continue
-			
+			# move on to next file once we've exhausted hrefs and sources
+			if len(hrefs) == 0 or len(srcs) == 0: continue
+			# find out the shortcode and username information
 			shortcodes, username = href_to_shortcode(hrefs)
+			# convert source information to usable ids
 			ids = src_to_img_id(srcs)
+			# status update to terminal for given user
 			print 'user: {}'.format(username)
-
+			# edgecase when page was improperly loaded/saved
 			if len(shortcodes) != len(ids):
 				print 'user {} len(shortcodes): {}, len(ids): {}'.format(username, len(shortcodes), len(ids))
 				continue
-
+			# randomize images to eliminate time structure of page & images
 			pairs = zip(shortcodes, ids) 
 			random.shuffle(pairs)
-
 			# check whether user is already in table
 			c.execute('''SELECT COUNT(*) FROM tracker WHERE username = '{}';'''.format(username))
 			user_count = int(c.fetchall()[0][0])
 
 			if user_count == 0:
+				# insert new rows into table 'tracker'
 				print 'inserting for user {}'.format(username)
 				for (code, img_id) in pairs:
 					c.execute( insert_tracker(code, username, img_id) )
