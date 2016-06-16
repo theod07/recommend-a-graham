@@ -1,27 +1,40 @@
-import numpy as np
-import pandas as pd
+from tfidf_fc8 import make_user_category_dict
+from pg_to_df import CATEGORIES
 import psycopg2 as pg2
-import os
+import pandas as pd
+import numpy as np
 import random
 import shutil
-from pg_to_df import CATEGORIES
-from tfidf_fc8 import make_user_category_dict
+import os
 
 # HTMLS_DIR = '~/Volumes/panther/recommend-a-graham/data'
 
 def get_dirmap():
+	"""
+	load dictionary
+	{username: directoryname}
+	"""
+	# read file
 	with open('../data/html_map.txt', 'r') as f:
 		lines = f.read().splitlines()
 	dirs = {}
 	for line in lines:
+		# split on custom delimiter
 		kv = line.split('!@#$!@#$!@#$ ')
+		# update dictionary
 		dirs[kv[0]] = kv[1]
 	return dirs
 
 def get_usernames(category):
+	"""
+	get list of usernames for a given category
+	"""
+	# read in file
 	with open('../data/{}.txt'.format(category), 'r') as f:
 		lines = f.readlines()
+		# filter out irrelevant lines
 		lines = [l for l in lines if not l.startswith('#')]
+		# strip \n characters
 		usernames = [l.split('\n')[0] for l in lines]
 	return username
 
