@@ -144,12 +144,11 @@ def copy_imgs_to_dir(dirmap):
 
 
 if __name__ == '__main__':
+
 	try:
 		conn = pg2.connect(dbname='image_clusters')
 	except:
 		conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
-
-	# imgs_to_show(CATEGORIES)
 
 	dirmap = get_dirmap()
 

@@ -1,29 +1,15 @@
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from tempfile import TemporaryFile
+import matplotlib.pyplot as plt
 import psycopg2 as pg2
 import pandas as pd
 import numpy as np
-from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 import os
-from tempfile import TemporaryFile
-from sklearn.preprocessing import StandardScaler
 plt.style.use('ggplot')
 
-# CATEGORIES = ['most_popular','photographers', 'travel', 'foodies', 'models', 'cats', 'dogs'] # excluding 'most_popular' because useless
+# CATEGORIES = ['most_popular','photographers', 'travel', 'foodies', 'models', 'cats', 'dogs'] 
 CATEGORIES = ['cats', 'dogs']
-
-# 
-# for group in USER_GROUPS:
-# 	print 'retrieving data for {}'.format(group)
-# 	with open('../data/{}.txt'.format(group), 'r') as f:
-# 		lines = f.readlines()
-# 		lines = [l for l in lines if not l.startswith('#')]
-# 		usernames = [l.split('\n')[0] for l in lines]
-# 	df = psql.frame_query(\
-# 		'''SELECT * FROM fc7 WHERE username IN ({});'''\
-# 		.format("'"+"', '".join(usernames)+"'"), conn)
-# 
-# 	df.to_pickle('./{}.pkl'.format(group))
-
 
 def get_mean_vectors(user, conn, vec_name='softmax'):
 	"""
@@ -114,7 +100,6 @@ def get_pca_models(mean_arr):
 		plt.close('all')
 
 	return pca_models
-
 
 
 
