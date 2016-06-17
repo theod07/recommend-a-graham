@@ -1,37 +1,43 @@
-import os
-import numpy as np
-from operator import xor
-import matplotlib.pyplot as plt
-from skimage.io import imshow
-import psycopg2 as pg2
-import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from html_map import user_group_dictionary
+import matplotlib.pyplot as plt
+from skimage.io import imshow
+from operator import xor
+import psycopg2 as pg2
+import pandas as pd
+import numpy as np
+import os
 
 
 def show_user_imgs(imgs):
 	'''
-	Display images to new_user and prompt for response (Like/NoLike)
+	Display images to new_user and prompt for response (Like / NoLike)
 	Keep track of preferences in a list.
 	
 	INPUT: list of pairs, (username, img_id)
 
-	OUTPUT: list of new_user's preferences (zero or one)
+	OUTPUT: np.array of new_user's preferences (zero or one)
 	'''
+	# initialize the list of preferences
 	likes = []
 	for img in imgs:
+		# generate the path to the image
 		fname = '../imgs/{}'.format(img)
+		# update status to terminal
 		print fname
-		# imshow(fname)
+		# show image to user
 		imshow(fname)
 		plt.show()
-
+		# initialize string of preferences
 		pref = ''
 		# logical xor in python is != ... i know, right??
 		while not pref in ['0', '1']:
+			# survey whether user liked photo
 			print 'you entered: {}'.format(pref)
 			pref = raw_input('Did you like that photo? Yes:1, No:0...')
+			# keep track of the result in list 'likes'
 			likes.append(int(pref))
+	# convert list 'likes' to a np.array for better handling downstream
 	likes = np.array(likes).astype('bool')
 	return likes
 
