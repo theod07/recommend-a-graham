@@ -13,7 +13,7 @@ CATEGORIES = ['cats', 'dogs']
 
 def get_mean_vectors(user, conn, vec_name='softmax'):
 	"""
-	INPUT: username for instagram,
+	INPUT:  username for instagram,
 			connection object to postgres database
 
 	OUTPUT: user's mean vector, taken from table vec_name
@@ -36,7 +36,9 @@ def get_mean_vectors(user, conn, vec_name='softmax'):
 	
 def get_users_arr(conn, vtype):
 	"""
-	INPUT: connection object to postgres database
+	load the array of users vectors  from file
+
+	INPUT:  connection object to postgres database
 			vtype: either 'softmax', 'fc8', 'fc7'
 	OUTPUT: numpy array of users' mean vectors.
 			row-by-colum :: user-by-features
@@ -59,7 +61,9 @@ def get_users_arr(conn, vtype):
 
 def get_pca_models(mean_arr):
 	"""
-	INPUT: scaled 2D array of softmax vectors
+	calculate run PCA and generate plots for inspection.
+
+	INPUT:  scaled 2D array of softmax vectors
 
 	OUTPUT: list of pca models of various amount of variance explained
 			save plots of explained variance in ../data/ directory
@@ -128,10 +132,3 @@ if __name__ == '__main__':
 	# create a pca_model for different values of explained variance
 	# pca_models = get_pca_models(sm_arr_scaled)
 
-
-
-
-
-
-
-	
