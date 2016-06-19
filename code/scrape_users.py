@@ -1,18 +1,20 @@
-import selenium.webdriver as webdriver
-import time
-import random
-import os
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-# from appscript import app
+import selenium.webdriver as webdriver
 from pykeyboard import PyKeyboard
+# from appscript import app
+import random
+import time
+import os
 
 def get_users(filename):
-    '''
-    INPUT: file of users, separated by newline
+    """
+    load list of usernames from file
+
+    INPUT:  file of users, separated by newline
     OUTPUT: list of users
-    '''
+    """
     with open(filename) as f:
         users = f.readlines()
     users = [name.split('\n')[0] for name in users if not name.startswith('#')]
@@ -20,32 +22,44 @@ def get_users(filename):
 
 
 def get_page(user, driver, sleeptime=1, down_scrolls=int(3e2)):
-    '''
-    '''
+    """
+    collect data for a given username
+    save webpage locally
+
+    INPUT:  user, string name of user
+            driver, Selenium driver object 
+            sleeptime, integer number of seconds to pause between scrolls
+            down_scrolls, integer number of times to scroll down user's page
+    OUTPUT: None; raw page is saved to local drive
+    """
     url = 'http://instagram.com/' + user
     driver.get(url)
 
     # Page is not available/404
-    if 'The link you followed may be broken, or the page may have been removed.' in driver.page_source:
+    message_404 = 'The link you followed may be broken, or the page may have been removed.'
+    if message_404 in driver.page_source:
         return
-
+    # Must click 'Load More' button to see more content
     try:
         driver.find_element_by_link_text('LOAD MORE').click()
+    # Content is not available for whatever reason
     except NoSuchElementException:
         print "Sorry, can't click LOAD MORE for {}".format(user)
 
     page = driver.page_source
-
+    # Continue scrolling to load more content
     for i in xrange(down_scrolls):
         driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        # Pause to update page
         time.sleep(sleeptime + random.random())
+        # Stop early if the page hasn't changed since the last iteration
         if driver.page_source == page:
             break
         page = driver.page_source
-
+    # Execute keyboard shortcuts to save entire page
     saveas = ActionChains(driver).key_down(Keys.CONTROL).send_keys('s').key_up(Keys.CONTROL)
     saveas.perform()
-
+    # Pause again, to avoid 
     time.sleep(2)
     # app('System Events').keystroke('\r')
     kbrd = PyKeyboard()
@@ -79,7 +93,7 @@ if __name__ == '__main__':
         profile.set_preference("browser.download.manager.showWhenStarting", False)
         profile.set_preference("browser.download.dir", SAVE_DIR)
 
-        # Load driver to load page
+        # Load driver to view page
         driver = webdriver.Firefox(firefox_profile=profile)
 
         get_page(user, driver, sleeptime=SLEEPTIME)
@@ -99,4 +113,5 @@ if __name__ == '__main__':
             time.sleep(3)
 
         time.sleep(5)
+        # Close driver each time to free system memory
         driver.close()

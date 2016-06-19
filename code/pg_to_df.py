@@ -36,7 +36,7 @@ def get_mean_vectors(user, conn, vec_name='softmax'):
 	
 def get_users_arr(conn, vtype):
 	"""
-	load the array of users vectors  from file
+	load the array of users vectors from file
 
 	INPUT:  connection object to postgres database
 			vtype: either 'softmax', 'fc8', 'fc7'
