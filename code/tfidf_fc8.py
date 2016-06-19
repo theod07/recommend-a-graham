@@ -1,15 +1,26 @@
-import pandas as pd
-import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import psycopg2 as pg2
+import pandas as pd
+import numpy as np
+
+# connect to postgres database
 conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
-
-
+# small sample of users to test code with
 sample_users = ['goemon16', 'andrew_icant', 'instagramtop50', 'lebackpacker']
-# tracker_df = pd.read_pickle('./tracker.pkl')
+# load tracker dataframe from file
+# work with table 'tracker' from memory instead of hitting postgres database
+tracker_df = pd.read_pickle('./tracker.pkl')
 
 def explore1():
+	"""
+	sandbox to test analysis using tfidf method
+	load each user's dataframe
+	randomly select 100 images for given user
+	query the neural network fc8 vector for selected images from postgres DB
+	represent user as the sum of their images (sum fc8 vectors together)
+
+	"""
 	shortcodes = [] # len4 list of len100 lists of shortcodes
 	for user in sample_users:
 		user_df = tracker_df[tracker_df.username == user]
@@ -21,7 +32,11 @@ def explore1():
 
 	users_vectors = []
 	for i, user in enumerate(sample_users):
-		df = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode in ('{}');'''.format(shortcodes_csv[i]), conn)
+		df = pd.read_sql(
+					'''SELECT * 
+						FROM fc8 
+						WHERE shortcode 
+						IN ('{}');'''.format(shortcodes_csv[i]), conn)
 		df.fc8 = df.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 		users_vectors.append(df)
 
