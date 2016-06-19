@@ -9,8 +9,6 @@ conn = pg2.connect(dbname='image_clusters', host='/var/run/postgresql/')
 # small sample of users to test code with
 sample_users = ['goemon16', 'andrew_icant', 'instagramtop50', 'lebackpacker']
 # load tracker dataframe from file
-# work with table 'tracker' from memory instead of hitting postgres database
-tracker_df = pd.read_pickle('./tracker.pkl')
 
 def explore1():
 	"""
@@ -19,7 +17,7 @@ def explore1():
 	randomly select 100 images for given user
 	query the neural network fc8 vector for selected images from postgres DB
 	represent user as the sum of their images (sum fc8 vectors together)
-
+	calculate term frequency inverse document frequency
 	"""
 	shortcodes = [] # len4 list of len100 lists of shortcodes
 	for user in sample_users:
@@ -54,7 +52,7 @@ def explore1():
 	# results in a 1000-element array of count of documents
 	df = np.sum(word_counts > 0, axis=0)
 	# normalize word_count matrix to get term frequencies
-	# ie. divide each term frequency by total count of number of words in that document
+	# ie. divide each term frequency by total count of number of words in document
 	tf_norm = np.sqrt((word_counts ** 2).sum(axis=1))
 	tf_norm[tf_norm == 0] = 1 # avoid divide by zero
 	tf = word_counts / tf_norm.reshape(4,1)
@@ -67,7 +65,16 @@ def explore1():
 	tfidf_normed = tfidf / tfidf_norm.reshape(4,1) # we're working with 4 documents (users)
 
 def get_user_vector_pkls(category):
+	"""
+	query postgres database for users' fc7, fc8, softmax vectors from neural network
+	save information as pkl files on local disk
+
+	INPUT:  category, string category name
+	OUTPUT: None, pickle files saved to disk for each user
+	"""	
+	# query table 'tracker' from memory instead of hitting postgres database
 	tracker_df = pd.read_pickle('./tracker.pkl')
+	# load list of users
 	with open('../data/{}.txt'.format(category), 'r') as f:
 		lines = f.readlines()
 		lines = [l for l in lines if not l.startswith('#')]
@@ -78,7 +85,7 @@ def get_user_vector_pkls(category):
 		print user
 		user_df = tracker_df[tracker_df.username == user]
 		user_df = user_df[user_df.predicted == 1]
-
+		# get the list of appropriate shortcodes
 		shorts = user_df.shortcode.values
 		shortcodes.append(shorts)
 
@@ -86,27 +93,36 @@ def get_user_vector_pkls(category):
 
 	users_vectors = []
 	for user, shorts in zip(users, shortcodes_csv):
+		# query postgres tables for content 
 		df7 = pd.read_sql('''SELECT * FROM fc7 WHERE shortcode IN ('{}');'''.format(shorts), conn)
 		df8 = pd.read_sql('''SELECT * FROM fc8 WHERE shortcode IN ('{}');'''.format(shorts), conn)
 		smax = pd.read_sql('''SELECT * FROM softmax WHERE shortcode IN ('{}');'''.format(shorts), conn)
+
 		print 'df7: ', df7.shape
 		print 'df8: ', df8.shape
 		print 'smax: ', smax.shape
-
+		# convert from string objects to numpy array objects
 		df7.fc7 = df7.fc7.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 		df8.fc8 = df8.fc8.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
 		smax.softmax = smax.softmax.apply(lambda x: np.fromstring(x[1:-1], sep='\n'))
-
+		# generate file names
 		fname7 = './fc7_{}.pkl'.format(user)
 		fname8 = './fc8_{}.pkl'.format(user)
 		fnamesmax = './smax_{}.pkl'.format(user)
-
+		# save them
 		df7.to_pickle(fname7)
 		df8.to_pickle(fname8)
 		smax.to_pickle(fnamesmax)
 	return
 
 def vector_to_document(vector):
+	"""
+	convert a given vector to a 'document', represented as a string of tokens
+	each token is represented as an integer representing the index of the feature
+
+	INPUT:  vector, numpy array 
+	OUTPUT: document, string of integers
+	"""
 	# convert vector to integers to avoid confusion
 	vector = vector.astype(int)
 	# use zfill to pad strings with zeros. '1'.zfill(3) == '001'
@@ -118,10 +134,11 @@ def vector_to_document(vector):
 	return document
 
 def pilot_test():
+	"""
+	"""
 	users_vectors = []
 	vectorsums = []
 	for i, user in enumerate(sample_users):
-		# df = pd.read_pickle('./fc8_10imgs_{}.pkl'.format(user))
 		df = pd.read_pickle('./fc8_100imgs_{}.pkl'.format(user))
 		users_vectors.append(df)
 		vectorsums.append(df.fc8.values.sum())
@@ -153,6 +170,12 @@ def pilot_test():
 		print 'top score: {}     top user: {}'.format(sim.max(), sample_users[np.argmax(sim)])
 
 def make_user_category_dict():
+	"""
+	make a dictionary that maps a given username to the category it belongs to
+
+	INPUT:  None
+	OUTPUT: user_cat_dict, dictionary {username: category}
+	"""
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 
@@ -169,6 +192,9 @@ def make_user_category_dict():
 user_cat_dict = make_user_category_dict()
 
 def pilot_test3(users_per_group=50, img_per_user=100, feat_type='fc8'):
+	"""
+	
+	"""
 	categories = ['cats', 'dogs', 'foodies', 'models',
 					'photographers', 'travel', 'most_popular']
 	lines = []
@@ -219,6 +245,9 @@ def pilot_test3(users_per_group=50, img_per_user=100, feat_type='fc8'):
 
 
 def visualize_tsne():
+	"""
+	play around with tsne to visualize image space
+	"""
 	import matplotlib.pyplot as plt
 	from tsne import bh_sne
 	tracker_df = pd.read_pickle('./tracker.pkl')
