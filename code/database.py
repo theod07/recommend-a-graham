@@ -1,9 +1,9 @@
-import os
-import psycopg2 as pg2
-from test_parse_html import get_hrefs_srcs
 from test_parse_html import href_to_shortcode
+from test_parse_html import get_hrefs_srcs
 from test_parse_html import src_to_img_id
+import psycopg2 as pg2
 import random
+import os
 
 def insert_tracker(shortcode, username, id):
 	"""
