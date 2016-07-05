@@ -2,10 +2,25 @@
   <img width="330"  src="/slides/Slide01.jpg">
 </div>
 
-![alt text](https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg "Logo Title Text 1")
+![alt text](/slides/Slide01.jpg "Slide01")
 
-![alt text](/slides/Slide01.jpg "Logo Title Text 1")
+![alt text][Slide04]
+![alt text][Slide06]
 
+[Slide04]: ./slides/Slide04.jpg "Slide04"
+[Slide06]: ./slides/Slide06.jpg "Slide06"
+[Slide07]: ./slides/Slide07.jpg "Slide07"
+[Slide08]: ./slides/Slide08.jpg "Slide08"
+[Slide09]: ./slides/Slide09.jpg "Slide09"
+[Slide10]: ./slides/Slide10.jpg "Slide10"
+[Slide11]: ./slides/Slide11.jpg "Slide11"
+[Slide12]: ./slides/Slide12.jpg "Slide12"
+[Slide14]: ./slides/Slide14.jpg "Slide14"
+[Slide15]: ./slides/Slide15.jpg "Slide15"
+[Slide16]: ./slides/Slide16.jpg "Slide16"
+[Slide17]: ./slides/Slide17.jpg "Slide17"
+[Slide18]: ./slides/Slide18.jpg "Slide18"
+[Slide19]: ./slides/Slide19.jpg "Slide19"
 Most of us here are familiar with Instagram. Sometimes we're greeted with selfies. Sometimes we're greeted with foodies. I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers.
 
 
