@@ -46,11 +46,10 @@ s2 = "the brown dog"
 s3 = "the cat"
 corpus = [s1,s2,s3]
 ```
-The set of all strings is our corpus.
-We'll call each string a document.
-Each document has a word count, of course. In s3, "the" and "cat" each show up once, and everything else is zero: `[0 0 1 0 1]`. We'll call this the term frequency vector.
+The set of all strings is our corpus. Let's call each string a "document".
+Of course, each document has a word count because that's how words work. In s3, "the" and "cat" each show up once, and everything else is zero: `[0 0 1 0 1]`. We'll call this the term frequency vector.
 
-We can also look at the count of documents that contain each term to get an IDF vector. This is the money maker!! Terms that show up often have a larger denominator, so they contribute less to the model.
+We can also look at the count of documents that contain each term to get an IDF vector. This is the money maker! Terms that show up often have a larger denominator, so they contribute less to the model.
 
 <img style="float:center" src="./slides/Slide12.jpg" />
 
@@ -71,7 +70,7 @@ The output for this `dog` profile (`lil_rufio`) is one from the `dog` category (
 <img style="float:center" src="./slides/Slide16.jpg" />
 <img style="float:center" src="./slides/Slide17.jpg" />
 
-This last result I found really interesting. The input profile is from my `travel` category (`simonebirch`), but the recommended profile is from my `most_popular` category (`solar`). At first glance we might want to call this a bad recommendation, but a closer look shows that both profiles include images of natural scenery. Maybe the model isn't too far off the mark.
+This last result I found really interesting. The input profile is from my `travel` category (`simonebirch`), but the recommended profile is from my `most_popular` category (`solar`). At first glance we should be tempted to call this a bad recommendation, but a closer look shows that both profiles include images of natural scenery. Maybe the model isn't too far off the mark.
 
 <img style="float:center" src="./slides/Slide18.jpg" />
 
