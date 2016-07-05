@@ -1,12 +1,10 @@
-<div align="center" >
-  <img width="330"  src="/slides/Slide01.jpg">
-</div>
+<img style="float:center" src="./slides/Slide01.jpg" />
 
 ![alt text](/slides/Slide01.jpg "Slide01")
 
-![alt text][Slide04]
-![alt text][Slide06]
-![alt text][Slide07]
+![alt text][Slide04]{float:right}
+![alt text][Slide06]{float:left}
+![alt text][Slide07]{float:center}
 ![alt text][Slide08]
 ![alt text][Slide09]
 ![alt text][Slide10]
