@@ -4,6 +4,8 @@
 
 ![alt text](https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg "Logo Title Text 1")
 
+![alt text](/slides/Slide01.jpg "Logo Title Text 1")
+
 Most of us here are familiar with Instagram. Sometimes we're greeted with selfies. Sometimes we're greeted with foodies. I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers.
 
 
