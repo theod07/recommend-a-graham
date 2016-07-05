@@ -1,12 +1,16 @@
-[slide01]
+<div align="center" >
+  <img width="330"  src="/slides/Slide01.jpg">
+</div>
 
-Most of us here are familiar with Instagram. Sometimes we're greeted with selfies. Sometimes we're greeted with foodies. I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers. 
+![alt text](https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg "Logo Title Text 1")
+
+Most of us here are familiar with Instagram. Sometimes we're greeted with selfies. Sometimes we're greeted with foodies. I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers.
 
 
 It's hard to find relevant content on Instagram. We could search for hashtags, but that requires that you know what you're looking for before hand. And even if we did, we'd get back images that have been tagged. What if we could use the content of the images, instead?
 
 
-Let's say you're interested in dogs -- patriotic, fourth of july dogs. Here's something you might enjoy. 
+Let's say you're interested in dogs -- patriotic, fourth of july dogs. Here's something you might enjoy.
 Or maybe you enjoy cinematic aerial views of san francisco. You might love this one here.
 My objective is to do this type of content-based recommendation.
 
@@ -18,7 +22,7 @@ Images were featurized by a neural network trained on imagenet dataset.
 Used python's scikit-learn library to analyze featurized images.
 
 
-My first approach was the natural one: represent each user as an average of their images and compare users via cosine similarity. I tested this using an input of cat images, the model recommended Justin Bieber. 
+My first approach was the natural one: represent each user as an average of their images and compare users via cosine similarity. I tested this using an input of cat images, the model recommended Justin Bieber.
 I knew that couldn't be right. Back to the drawing board.
 
 
@@ -37,8 +41,8 @@ We can also look at the count of documents that contain each term to get an IDF 
 Here are some results of this method:
 The output for this cat profile is that cat profile.
 The output for this dog profile is that dog profile.
-Here's a result that i found interesting. The input profile is from my travel category, but the recommended profile is from my most_popular category. At first glance, that seems like it would be a bad recommendation, but when we take a closer look we can see that both profiles have images of natural scenery. 
+Here's a result that i found interesting. The input profile is from my travel category, but the recommended profile is from my most_popular category. At first glance, that seems like it would be a bad recommendation, but when we take a closer look we can see that both profiles have images of natural scenery.
 
 I know that this model is performing well because the output for this travel profile is that most_popular profile. Even though these profiles belong to different categories, we as humans we can see similar themes among the images.
 
-[slide01]: https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg "Slide01"
+[slide01]: (https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg) "Slide01"
