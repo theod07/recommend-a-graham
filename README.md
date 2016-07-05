@@ -16,7 +16,7 @@ This is the type of content-based recommendation that I'm aiming to do.
 And here's the pipeline I used to do it:
 
 * Selenium Webdriver for data collection
-* Postgres database for data storage and management
+* Postgres database for storage and management
 * Neural network trained on Imagenet dataset for image featurization
 * Python's scikit-learn library for analysis
 
