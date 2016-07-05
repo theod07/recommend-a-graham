@@ -1,9 +1,6 @@
+[slide01]
 
-Motivation
-Most of us here are familiar with instagram. 
-Sometimes we're greeted with SELFIES.
-Sometimes we're greeted with FOODIES.
-I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers. 
+Most of us here are familiar with Instagram. Sometimes we're greeted with selfies. Sometimes we're greeted with foodies. I don't know about you, but I'm not terribly interested in celebrity selfies and fancy hamburgers. 
 
 
 It's hard to find relevant content on Instagram. We could search for hashtags, but that requires that you know what you're looking for before hand. And even if we did, we'd get back images that have been tagged. What if we could use the content of the images, instead?
@@ -44,4 +41,4 @@ Here's a result that i found interesting. The input profile is from my travel ca
 
 I know that this model is performing well because the output for this travel profile is that most_popular profile. Even though these profiles belong to different categories, we as humans we can see similar themes among the images.
 
-
+[slide01]: https://github.com/theod07/recommend-a-graham/blob/master/slides/Slide01.jpg "Slide01"
