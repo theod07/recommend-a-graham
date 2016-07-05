@@ -15,11 +15,10 @@ This is the type of content-based recommendation that I'm aiming to do.
 
 And here's the pipeline I used to do it:
 
-* I used Selenium Webdriver for data collection.
-* Data storage and management using Postgres database.
-* Images were featurized by a neural network trained on Imagenet dataset.
-* Used python's scikit-learn library to analyze featurized vectors.
-
+* Selenium Webdriver for data collection
+* Postgres database for data storage and management
+* Neural network trained on Imagenet dataset for image featurization
+* Python's scikit-learn library for analysis
 
 <img style="float:center" src="./slides/Slide07.jpg" />
 
