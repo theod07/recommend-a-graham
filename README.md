@@ -4,7 +4,7 @@ Most of us here are familiar with Instagram. Sometimes we're greeted with selfie
 
 <img style="float:center" src="./slides/Slide04.jpg" />
 
-It can be hard to find relevant content on Instagram. Sure, we could search for hashtags, but that requires that we know what we're looking for before hand. And even if we did, we'd only get back images that have been tagged.
+It can be hard to find relevant content on Instagram. Sure, we could search for `#hashtags`, but that requires that we know what we're looking for before hand. And even if we did, we'd only get back images that have been tagged.
 
 What if we could use the content of the images, instead? For example let's say you're interested in dogs. Patriotic, fourth-of-july dogs. Here's an image you might enjoy.
 
@@ -48,9 +48,9 @@ corpus = [s1,s2,s3]
 ```
 The set of all strings is our corpus.
 We'll call each string a document.
-Each document has a word count, of course. In s3, "the" and "cat" each show up once, and everything else is zero. We'll call this a term frequency vector.
+Each document has a word count, of course. In s3, "the" and "cat" each show up once, and everything else is zero: `[0 0 1 0 1]`. We'll call this the term frequency vector.
 
-We can also look at the count of documents that contain each term to get an IDF vector. This is the money maker. Terms that show up often have a larger denominator and are valued less.
+We can also look at the count of documents that contain each term to get an IDF vector. This is the money maker!! Terms that show up often have a larger denominator, so they contribute less to the model.
 
 <img style="float:center" src="./slides/Slide12.jpg" />
 
