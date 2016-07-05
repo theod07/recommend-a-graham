@@ -2,9 +2,9 @@
 
 ![alt text](/slides/Slide01.jpg "Slide01")
 
-![alt text][Slide04]{float:right}
-![alt text][Slide06]{float:left}
-![alt text][Slide07]{float:center}
+![alt text][Slide04]
+![alt text][Slide06]
+![alt text][Slide07]
 ![alt text][Slide08]
 ![alt text][Slide09]
 ![alt text][Slide10]
@@ -17,9 +17,9 @@
 ![alt text][Slide18]
 ![alt text][Slide19]
 
-[Slide04]: ./slides/Slide04.jpg "Slide04"
-[Slide06]: ./slides/Slide06.jpg "Slide06"
-[Slide07]: ./slides/Slide07.jpg "Slide07"
+[Slide04]: ./slides/Slide04.jpg "Slide04" {float:center}
+[Slide06]: ./slides/Slide06.jpg "Slide06" {float:right}
+[Slide07]: ./slides/Slide07.jpg "Slide07" {float:left}
 [Slide08]: ./slides/Slide08.jpg "Slide08"
 [Slide09]: ./slides/Slide09.jpg "Slide09"
 [Slide10]: ./slides/Slide10.jpg "Slide10"
