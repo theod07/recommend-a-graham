@@ -23,7 +23,7 @@ And here's the pipeline I used to do it:
 
 <img style="float:center" src="./slides/Slide07.jpg" />
 
-My first approach was the natural one: represent each user as an average of their images and compare users via cosine similarity.
+My first approach was the natural one: represent each user as an average of their images and compare users to each other via cosine similarity.
 
 <img style="float:center" src="./slides/Slide08.jpg" />
 
@@ -53,54 +53,29 @@ Each document has a word count, of course. In s3, "the" and "cat" each show up o
 We can also look at the count of documents that contain each term to get an IDF vector. This is the money maker. Terms that show up often have a larger denominator and are valued less.
 
 <img style="float:center" src="./slides/Slide12.jpg" />
+
+Here's the analogy:
+* One document :: One images
+* Term frequency vector :: Feauturized output of the neural network
+* Corpus :: Collection of all images
+
 <img style="float:center" src="./slides/Slide14.jpg" />
+
+Here are some results using this method:
+The output for this `cat` profile (`wa_sabi`) is one from the `cat` category (`leonliu`).
+
 <img style="float:center" src="./slides/Slide15.jpg" />
+
+The output for this `dog` profile (`lil_rufio`) is one from the `dog` category (`baby.beckham`).
+
 <img style="float:center" src="./slides/Slide16.jpg" />
 <img style="float:center" src="./slides/Slide17.jpg" />
+
+This last result I found really interesting. The input profile is from my `travel` category (`simonebirch`), but the recommended profile is from my `most_popular` category (`solar`). At first glance you might think this is a bad recommendation, but when we take a closer look we can see that both profiles include images of natural scenery. Maybe the model isn't too far off the mark.
+
 <img style="float:center" src="./slides/Slide18.jpg" />
+
+Now that we have a baseline model with some promise, I'd like to extend the analogy between computer vision and NLP to do some topic modeling among images and users. I'd also like to vary the posting habits of users, because most people don't post images of just one thing. Eventually, I'd like to be able to cluster users together by their posting habits and compare users that way. That would be so interesting!
+
+
 <img style="float:center" src="./slides/Slide19.jpg" />
-
-
-
-
-
-Here are some results of this method:
-The output for this cat profile is that cat profile.
-The output for this dog profile is that dog profile.
-Here's a result that i found interesting. The input profile is from my travel category, but the recommended profile is from my most_popular category. At first glance, that seems like it would be a bad recommendation, but when we take a closer look we can see that both profiles have images of natural scenery.
-
-I know that this model is performing well because the output for this travel profile is that most_popular profile. Even though these profiles belong to different categories, we as humans we can see similar themes among the images.
-
-
-
-![alt text](/slides/Slide01.jpg "Slide01")
-
-![alt text][Slide04]
-![alt text][Slide06]
-![alt text][Slide07]
-![alt text][Slide08]
-![alt text][Slide09]
-![alt text][Slide10]
-![alt text][Slide11]
-![alt text][Slide12]
-![alt text][Slide14]
-![alt text][Slide15]
-![alt text][Slide16]
-![alt text][Slide17]
-![alt text][Slide18]
-![alt text][Slide19]
-
-[Slide04]: ./slides/Slide04.jpg "Slide04"
-[Slide06]: ./slides/Slide06.jpg "Slide06"
-[Slide07]: ./slides/Slide07.jpg "Slide07"
-[Slide08]: ./slides/Slide08.jpg "Slide08"
-[Slide09]: ./slides/Slide09.jpg "Slide09"
-[Slide10]: ./slides/Slide10.jpg "Slide10"
-[Slide11]: ./slides/Slide11.jpg "Slide11"
-[Slide12]: ./slides/Slide12.jpg "Slide12"
-[Slide14]: ./slides/Slide14.jpg "Slide14"
-[Slide15]: ./slides/Slide15.jpg "Slide15"
-[Slide16]: ./slides/Slide16.jpg "Slide16"
-[Slide17]: ./slides/Slide17.jpg "Slide17"
-[Slide18]: ./slides/Slide18.jpg "Slide18"
-[Slide19]: ./slides/Slide19.jpg "Slide19"
