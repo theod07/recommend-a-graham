@@ -17,7 +17,7 @@ And here's the pipeline I used to do it:
 
 * Selenium Webdriver for data collection
 * Postgres database for storage and management
-* Neural network trained on Imagenet dataset for image featurization
+* Neural network (pre-trained on Imagenet dataset) for image featurization
 * Python's scikit-learn library for analysis
 
 <img style="float:center" src="./slides/Slide07.jpg" />
