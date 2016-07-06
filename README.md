@@ -6,7 +6,7 @@ Most of us here are familiar with Instagram. Sometimes we're greeted with selfie
 
 It can be hard to find relevant content on Instagram. Sure, we could search for `#hashtags`, but that requires that we know what we're looking for before hand. And even if we did, we'd only get back images that have been tagged.
 
-What if we could use information in the photos instead? For example let's say you're interested in dogs. Patriotic, fourth-of-july dogs. Here's an something you might enjoy.
+What if we could use information in the photos instead? For example let's say you're interested in dogs. Patriotic, fourth-of-july dogs. Here's something you might enjoy.
 
 Or maybe you enjoy cinematic, aerial views of San Francisco. This would be perfect for you.
 This is the type of content-based recommendation that I'm aiming to do.
